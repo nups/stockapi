@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Watchlist - Indian Markets</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Debug Panel -->
+        <div class="debug-panel" id="debugPanel">
+            <div class="debug-header">
+                <h4>Debug Console</h4>
+                <button class="btn btn--outline btn--sm" id="toggleDebug">Hide</button>
+            </div>
+            <div class="debug-content" id="debugContent">
+                <div class="debug-logs" id="debugLogs"></div>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="flex items-center justify-between">
+                <h1 class="m-0">📈 Indian Stock Watchlist</h1>
+                <div class="flex items-center gap-16">
+                    <div class="market-status" id="marketStatus">
+                        <span class="status status--success">Market Open</span>
+                        <small class="market-time">9:15 AM - 3:30 PM IST</small>
+                    </div>
+                    <button class="btn btn--outline" id="themeToggle">🌙</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Market Indices -->
+        <section class="indices-section">
+            <div class="indices-grid" id="indicesGrid">
+                <!-- Market indices will be populated here -->
+            </div>
+        </section>
+
+        <!-- Watchlist Management -->
+        <section class="watchlist-management">
+            <div class="card">
+                <div class="card__body">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center gap-16">
+                            <h2>My Watchlists</h2>
+                            <select class="form-control watchlist-selector" id="watchlistSelector">
+                                <option value="">Select a watchlist</option>
+                            </select>
+                        </div>
+                        <div class="flex gap-8">
+                            <button class="btn btn--primary" id="createWatchlistBtn">+ Create New</button>
+                            <button class="btn btn--outline" id="deleteWatchlistBtn" disabled>Delete</button>
+                        </div>
+                    </div>
+
+                    <!-- Stock Search -->
+                    <div class="stock-search-container">
+                        <div class="form-group">
+                            <label class="form-label" for="stockSearch">Add stocks to watchlist</label>
+                            <div class="search-wrapper">
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="stockSearch" 
+                                    placeholder="Search by symbol (e.g., RELIANCE.NS) or company name"
+                                    autocomplete="off"
+                                    disabled
+                                >
+                                <div class="search-results" id="searchResults"></div>
+                            </div>
+                            <small class="form-help-text">Create or select a watchlist first to add stocks</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Dashboard -->
+        <section class="main-dashboard" id="mainDashboard">
+            <div class="empty-state" id="emptyState">
+                <div class="empty-state-content">
+                    <h3>No watchlist selected</h3>
+                    <p>Create a new watchlist or select an existing one to start tracking stocks.</p>
+                    <button class="btn btn--primary" id="createFirstWatchlist">Create Your First Watchlist</button>
+                </div>
+            </div>
+
+            <div class="watchlist-content" id="watchlistContent" style="display: none;">
+                <div class="watchlist-header">
+                    <h2 id="activeWatchlistName">My Stocks</h2>
+                    <div class="last-updated">
+                        Last updated: <span id="lastUpdated">--</span>
+                        <button class="btn btn--outline btn--sm" id="refreshBtn">🔄 Refresh</button>
+                    </div>
+                </div>
+
+                <div class="stocks-grid" id="stocksGrid">
+                    <!-- Stock cards will be populated here -->
+                </div>
+
+                <!-- Technical Analysis Section -->
+                <div class="analysis-section">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Technical Analysis</h3>
+                        </div>
+                        <div class="card__body" id="technicalAnalysis">
+                            <!-- Technical indicators will be populated here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fundamental Analysis Section -->
+                <div class="analysis-section">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Fundamental Analysis</h3>
+                        </div>
+                        <div class="card__body" id="fundamentalAnalysis">
+                            <!-- Fundamental metrics will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Create Watchlist Modal -->
+    <div class="modal-overlay" id="modalOverlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Create New Watchlist</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="watchlistName">Watchlist Name</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="watchlistName" 
+                        placeholder="e.g., Blue Chip Stocks, Growth Stocks"
+                        maxlength="50"
+                    >
+                    <div class="form-error" id="watchlistNameError" style="display: none;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--outline" id="modalCancel">Cancel</button>
+                <button class="btn btn--primary" id="modalConfirm">Create</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="confirmation-modal" id="confirmationModal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="confirmationTitle">Confirm Action</h3>
+                <button class="modal-close" id="confirmationClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmationMessage">Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn--outline" id="confirmationCancel">Cancel</button>
+                <button class="btn btn--error" id="confirmationConfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

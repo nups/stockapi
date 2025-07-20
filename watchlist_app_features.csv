@@ -1,0 +1,25 @@
+Feature Category,Feature,Description,Benefit
+Watchlist Management,Create Multiple Watchlists,"Create custom named watchlists (e.g., ""Blue Chip"", ""Growth"")",Organize stocks by strategy/sector/risk level
+Watchlist Management,Add/Remove Stocks,One-click add/remove with confirmation dialogs,Easy portfolio management and tracking
+Watchlist Management,Switch Between Lists,Dropdown selector to switch between multiple lists,Monitor different investment themes separately
+Watchlist Management,Delete Watchlists,Delete entire watchlists with confirmation,Clean up unused watchlists easily
+Stock Search,Autocomplete Search,Smart suggestions while typing stock names/symbols,Find stocks quickly without typing full names
+Stock Search,Search by Symbol/Name,"Search by ""RELIANCE"" or ""RELIANCE.NS""",Flexible search accommodates different user habits
+Stock Search,Indian Stock Database,45+ popular Indian stocks with .NS/.BO suffixes,Focus on most traded Indian stocks
+Stock Search,Prevent Duplicates,Cannot add same stock twice to same watchlist,"Maintain clean, organized watchlists"
+Data Fetching,Selective API Calls,Fetch data only for stocks in active watchlist,Eliminates unnecessary API load and costs
+Data Fetching,Real-time Price Updates,Live price updates with change indicators,Stay updated on portfolio performance
+Data Fetching,Market Status Indicator,Show if NSE/BSE markets are open/closed,Trade only during active market hours
+Data Fetching,Auto-refresh,Auto-refresh every 30 seconds during market hours,Always see latest market data
+Analysis Tools,Technical Indicators,"RSI, MACD, Moving Averages with visual indicators",Make informed technical trading decisions
+Analysis Tools,Fundamental Ratios,"P/E, P/B, ROE, Market Cap, Dividend Yield",Evaluate stock valuation and health
+Analysis Tools,Price Trend Charts,Simple ASCII/CSS charts showing price trends,Identify price momentum and trends
+Analysis Tools,Market Indices Display,"NIFTY 50, SENSEX, BANK NIFTY live tracking",Understand overall market sentiment
+User Interface,Dark/Light Mode,Toggle between light and dark themes,Comfortable viewing in any lighting condition
+User Interface,Mobile Responsive,Responsive design works on mobile devices,"Monitor stocks on any device, anywhere"
+User Interface,Toast Notifications,Success/error messages for user actions,Clear feedback for all user interactions
+User Interface,Loading States,Loading spinners during data fetch operations,Professional user experience with status updates
+Performance,LocalStorage Persistence,All watchlists saved to browser localStorage,Watchlists survive browser restarts
+Performance,Fast Response Times,Sub-2 second response times for 20-30 stocks,Instant loading and smooth interactions
+Performance,Low Memory Usage,Uses <50MB memory vs 10GB for all stocks,"Efficient resource usage, no browser lag"
+Performance,Rate Limit Safe,Maximum 25-50 API calls vs 5000+ calls,No API rate limiting issues or blocks

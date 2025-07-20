@@ -1,0 +1,13 @@
+Metric,Value,Category,Scaling_Factor
+Total Listed Companies (NSE),"2,671",Market Scale,1.0
+Total Listed Companies (BSE),"5,595",Market Scale,2.1
+Unique Companies Combined,"5,000+",Market Scale,1.9
+API Requests (5 stocks),5 per refresh,API Load,1.0
+API Requests (5000 stocks),"5,000 per refresh",API Load,1000.0
+Database Records (5 stocks),~500 records,Data Volume,1.0
+Database Records (5000 stocks),"~500,000 records",Data Volume,1000.0
+Memory Usage (5 stocks),~10 MB,Resource Usage,1.0
+Memory Usage (5000 stocks),~10 GB,Resource Usage,1000.0
+Response Time (5 stocks),<100ms,Performance,1.0
+Response Time (5000 stocks - unoptimized),>30 seconds,Performance,300.0
+Response Time (5000 stocks - optimized),<200ms,Performance,2.0

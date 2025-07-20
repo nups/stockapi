@@ -1,0 +1,8 @@
+Approach,API_Calls_Per_Hour,Data_Freshness,Rate_Limit_Risk,Recommended_for_5K
+Individual API Calls,5000,Real-time,Very High,No
+Batch API Calls (10 stocks),500,Real-time,High,No
+Batch API Calls (50 stocks),100,Real-time,Medium,Partial
+Cached API Calls (1 hour),5,1 hour delay,Very Low,No
+Cached API Calls (15 minutes),20,15 min delay,Low,Yes
+WebSocket Real-time,1,Real-time,Low,Yes
+Hybrid Approach,25,5 min delay,Low,Yes
