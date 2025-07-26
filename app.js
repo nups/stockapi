@@ -1,3 +1,42 @@
+  const connectBtn = document.getElementById('connect-zerodha-btn');
+  const fetchBtn = document.getElementById('fetch-zerodha-holdings-btn');
+  const holdingsContainer = document.getElementById('zerodha-holdings-container');
+
+  connectBtn.addEventListener('click', () => {
+    // Redirect to backend Zerodha login endpoint
+    window.location.href = 'http://localhost:3001/api/zerodha/auth/login';
+  });
+
+  fetchBtn.addEventListener('click', async () => {
+    holdingsContainer.innerHTML = 'Loading Zerodha holdings...';
+    try {
+      const resp = await fetch('http://localhost:3001/api/zerodha/holdings', {
+        credentials: 'include',
+      });
+      if (!resp.ok) throw new Error('User not authenticated or fetch failed');
+      
+      const holdings = await resp.json();
+
+      if (!holdings.length) {
+        holdingsContainer.innerHTML = '<p>No holdings found.</p>';
+        return;
+      }
+
+      const listHtml = holdings.map(h =>
+        `<li>${h.tradingsymbol}: ${h.quantity} @ ₹${h.average_price}</li>`
+      ).join('');
+
+      holdingsContainer.innerHTML = `<ul>${listHtml}</ul>`;
+    } catch (err) {
+      holdingsContainer.innerHTML = '<p style="color:red;">Failed to fetch holdings. Please connect Zerodha first.</p>';
+    }
+  });
+
+  // Enable fetch button if redirected here after Zerodha login
+  if (document.referrer.includes('kite.zerodha.com')) {
+    fetchBtn.disabled = false;
+  }
+
 // Stock Watchlist Application - JavaScript with Debug Features
 class StockWatchlistApp {
     constructor() {
