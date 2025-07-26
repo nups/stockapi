@@ -6,7 +6,7 @@
   connectBtn.addEventListener('click', () => {
     // Redirect to backend Zerodha login endpoint local
     // window.location.href = `http://localhost:3001/api/zerodha/auth/login`;
-    window.location.href = `https://stockapi-atcbeuenh9b5bfd8.centralindia-01.azurewebsites.net/api/zerodha/auth/login`;
+    window.location.href = `https://stockapi2-hvc4hgajbxd7gmes.centralindia-01.azurewebsites.net/api/zerodha/auth/login`;
   });
 
   fetchBtn.addEventListener('click', async () => {
@@ -17,7 +17,7 @@
       // });
       // if (!resp.ok) throw new Error('User not authenticated or fetch failed');
 
-        const resp = await fetch('https://stockapi-atcbeuenh9b5bfd8.centralindia-01.azurewebsites.net/api/zerodha/holdings', {
+        const resp = await fetch('https://stockapi2-hvc4hgajbxd7gmes.centralindia-01.azurewebsites.net/api/zerodha/holdings', {
           credentials: 'include',
         });
 
