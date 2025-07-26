@@ -2,9 +2,10 @@
   const fetchBtn = document.getElementById('fetch-zerodha-holdings-btn');
   const holdingsContainer = document.getElementById('zerodha-holdings-container');
 
+  
   connectBtn.addEventListener('click', () => {
     // Redirect to backend Zerodha login endpoint
-    window.location.href = 'http://localhost:3001/api/zerodha/auth/login';
+    window.location.href = `http://localhost:3001/api/zerodha/auth/login`;
   });
 
   fetchBtn.addEventListener('click', async () => {
