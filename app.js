@@ -82,10 +82,18 @@ class ZerodhaAuth {
 
     if (!this.sessionToken) {
       holdingsContainer.innerHTML = '<p style="color:red;">Please connect to Zerodha first.</p>';
+      const tableContainer = document.getElementById('holdings-table-container');
+      if (tableContainer) {
+        tableContainer.style.display = 'none';
+      }
       return;
     }
 
     holdingsContainer.innerHTML = 'Loading Zerodha holdings...';
+    const tableContainer = document.getElementById('holdings-table-container');
+    if (tableContainer) {
+      tableContainer.style.display = 'none';
+    }
     
     try {
       const response = await fetch(`${this.baseUrl}/api/zerodha/holdings?session=${this.sessionToken}`);
@@ -104,27 +112,142 @@ class ZerodhaAuth {
 
       if (!holdings || !Array.isArray(holdings) || holdings.length === 0) {
         holdingsContainer.innerHTML = '<p>No holdings found.</p>';
+        const tableContainer = document.getElementById('holdings-table-container');
+        if (tableContainer) {
+          tableContainer.style.display = 'none';
+        }
         return;
       }
 
-      const listHtml = holdings.map(h =>
-        `<li><strong>${h.tradingsymbol}</strong>: ${h.quantity} shares @ ₹${h.average_price} (Total: ₹${(h.quantity * h.average_price).toLocaleString('en-IN')})</li>`
-      ).join('');
+      // Show the table container
+      const tableContainer = document.getElementById('holdings-table-container');
+      if (tableContainer) {
+        tableContainer.style.display = 'block';
+      }
 
-      holdingsContainer.innerHTML = `
-        <div style="margin-bottom: 10px;">
-          <strong>Total Holdings: ${holdings.length}</strong>
-        </div>
-        <ul style="list-style-type: none; padding: 0;">${listHtml}</ul>
-      `;
+      // Populate the table
+      this.populateHoldingsTable(holdings);
 
       this.showMessage('Holdings loaded successfully!', 'success');
 
     } catch (error) {
       console.error('Error fetching holdings:', error);
       holdingsContainer.innerHTML = '<p style="color:red;">Failed to fetch holdings. Please try again.</p>';
+      const tableContainer = document.getElementById('holdings-table-container');
+      if (tableContainer) {
+        tableContainer.style.display = 'none';
+      }
       this.showMessage('Failed to fetch holdings', 'error');
     }
+  }
+
+  populateHoldingsTable(holdings) {
+    const tableBody = document.getElementById('holdings-table-body');
+    if (!tableBody) {
+      console.error('Holdings table body not found');
+      return;
+    }
+
+    let totalValue = 0;
+    let totalPnL = 0;
+
+    // Clear existing rows
+    tableBody.innerHTML = '';
+
+    // Create table rows
+    holdings.forEach(holding => {
+      const {
+        tradingsymbol = 'N/A',
+        product = 'N/A',
+        quantity = 0,
+        average_price = 0,
+        last_price = 0,
+        pnl = 0,
+        close_price = 0
+      } = holding;
+
+      // Use last_price or close_price for current price
+      const currentPrice = last_price || close_price || average_price;
+      const holdingValue = quantity * currentPrice;
+      const profit_loss = (currentPrice - average_price) * quantity;
+
+      totalValue += holdingValue;
+      totalPnL += profit_loss;
+
+      // Determine P&L color
+      const pnlColor = profit_loss >= 0 ? '#28a745' : '#dc3545';
+      
+      const row = document.createElement('tr');
+      row.style.borderBottom = '1px solid #eee';
+      
+      row.innerHTML = `
+        <td style="padding: 12px 8px; border: 1px solid #ddd;">
+          <div style="font-weight: 600; color: #333;">${tradingsymbol}</div>
+          <div style="font-size: 12px; color: #666;">${product}</div>
+        </td>
+        <td style="padding: 12px 8px; border: 1px solid #ddd;">
+          <div style="font-size: 14px; color: #333;">${this.getCompanyName(tradingsymbol)}</div>
+        </td>
+        <td style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 500;">
+          ${quantity.toLocaleString('en-IN')}
+        </td>
+        <td style="padding: 12px 8px; text-align: right; border: 1px solid #ddd;">
+          ₹${parseFloat(average_price).toFixed(2)}
+        </td>
+        <td style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 500;">
+          ₹${parseFloat(currentPrice).toFixed(2)}
+        </td>
+        <td style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; color: ${pnlColor}; font-weight: 600;">
+          ₹${profit_loss.toFixed(2)}
+        </td>
+        <td style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 600;">
+          ₹${holdingValue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        </td>
+      `;
+      
+      tableBody.appendChild(row);
+    });
+
+    // Update summary
+    this.updateHoldingsSummary(totalValue, totalPnL);
+  }
+
+  updateHoldingsSummary(totalValue, totalPnL) {
+    const totalValueElement = document.getElementById('total-portfolio-value');
+    const totalPnLElement = document.getElementById('total-pnl');
+
+    if (totalValueElement) {
+      totalValueElement.textContent = `₹${totalValue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    if (totalPnLElement) {
+      const pnlColor = totalPnL >= 0 ? '#28a745' : '#dc3545';
+      totalPnLElement.textContent = `₹${totalPnL.toFixed(2)}`;
+      totalPnLElement.style.color = pnlColor;
+    }
+  }
+
+  getCompanyName(symbol) {
+    // Basic mapping of some common symbols to company names
+    const symbolMap = {
+      'RELIANCE': 'Reliance Industries',
+      'TCS': 'Tata Consultancy Services',
+      'INFY': 'Infosys Limited',
+      'HDFCBANK': 'HDFC Bank',
+      'ICICIBANK': 'ICICI Bank',
+      'SBIN': 'State Bank of India',
+      'BHARTIARTL': 'Bharti Airtel',
+      'ITC': 'ITC Limited',
+      'KOTAKBANK': 'Kotak Mahindra Bank',
+      'LT': 'Larsen & Toubro',
+      'AXISBANK': 'Axis Bank',
+      'MARUTI': 'Maruti Suzuki',
+      'ASIANPAINT': 'Asian Paints',
+      'TITAN': 'Titan Company',
+      'ULTRACEMCO': 'UltraTech Cement'
+    };
+
+    return symbolMap[symbol] || symbol;
   }
 
   handleSessionExpired() {
@@ -135,6 +258,11 @@ class ZerodhaAuth {
     const holdingsContainer = document.getElementById('zerodha-holdings-container');
     if (holdingsContainer) {
       holdingsContainer.innerHTML = '<p style="color:orange;">Session expired. Please connect to Zerodha again.</p>';
+    }
+    
+    const tableContainer = document.getElementById('holdings-table-container');
+    if (tableContainer) {
+      tableContainer.style.display = 'none';
     }
     
     this.showMessage('Session expired. Please login again.', 'warning');
