@@ -1,4 +1,37 @@
+  // Add this at the beginning of the script to ensure tables initialize correctly
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 DOM fully loaded - performing initial table check');
+    
+    // Run a pre-check for table structures
+    const tableContainer = document.getElementById('holdings-table-container');
+    if (tableContainer) {
+      const table = tableContainer.querySelector('table');
+      if (table) {
+        const tbody = table.querySelector('tbody');
+        if (tbody && !tbody.id) {
+          console.log('Found tbody without ID - fixing');
+          tbody.id = 'holdings-table-body';
+        } else if (!tbody) {
+          console.log('No tbody found in table - creating one');
+          const newTbody = document.createElement('tbody');
+          newTbody.id = 'holdings-table-body';
+          
+          // Add a placeholder row to ensure the tbody is properly rendered
+          const placeholderRow = document.createElement('tr');
+          placeholderRow.id = 'placeholder-row';
+          placeholderRow.style.display = 'none';
+          placeholderRow.innerHTML = '<td colspan="7">Placeholder</td>';
+          newTbody.appendChild(placeholderRow);
+          
+          table.appendChild(newTbody);
+        }
+      }
+    }
+  });
+
   // Zerodha Session Token Management
+console.log('🚀 app.js loading - version 1.2');
+
 class ZerodhaAuth {
   constructor() {
     this.sessionToken = null;
@@ -48,33 +81,50 @@ class ZerodhaAuth {
   }
 
   setupEventListeners() {
+    console.log('Setting up Zerodha event listeners...');
+    
     const connectBtn = document.getElementById('connect-zerodha-btn');
     const fetchBtn = document.getElementById('fetch-zerodha-holdings-btn');
     const aiBtn = document.getElementById('ai-recommendation-btn');
     const testBtn = document.getElementById('test-table-btn');
 
+    console.log('Found buttons:', {
+      connectBtn: !!connectBtn,
+      fetchBtn: !!fetchBtn, 
+      aiBtn: !!aiBtn,
+      testBtn: !!testBtn
+    });
+
     if (connectBtn) {
       connectBtn.addEventListener('click', () => {
+        console.log('Connect button clicked!');
         this.initiateLogin();
       });
+      console.log('Connect button listener added');
     }
 
     if (fetchBtn) {
       fetchBtn.addEventListener('click', async () => {
+        console.log('Fetch button clicked!');
         await this.fetchHoldings();
       });
+      console.log('Fetch button listener added');
     }
 
     if (aiBtn) {
       aiBtn.addEventListener('click', async () => {
+        console.log('AI button clicked!');
         await this.fetchAIRecommendations();
       });
+      console.log('AI button listener added');
     }
 
     if (testBtn) {
       testBtn.addEventListener('click', () => {
+        console.log('Test button clicked!');
         this.showTestTable();
       });
+      console.log('Test button listener added');
     }
   }
 
@@ -94,11 +144,19 @@ class ZerodhaAuth {
       return;
     }
 
+    console.log('ENHANCED DEBUG - Initial check for holdings-table-body');
+    const initialTableBodyCheck = document.getElementById('holdings-table-body');
+    console.log('Initial table body status:', initialTableBodyCheck ? 'FOUND with parent: ' + initialTableBodyCheck.parentElement?.tagName : 'NOT FOUND');
+
     if (!this.sessionToken) {
       holdingsContainer.innerHTML = '<p style="color:red;">Please connect to Zerodha first.</p>';
       const tableContainer = document.getElementById('holdings-table-container');
       if (tableContainer) {
-        tableContainer.style.display = 'none';
+        // Hide using visibility instead of display
+        tableContainer.style.visibility = 'hidden';
+        tableContainer.style.height = '0';
+        tableContainer.style.opacity = '0';
+        tableContainer.style.overflow = 'hidden';
       }
       return;
     }
@@ -106,7 +164,11 @@ class ZerodhaAuth {
     holdingsContainer.innerHTML = 'Loading Zerodha holdings...';
     const tableContainer = document.getElementById('holdings-table-container');
     if (tableContainer) {
-      tableContainer.style.display = 'none';
+      // Hide using visibility instead of display
+      tableContainer.style.visibility = 'hidden';
+      tableContainer.style.height = '0';
+      tableContainer.style.opacity = '0';
+      tableContainer.style.overflow = 'hidden';
     }
     
     try {
@@ -128,15 +190,22 @@ class ZerodhaAuth {
         holdingsContainer.innerHTML = '<p>No holdings found.</p>';
         const tableContainer = document.getElementById('holdings-table-container');
         if (tableContainer) {
-          tableContainer.style.display = 'none';
+          // Hide using visibility instead of display
+          tableContainer.style.visibility = 'hidden';
+          tableContainer.style.height = '0';
+          tableContainer.style.opacity = '0';
+          tableContainer.style.overflow = 'hidden';
         }
         return;
       }
 
-      // Show the table container
+      // Show the table container using visibility approach
       const tableContainer = document.getElementById('holdings-table-container');
       if (tableContainer) {
-        tableContainer.style.display = 'block';
+        tableContainer.style.visibility = 'visible';
+        tableContainer.style.height = 'auto';
+        tableContainer.style.opacity = '1';
+        tableContainer.style.overflow = 'visible';
       }
 
       // Populate the table
@@ -149,20 +218,317 @@ class ZerodhaAuth {
       holdingsContainer.innerHTML = '<p style="color:red;">Failed to fetch holdings. Please try again.</p>';
       const tableContainer = document.getElementById('holdings-table-container');
       if (tableContainer) {
-        tableContainer.style.display = 'none';
+        // Hide using visibility instead of display
+        tableContainer.style.visibility = 'hidden';
+        tableContainer.style.height = '0';
+        tableContainer.style.opacity = '0';
+        tableContainer.style.overflow = 'hidden';
       }
       this.showMessage('Failed to fetch holdings', 'error');
     }
   }
 
+  initializeHoldingsTable() {
+    console.log('🔧 Initializing holdings table...');
+    
+    const tableContainer = document.getElementById('holdings-table-container');
+    if (!tableContainer) {
+      console.error('Cannot initialize holdings table: container not found');
+      return;
+    }
+    
+    // Check if we need to create the table structure
+    let table = tableContainer.querySelector('table');
+    if (!table) {
+      console.log('Creating new table structure...');
+      
+      // Create a div for overflow handling
+      const overflowDiv = document.createElement('div');
+      overflowDiv.style.overflowX = 'auto';
+      
+      // Create the table
+      table = document.createElement('table');
+      table.className = 'holdings-table';
+      table.style.width = '100%';
+      table.style.borderCollapse = 'collapse';
+      table.style.marginTop = '10px';
+      table.style.border = '1px solid #ddd';
+      
+      // Create table header
+      const thead = document.createElement('thead');
+      thead.innerHTML = `
+        <tr style="background-color: #f5f5f5;">
+          <th style="padding: 12px 8px; text-align: left; border: 1px solid #ddd; font-weight: 600; color: #333;">Symbol</th>
+          <th style="padding: 12px 8px; text-align: left; border: 1px solid #ddd; font-weight: 600; color: #333;">Company</th>
+          <th style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 600; color: #333;">Quantity</th>
+          <th style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 600; color: #333;">Avg Price</th>
+          <th style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 600; color: #333;">Current Price</th>
+          <th style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 600; color: #333;">P&L</th>
+          <th style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 600; color: #333;">Value</th>
+        </tr>
+      `;
+      table.appendChild(thead);
+      
+      // Append to the container
+      overflowDiv.appendChild(table);
+      tableContainer.appendChild(overflowDiv);
+      
+      console.log('Created new table structure successfully');
+    }
+    
+    // Check if tbody exists, create if not
+    let tbody = table.querySelector('tbody#holdings-table-body');
+    if (!tbody) {
+      console.log('Creating tbody with ID holdings-table-body...');
+      
+      // Check if there's a tbody without the correct ID
+      const existingTbody = table.querySelector('tbody');
+      if (existingTbody) {
+        console.log('Found existing tbody without correct ID, updating it');
+        existingTbody.id = 'holdings-table-body';
+        tbody = existingTbody;
+      } else {
+        // Create new tbody
+        tbody = document.createElement('tbody');
+        tbody.id = 'holdings-table-body';
+        
+        // Add a placeholder row to ensure the tbody is properly rendered
+        const placeholderRow = document.createElement('tr');
+        placeholderRow.id = 'placeholder-row';
+        placeholderRow.style.display = 'none';
+        placeholderRow.innerHTML = '<td colspan="7">Placeholder</td>';
+        tbody.appendChild(placeholderRow);
+        
+        table.appendChild(tbody);
+      }
+      
+      console.log('Tbody element created or updated with ID:', tbody.id);
+    } else {
+      console.log('Tbody already exists with correct ID');
+    }
+    
+    return tbody;
+  }
+
   populateHoldingsTable(holdings) {
     console.log('populateHoldingsTable called with:', holdings);
     
-    const tableBody = document.getElementById('holdings-table-body');
+    // First ensure the holdings table container is visible using the new approach
+    const tableContainer = document.getElementById('zerodha-holdings-container');
+    if (tableContainer) {
+      // Use visibility and opacity instead of display for better DOM accessibility
+      tableContainer.style.visibility = 'visible';
+      tableContainer.style.height = 'auto';
+      tableContainer.style.opacity = '1';
+      tableContainer.style.overflow = 'visible';
+      console.log('Holdings table container made visible with new approach');
+    } else {
+      console.error('Holdings table container not found');
+    }
+    
+    // Initialize the table if needed
+    this.initializeHoldingsTable();
+    
+    // Try to find the table body element multiple ways
+    const findTableBodyAndPopulate = () => {
+      console.log('🔍 Starting search for holdings-table-body...');
+      
+      // First try to initialize/fix the table to ensure it has a proper tbody
+      const initializedTbody = this.initializeHoldingsTable();
+      console.log('Table initialization result:', initializedTbody ? 'SUCCESS' : 'FAILED');
+      
+      // Log the visibility state of containers
+      const holdingsContainer = document.getElementById('zerodha-holdings-container');
+      const tableContainer = document.getElementById('holdings-table-container');
+      
+      // Enhanced logging to check container visibility and structure
+      console.log('ENHANCED DEBUG - Container states:', {
+        holdingsContainer: holdingsContainer ? 'found' : 'NOT FOUND',
+        holdingsContainerVisible: holdingsContainer ? holdingsContainer.style.display : 'N/A',
+        holdingsContainerVisibility: holdingsContainer ? holdingsContainer.style.visibility : 'N/A',
+        tableContainer: tableContainer ? 'found' : 'NOT FOUND', 
+        tableContainerVisible: tableContainer ? tableContainer.style.display : 'N/A',
+        tableContainerVisibility: tableContainer ? tableContainer.style.visibility : 'N/A',
+        tableContainerOpacity: tableContainer ? tableContainer.style.opacity : 'N/A',
+        tableContainerHeight: tableContainer ? tableContainer.style.height : 'N/A'
+      });
+      
+      // Check if the table is present in the containers
+      if (holdingsContainer) {
+        console.log('ENHANCED DEBUG - Holdings Container HTML structure:');
+        console.log(holdingsContainer.innerHTML.slice(0, 200) + '...');
+        console.log('Direct check for table inside holdings container:', 
+                    holdingsContainer.querySelector('table') ? 'TABLE FOUND' : 'TABLE NOT FOUND');
+      }
+      
+      if (tableContainer) {
+        console.log('ENHANCED DEBUG - Table Container HTML structure:');
+        console.log(tableContainer.innerHTML.slice(0, 200) + '...');
+        const tableCheck = tableContainer.querySelector('table');
+        console.log('Direct check for table inside table container:', 
+                    tableCheck ? 'TABLE FOUND' : 'TABLE NOT FOUND');
+        
+        if (tableCheck) {
+          console.log('ENHANCED DEBUG - Table has tbody?', 
+                      tableCheck.querySelector('tbody') ? 'YES with ID: ' + tableCheck.querySelector('tbody').id : 'NO TBODY');
+        }
+      }
+      
+      // Use the initialized tbody if available
+      let tableBody = initializedTbody;
+      
+      // If we didn't get it from initialization, try the normal methods
+      if (!tableBody) {
+        // Method 1: Direct getElementById
+        const idToSearch = 'holdings-table-body';
+        console.log('Looking for ID exactly as:', idToSearch);
+        tableBody = document.getElementById(idToSearch);
+        console.log('Method 1 - getElementById:', tableBody ? 'FOUND' : 'not found');
+      }
+      
+      // Final check - if we still don't have a tbody, create one directly
+      if (!tableBody) {
+        console.log('LAST RESORT - Force creating tbody element');
+        const table = tableContainer?.querySelector('table');
+        if (table) {
+          tableBody = document.createElement('tbody');
+          tableBody.id = 'holdings-table-body';
+          table.appendChild(tableBody);
+          console.log('Created tbody as last resort');
+        }
+      }
+
+      // Final logging
+      console.log('🎯 Final result:', {
+        tableBodyFound: !!tableBody,
+        tableBodyId: tableBody ? tableBody.id : 'N/A',
+        tableBodyParent: tableBody ? tableBody.parentElement?.tagName : 'N/A'
+      });
+      
+      console.log('All elements with "holdings" in ID:');
+      document.querySelectorAll('[id*="holdings"]').forEach((el, index) => {
+        console.log(`  ${index + 1}. ${el.id} (${el.tagName}) - visibility: ${el.style.visibility || 'default'}, opacity: ${el.style.opacity || 'default'}`);
+      });
+
+      if (tableBody) {
+        this.actuallyPopulateTable(tableBody, holdings);
+      } else {
+        console.error('❌ Could not find or create holdings table body after all methods');
+        console.log('DOM structure around holdings:');
+        if (holdingsContainer) {
+          console.log('Holdings container HTML:', holdingsContainer.innerHTML.substring(0, 500) + '...');
+        }
+        
+        // Last attempt - create a completely new table from scratch
+        console.log('LAST ATTEMPT - Creating completely new table structure');
+        if (tableContainer) {
+          // Clear the container
+          tableContainer.innerHTML = '';
+          
+          // Add heading
+          const heading = document.createElement('h4');
+          heading.style.margin = '15px 0 10px 0';
+          heading.style.color = '#333';
+          heading.style.fontSize = '16px';
+          heading.textContent = '📊 Your Holdings';
+          tableContainer.appendChild(heading);
+          
+          // Create overflow div
+          const overflowDiv = document.createElement('div');
+          overflowDiv.style.overflowX = 'auto';
+          
+          // Create table
+          const newTable = document.createElement('table');
+          newTable.className = 'holdings-table';
+          newTable.style.width = '100%';
+          newTable.style.borderCollapse = 'collapse';
+          newTable.style.marginTop = '10px';
+          newTable.style.border = '1px solid #ddd';
+          
+          // Create thead
+          const thead = document.createElement('thead');
+          thead.innerHTML = `
+            <tr style="background-color: #f5f5f5;">
+              <th style="padding: 12px 8px; text-align: left; border: 1px solid #ddd; font-weight: 600; color: #333;">Symbol</th>
+              <th style="padding: 12px 8px; text-align: left; border: 1px solid #ddd; font-weight: 600; color: #333;">Company</th>
+              <th style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 600; color: #333;">Quantity</th>
+              <th style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 600; color: #333;">Avg Price</th>
+              <th style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 600; color: #333;">Current Price</th>
+              <th style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 600; color: #333;">P&L</th>
+              <th style="padding: 12px 8px; text-align: right; border: 1px solid #ddd; font-weight: 600; color: #333;">Value</th>
+            </tr>
+          `;
+          newTable.appendChild(thead);
+          
+          // Create tbody with ID
+          const newTbody = document.createElement('tbody');
+          newTbody.id = 'holdings-table-body';
+          newTable.appendChild(newTbody);
+          
+          // Add to DOM
+          overflowDiv.appendChild(newTable);
+          tableContainer.appendChild(overflowDiv);
+          
+          // Also re-add the summary div
+          const summaryDiv = document.createElement('div');
+          summaryDiv.className = 'holdings-summary';
+          summaryDiv.style.marginTop = '15px';
+          summaryDiv.style.padding = '10px';
+          summaryDiv.style.backgroundColor = '#f0f8ff';
+          summaryDiv.style.border = '1px solid #b8daff';
+          summaryDiv.style.borderRadius = '5px';
+          summaryDiv.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 600; color: #333;">Total Portfolio Value:</span>
+              <span id="total-portfolio-value" style="font-weight: 700; font-size: 18px; color: #2c5aa0;">₹0.00</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+              <span style="font-weight: 600; color: #333;">Total P&L:</span>
+              <span id="total-pnl" style="font-weight: 700; font-size: 16px;">₹0.00</span>
+            </div>
+          `;
+          tableContainer.appendChild(summaryDiv);
+          
+          // Try to populate again with the new tbody
+          const finalTbody = document.getElementById('holdings-table-body');
+          if (finalTbody) {
+            console.log('Final attempt - found new tbody, trying to populate');
+            this.actuallyPopulateTable(finalTbody, holdings);
+          }
+        }
+      }
+    };
+    
+    // Try immediately, then with a small delay if needed
+    findTableBodyAndPopulate();
+    
+    // If still not found, try again after a short delay
+    setTimeout(() => {
+      if (!document.getElementById('holdings-table-body')) {
+        console.log('Retrying table body search after timeout...');
+        findTableBodyAndPopulate();
+      }
+    }, 200);
+  }
+
+  actuallyPopulateTable(tableBody, holdings) {
+    console.log('actuallyPopulateTable called with tableBody:', tableBody, 'holdings:', holdings);
+
+    // ENHANCED DEBUG - Check tableBody validity
     if (!tableBody) {
-      console.error('Holdings table body not found');
+      console.error('❌ CRITICAL ERROR: tableBody is null or undefined');
       return;
     }
+    
+    if (typeof tableBody.innerHTML === 'undefined') {
+      console.error('❌ CRITICAL ERROR: tableBody does not have innerHTML property');
+      console.log('tableBody type:', typeof tableBody);
+      console.log('tableBody properties:', Object.keys(tableBody));
+      return;
+    }
+    
+    console.log('✅ tableBody is valid with ID:', tableBody.id);
+    console.log('✅ tableBody parent is:', tableBody.parentElement?.tagName);
 
     let totalValue = 0;
     let totalPnL = 0;
@@ -267,7 +633,63 @@ class ZerodhaAuth {
   }
 
   showTestTable() {
-    console.log('showTestTable called - NEW VERSION!');
+    console.log('🧪 showTestTable called - Enhanced debugging version!');
+    
+    // First, let's examine the DOM structure
+    console.log('=== DOM STRUCTURE ANALYSIS ===');
+    const zerodhaSection = document.querySelector('.zerodha-section');
+    console.log('Zerodha section found:', !!zerodhaSection);
+    
+    const holdingsContainer = document.getElementById('zerodha-holdings-container');
+    console.log('Holdings container found:', !!holdingsContainer);
+    
+    const tableContainer = document.getElementById('holdings-table-container');  
+    console.log('Table container found:', !!tableContainer);
+    console.log('Table container visibility:', tableContainer?.style.visibility);
+    console.log('Table container opacity:', tableContainer?.style.opacity);
+    
+    // Make table container visible for testing
+    if (tableContainer) {
+      console.log('Making table container visible');
+      tableContainer.style.visibility = 'visible';
+      tableContainer.style.height = 'auto';
+      tableContainer.style.opacity = '1';
+      tableContainer.style.overflow = 'visible';
+    }
+    
+    // Initialize the table structure if needed
+    const tbody = this.initializeHoldingsTable();
+    console.log('Table initialization result:', tbody ? 'SUCCESS' : 'FAILED');
+    
+    // Log all tbody elements
+    console.log('=== ALL TBODY ELEMENTS ===');
+    document.querySelectorAll('tbody').forEach((tbody, i) => {
+      console.log(`tbody ${i+1}:`, {
+        id: tbody.id,
+        parent: tbody.parentElement?.tagName,
+        parentId: tbody.parentElement?.id,
+        html: tbody.outerHTML.substring(0, 50)
+      });
+    });
+    
+    // Try both ways to find our specific tbody
+    const tbodyById = document.getElementById('holdings-table-body');
+    console.log('Tbody by ID found:', !!tbodyById);
+    
+    const tbodyByQuery = document.querySelector('#holdings-table-body');
+    console.log('Tbody by querySelector found:', !!tbodyByQuery);
+
+    // Check for similar IDs that might be confused
+    console.log('=== SIMILAR ID CHECK ===');
+    document.querySelectorAll('[id*="holding"]').forEach((el) => {
+      console.log(`Element with 'holding' in ID:`, {
+        id: el.id,
+        tagName: el.tagName,
+        exists: !!el
+      });
+    });
+    
+    console.log('=== END DOM ANALYSIS ===');
     
     // Sample holdings data for testing the table
     const testHoldings = [
@@ -294,47 +716,13 @@ class ZerodhaAuth {
         average_price: 1420.50,
         last_price: 1485.75,
         close_price: 1485.75
-      },
-      {
-        tradingsymbol: 'HDFCBANK',
-        product: 'CNC',
-        quantity: 40,
-        average_price: 1650.80,
-        last_price: 1612.25,
-        close_price: 1612.25
-      },
-      {
-        tradingsymbol: 'ICICIBANK',
-        product: 'CNC',
-        quantity: 35,
-        average_price: 1025.60,
-        last_price: 1087.40,
-        close_price: 1087.40
       }
     ];
 
-    // Show the table container
-    const tableContainer = document.getElementById('holdings-table-container');
-    if (tableContainer) {
-      tableContainer.style.display = 'block';
-    }
-
-    // Clear any existing message in holdings container
-    const holdingsContainer = document.getElementById('zerodha-holdings-container');
-    if (holdingsContainer) {
-      // Keep only the table container, remove any other content
-      const otherContent = holdingsContainer.querySelectorAll(':not(#holdings-table-container)');
-      otherContent.forEach(element => {
-        if (element.id !== 'holdings-table-container') {
-          element.remove();
-        }
-      });
-    }
-
-    // Populate the table
+    // Call the populate method which will handle finding the tbody
     this.populateHoldingsTable(testHoldings);
 
-    this.showMessage('Test table loaded with sample data!', 'success');
+    this.showMessage('Test table loading attempted - check console for detailed logs!', 'success');
   }
 
   async fetchAIRecommendations() {
@@ -348,13 +736,20 @@ class ZerodhaAuth {
 
     if (!this.sessionToken) {
       aiContent.textContent = 'Please connect to Zerodha first to get AI recommendations.';
-      aiContainer.style.display = 'block';
+      // Show using visibility approach
+      aiContainer.style.visibility = 'visible';
+      aiContainer.style.height = 'auto';
+      aiContainer.style.opacity = '1';
+      aiContainer.style.overflow = 'visible';
       return;
     }
 
-    // Show loading state
+    // Show loading state using visibility approach
     aiContent.textContent = 'Loading AI recommendations...';
-    aiContainer.style.display = 'block';
+    aiContainer.style.visibility = 'visible';
+    aiContainer.style.height = 'auto';
+    aiContainer.style.opacity = '1';
+    aiContainer.style.overflow = 'visible';
     
     const aiBtn = document.getElementById('ai-recommendation-btn');
     if (aiBtn) {
@@ -409,12 +804,20 @@ class ZerodhaAuth {
     
     const tableContainer = document.getElementById('holdings-table-container');
     if (tableContainer) {
-      tableContainer.style.display = 'none';
+      // Hide using visibility instead of display
+      tableContainer.style.visibility = 'hidden';
+      tableContainer.style.height = '0';
+      tableContainer.style.opacity = '0';
+      tableContainer.style.overflow = 'hidden';
     }
     
     const aiContainer = document.getElementById('ai-recommendations-container');
     if (aiContainer) {
-      aiContainer.style.display = 'none';
+      // Hide using visibility instead of display
+      aiContainer.style.visibility = 'hidden';
+      aiContainer.style.height = '0';
+      aiContainer.style.opacity = '0';
+      aiContainer.style.overflow = 'hidden';
     }
     
     this.showMessage('Session expired. Please login again.', 'warning');
@@ -426,22 +829,27 @@ class ZerodhaAuth {
   }
 
   updateUI() {
+    console.log('updateUI called, sessionToken:', this.sessionToken);
+    
     const connectBtn = document.getElementById('connect-zerodha-btn');
     const fetchBtn = document.getElementById('fetch-zerodha-holdings-btn');
     const aiBtn = document.getElementById('ai-recommendation-btn');
     
     if (connectBtn) {
       connectBtn.textContent = this.sessionToken ? 'Reconnect Zerodha' : 'Connect Zerodha';
+      console.log('Connect button updated:', connectBtn.textContent);
     }
     
     if (fetchBtn) {
       fetchBtn.disabled = !this.sessionToken;
       fetchBtn.style.opacity = this.sessionToken ? '1' : '0.5';
+      console.log('Fetch button disabled:', fetchBtn.disabled);
     }
     
     if (aiBtn) {
       aiBtn.disabled = !this.sessionToken;
       aiBtn.style.opacity = this.sessionToken ? '1' : '0.5';
+      console.log('AI button disabled:', aiBtn.disabled);
     }
   }
 
