@@ -300,8 +300,8 @@ class ZerodhaAuth {
   }
 
   async fetchAIRecommendations() {
-    const aiContainer = document.getElementById('zerodha-holdings-container');
-    const aiContent = document.getElementById('zerodha-holdings-container');
+    const aiContainer = document.getElementById('ai-recommendations-container');
+    const aiContent = document.getElementById('ai-recommendations-content');
     
     if (!aiContainer || !aiContent) {
       console.error('AI recommendations container not found');
@@ -309,7 +309,7 @@ class ZerodhaAuth {
     }
 
     if (!this.sessionToken) {
-      aiContent.textContent = 'Please connect to Zerodha first to get AI recommendations.';
+      aiContent.innerHTML = '<p style="padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px;">Please connect to Zerodha first to get AI recommendations.</p>';
       // Show using visibility approach
       aiContainer.style.visibility = 'visible';
       aiContainer.style.height = 'auto';
@@ -319,7 +319,7 @@ class ZerodhaAuth {
     }
 
     // Show loading state using visibility approach
-    aiContent.textContent = 'Loading AI recommendations...';
+    aiContent.innerHTML = '<p style="padding: 15px; text-align: center;"><span class="loading-spinner"></span> Loading AI recommendations...</p>';
     aiContainer.style.visibility = 'visible';
     aiContainer.style.height = 'auto';
     aiContainer.style.opacity = '1';
@@ -346,16 +346,22 @@ class ZerodhaAuth {
       const aiRecommendation = await response.text(); // Assuming AI returns text response
       
       if (!aiRecommendation || aiRecommendation.trim() === '') {
-        aiContent.textContent = 'No AI recommendations available at this time.';
+        aiContent.innerHTML = '<p style="padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px;">No AI recommendations available at this time.</p>';
       } else {
-        aiContent.textContent = aiRecommendation;
+        // Format the AI recommendation for better readability
+        const formattedText = this.formatAIRecommendation(aiRecommendation);
+        aiContent.innerHTML = formattedText;
       }
 
       this.showMessage('AI recommendations loaded successfully!', 'success');
 
     } catch (error) {
       console.error('Error fetching AI recommendations:', error);
-      aiContent.textContent = 'Failed to fetch AI recommendations. Please try again later.\n\nError: ' + error.message;
+      aiContent.innerHTML = '<div style="padding: 15px; background-color: #fff0f0; border: 1px solid #ffcccc; border-radius: 8px; color: #cc0000;">' +
+        '<h4 style="margin-top: 0;">Error Loading Recommendations</h4>' + 
+        '<p>Failed to fetch AI recommendations. Please try again later.</p>' +
+        '<p><strong>Error:</strong> ' + error.message + '</p>' +
+        '</div>';
       this.showMessage('Failed to fetch AI recommendations', 'error');
     } finally {
       // Reset button state
@@ -364,6 +370,119 @@ class ZerodhaAuth {
         aiBtn.textContent = '🤖 AI Recommendations';
       }
     }
+  }
+
+  formatAIRecommendation(text) {
+    // Sanitize the text first to prevent any HTML injection
+    const sanitizedText = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    
+    // Split by new lines
+    const lines = sanitizedText.split('\n');
+    
+    let formattedHTML = '<div style="padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px;">';
+    
+    // Add title
+    formattedHTML += '<h4 style="margin-top: 0; color: #2c5aa0; border-bottom: 1px solid #dee2e6; padding-bottom: 10px;">AI Portfolio Analysis</h4>';
+    
+    // Process each line to format headings, lists, and important points
+    let inList = false;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      
+      if (line === '') {
+        // Empty line - add paragraph break if not in a list
+        if (!inList) {
+          formattedHTML += '</p><p>';
+        }
+      } else if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
+        // Bullet point
+        if (!inList) {
+          // Start a new list if not already in one
+          if (formattedHTML.endsWith('<p>') || formattedHTML.endsWith('</p><p>')) {
+            formattedHTML = formattedHTML.substring(0, formattedHTML.lastIndexOf('<p>'));
+          }
+          formattedHTML += '<ul style="margin-top: 10px; margin-bottom: 10px; padding-left: 25px;">';
+          inList = true;
+        }
+        
+        // Extract the bullet point text
+        const bulletText = line.substring(1).trim();
+        
+        // Highlight any percentages or amounts with colors
+        const formattedBulletText = this.highlightFinancialMetrics(bulletText);
+        
+        formattedHTML += '<li style="margin-bottom: 5px;">' + formattedBulletText + '</li>';
+      } else if (/^\d+\./.test(line)) {
+        // Numbered list item
+        if (!inList) {
+          // Start a new list if not already in one
+          if (formattedHTML.endsWith('<p>') || formattedHTML.endsWith('</p><p>')) {
+            formattedHTML = formattedHTML.substring(0, formattedHTML.lastIndexOf('<p>'));
+          }
+          formattedHTML += '<ol style="margin-top: 10px; margin-bottom: 10px; padding-left: 25px;">';
+          inList = true;
+        }
+        
+        // Extract the numbered point text
+        const numberText = line.substring(line.indexOf('.') + 1).trim();
+        
+        // Highlight any percentages or amounts with colors
+        const formattedNumberText = this.highlightFinancialMetrics(numberText);
+        
+        formattedHTML += '<li style="margin-bottom: 5px;">' + formattedNumberText + '</li>';
+      } else {
+        // Regular text
+        if (inList) {
+          // End the list if we're in one
+          formattedHTML += inList ? '</ul><p>' : '';
+          inList = false;
+        }
+        
+        // Check if it's a heading (all caps or ends with colon)
+        if (line === line.toUpperCase() || line.endsWith(':')) {
+          formattedHTML += '<h5 style="margin-top: 15px; margin-bottom: 5px; color: #333;">' + line + '</h5>';
+        } else {
+          // Regular paragraph - highlight financial metrics
+          const formattedLine = this.highlightFinancialMetrics(line);
+          formattedHTML += (i === 0 || formattedHTML.endsWith('<p>')) ? formattedLine : (' ' + formattedLine);
+        }
+      }
+    }
+    
+    // Close any open tags
+    if (inList) {
+      formattedHTML += '</ul>';
+    } else {
+      formattedHTML += '</p>';
+    }
+    
+    // Add a signature
+    formattedHTML += '<div style="margin-top: 15px; font-style: italic; text-align: right; color: #666;">Analysis generated on ' + 
+      new Date().toLocaleDateString() + ' at ' + new Date().toLocaleTimeString() + '</div>';
+    
+    formattedHTML += '</div>';
+    
+    return formattedHTML;
+  }
+
+  highlightFinancialMetrics(text) {
+    // Highlight percentages in green (positive) or red (negative)
+    let formattedText = text.replace(/(\+?\d+(\.\d+)?%)/g, '<span style="font-weight: bold; color: #28a745;">$1</span>');
+    formattedText = formattedText.replace(/(-\d+(\.\d+)?%)/g, '<span style="font-weight: bold; color: #dc3545;">$1</span>');
+    
+    // Highlight currency amounts
+    formattedText = formattedText.replace(/(₹\s*\d+(,\d+)*(\.\d+)?)/g, '<span style="font-weight: bold; color: #2c5aa0;">$1</span>');
+    
+    // Highlight stock names
+    const stockNames = Object.values(this.symbolMap || {});
+    stockNames.forEach(name => {
+      if (formattedText.includes(name)) {
+        formattedText = formattedText.replace(new RegExp(name, 'g'), '<span style="font-weight: bold;">' + name + '</span>');
+      }
+    });
+    
+    return formattedText;
   }
 
   handleSessionExpired() {
