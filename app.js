@@ -1,47 +1,238 @@
-  const connectBtn = document.getElementById('connect-zerodha-btn');
-  const fetchBtn = document.getElementById('fetch-zerodha-holdings-btn');
-  const holdingsContainer = document.getElementById('zerodha-holdings-container');
+  // Zerodha Session Token Management
+class ZerodhaAuth {
+  constructor() {
+    this.sessionToken = null;
+    this.baseUrl = 'https://stockapi3-c6h7ejh2eedabuf6.centralindia-01.azurewebsites.net';
+    this.init();
+  }
 
-  
-  connectBtn.addEventListener('click', () => {
-    // Redirect to backend Zerodha login endpoint local
-    // window.location.href = `http://localhost:3001/api/zerodha/auth/login`;
-    window.location.href = `https://stockapi3-c6h7ejh2eedabuf6.centralindia-01.azurewebsites.net/api/zerodha/auth/login`;
-  });
+  init() {
+    // Check for session token in URL (after OAuth redirect)
+    this.checkForSessionToken();
+    
+    // Load existing session from localStorage
+    this.loadStoredSession();
+    
+    // Setup UI event listeners
+    this.setupEventListeners();
+    
+    // Update UI based on session status
+    this.updateUI();
+  }
 
-  fetchBtn.addEventListener('click', async () => {
+  checkForSessionToken() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionToken = urlParams.get('session');
+    
+    if (sessionToken) {
+      console.log('Session token found in URL:', sessionToken);
+      this.sessionToken = sessionToken;
+      localStorage.setItem('zerodha_session', sessionToken);
+      
+      // Clean up URL by removing session parameter
+      const url = new URL(window.location);
+      url.searchParams.delete('session');
+      window.history.replaceState({}, document.title, url);
+      
+      // Show success message
+      this.showMessage('Zerodha authentication successful!', 'success');
+    }
+  }
+
+  loadStoredSession() {
+    const storedSession = localStorage.getItem('zerodha_session');
+    if (storedSession) {
+      this.sessionToken = storedSession;
+      console.log('Loaded stored session token');
+    }
+  }
+
+  setupEventListeners() {
+    const connectBtn = document.getElementById('connect-zerodha-btn');
+    const fetchBtn = document.getElementById('fetch-zerodha-holdings-btn');
+
+    if (connectBtn) {
+      connectBtn.addEventListener('click', () => {
+        this.initiateLogin();
+      });
+    }
+
+    if (fetchBtn) {
+      fetchBtn.addEventListener('click', async () => {
+        await this.fetchHoldings();
+      });
+    }
+  }
+
+  initiateLogin() {
+    // Clear any existing session
+    this.clearSession();
+    
+    // Redirect to backend Zerodha login endpoint
+    window.location.href = `${this.baseUrl}/api/zerodha/auth/login`;
+  }
+
+  async fetchHoldings() {
+    const holdingsContainer = document.getElementById('zerodha-holdings-container');
+    
+    if (!holdingsContainer) {
+      console.error('Holdings container not found');
+      return;
+    }
+
+    if (!this.sessionToken) {
+      holdingsContainer.innerHTML = '<p style="color:red;">Please connect to Zerodha first.</p>';
+      return;
+    }
+
     holdingsContainer.innerHTML = 'Loading Zerodha holdings...';
+    
     try {
-      // const resp = await fetch('http://localhost:3001/api/zerodha/holdings', {
-      //   credentials: 'include',
-      // });
-      // if (!resp.ok) throw new Error('User not authenticated or fetch failed');
+      const response = await fetch(`${this.baseUrl}/api/zerodha/holdings?session=${this.sessionToken}`);
+      
+      if (response.status === 401) {
+        // Session expired or invalid
+        this.handleSessionExpired();
+        return;
+      }
 
-        const resp = await fetch('https://stockapi3-c6h7ejh2eedabuf6.centralindia-01.azurewebsites.net/api/zerodha/holdings', {
-          credentials: 'include',
-        });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
 
-      const holdings = await resp.json();
+      const holdings = await response.json();
 
-      if (!holdings.length) {
+      if (!holdings || !Array.isArray(holdings) || holdings.length === 0) {
         holdingsContainer.innerHTML = '<p>No holdings found.</p>';
         return;
       }
 
       const listHtml = holdings.map(h =>
-        `<li>${h.tradingsymbol}: ${h.quantity} @ ₹${h.average_price}</li>`
+        `<li><strong>${h.tradingsymbol}</strong>: ${h.quantity} shares @ ₹${h.average_price} (Total: ₹${(h.quantity * h.average_price).toLocaleString('en-IN')})</li>`
       ).join('');
 
-      holdingsContainer.innerHTML = `<ul>${listHtml}</ul>`;
-    } catch (err) {
-      holdingsContainer.innerHTML = '<p style="color:red;">Failed to fetch holdings. Please connect Zerodha first.</p>';
-    }
-  });
+      holdingsContainer.innerHTML = `
+        <div style="margin-bottom: 10px;">
+          <strong>Total Holdings: ${holdings.length}</strong>
+        </div>
+        <ul style="list-style-type: none; padding: 0;">${listHtml}</ul>
+      `;
 
-  // Enable fetch button if redirected here after Zerodha login
-  if (document.referrer.includes('kite.zerodha.com')) {
-    fetchBtn.disabled = false;
+      this.showMessage('Holdings loaded successfully!', 'success');
+
+    } catch (error) {
+      console.error('Error fetching holdings:', error);
+      holdingsContainer.innerHTML = '<p style="color:red;">Failed to fetch holdings. Please try again.</p>';
+      this.showMessage('Failed to fetch holdings', 'error');
+    }
   }
+
+  handleSessionExpired() {
+    console.log('Session expired, clearing stored session');
+    this.clearSession();
+    this.updateUI();
+    
+    const holdingsContainer = document.getElementById('zerodha-holdings-container');
+    if (holdingsContainer) {
+      holdingsContainer.innerHTML = '<p style="color:orange;">Session expired. Please connect to Zerodha again.</p>';
+    }
+    
+    this.showMessage('Session expired. Please login again.', 'warning');
+  }
+
+  clearSession() {
+    this.sessionToken = null;
+    localStorage.removeItem('zerodha_session');
+  }
+
+  updateUI() {
+    const connectBtn = document.getElementById('connect-zerodha-btn');
+    const fetchBtn = document.getElementById('fetch-zerodha-holdings-btn');
+    
+    if (connectBtn) {
+      connectBtn.textContent = this.sessionToken ? 'Reconnect Zerodha' : 'Connect Zerodha';
+    }
+    
+    if (fetchBtn) {
+      fetchBtn.disabled = !this.sessionToken;
+      fetchBtn.style.opacity = this.sessionToken ? '1' : '0.5';
+    }
+  }
+
+  showMessage(message, type = 'info') {
+    // Create or update message element
+    let messageEl = document.getElementById('zerodha-message');
+    if (!messageEl) {
+      messageEl = document.createElement('div');
+      messageEl.id = 'zerodha-message';
+      messageEl.style.cssText = `
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+        font-weight: bold;
+      `;
+      
+      const container = document.getElementById('zerodha-holdings-container');
+      if (container && container.parentNode) {
+        container.parentNode.insertBefore(messageEl, container);
+      }
+    }
+    
+    // Set message and styling based on type
+    messageEl.textContent = message;
+    
+    switch (type) {
+      case 'success':
+        messageEl.style.backgroundColor = '#d4edda';
+        messageEl.style.color = '#155724';
+        messageEl.style.border = '1px solid #c3e6cb';
+        break;
+      case 'error':
+        messageEl.style.backgroundColor = '#f8d7da';
+        messageEl.style.color = '#721c24';
+        messageEl.style.border = '1px solid #f5c6cb';
+        break;
+      case 'warning':
+        messageEl.style.backgroundColor = '#fff3cd';
+        messageEl.style.color = '#856404';
+        messageEl.style.border = '1px solid #ffeaa7';
+        break;
+      default:
+        messageEl.style.backgroundColor = '#d1ecf1';
+        messageEl.style.color = '#0c5460';
+        messageEl.style.border = '1px solid #bee5eb';
+    }
+    
+    // Auto-hide success messages after 5 seconds
+    if (type === 'success') {
+      setTimeout(() => {
+        if (messageEl.parentNode) {
+          messageEl.style.display = 'none';
+        }
+      }, 5000);
+    }
+  }
+
+  // Public method to check if user is authenticated
+  isAuthenticated() {
+    return !!this.sessionToken;
+  }
+
+  // Public method to get session token for other API calls
+  getSessionToken() {
+    return this.sessionToken;
+  }
+}
+
+// Initialize Zerodha authentication when DOM is loaded
+let zerodhaAuth;
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    zerodhaAuth = new ZerodhaAuth();
+  });
+} else {
+  zerodhaAuth = new ZerodhaAuth();
+}
 
 // Stock Watchlist Application - JavaScript with Debug Features
 class StockWatchlistApp {
