@@ -53,10 +53,21 @@
                         </div>
                         <div class="flex gap-8">
                             <button class="btn btn--primary" id="createWatchlistBtn">+ Create New</button>
-                            <button id="connect-zerodha-btn" style="margin-left:10px;">Connect Zerodha</button>
-                            <button id="fetch-zerodha-holdings-btn" style="margin-left:5px;">Fetch Holdings</button>
-                            <div id="zerodha-holdings-container" style="margin-top: 10px;"></div>
                             <button class="btn btn--outline" id="deleteWatchlistBtn" disabled>Delete</button>
+                        </div>
+                    </div>
+
+                    <!-- Zerodha Integration Section -->
+                    <div class="zerodha-section" style="margin-bottom: 20px; padding: 15px; border: 1px solid #e0e0e0; border-radius: 8px; background-color: #f9f9f9;">
+                        <div class="zerodha-header" style="margin-bottom: 15px;">
+                            <h3 style="margin: 0 0 10px 0; color: #333; font-size: 18px;">🔗 Zerodha Integration</h3>
+                            <div class="zerodha-buttons" style="display: flex; gap: 10px;">
+                                <button class="btn btn--primary" id="connect-zerodha-btn">Connect Zerodha</button>
+                                <button class="btn btn--outline" id="fetch-zerodha-holdings-btn" disabled>Fetch Holdings</button>
+                            </div>
+                        </div>
+                        <div id="zerodha-holdings-container" style="margin-top: 15px; min-height: 20px;">
+                            <!-- Holdings will be populated here -->
                         </div>
                     </div>
 
