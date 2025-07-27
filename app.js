@@ -50,6 +50,8 @@ class ZerodhaAuth {
   setupEventListeners() {
     const connectBtn = document.getElementById('connect-zerodha-btn');
     const fetchBtn = document.getElementById('fetch-zerodha-holdings-btn');
+    const aiBtn = document.getElementById('ai-recommendation-btn');
+    const testBtn = document.getElementById('test-table-btn');
 
     if (connectBtn) {
       connectBtn.addEventListener('click', () => {
@@ -60,6 +62,18 @@ class ZerodhaAuth {
     if (fetchBtn) {
       fetchBtn.addEventListener('click', async () => {
         await this.fetchHoldings();
+      });
+    }
+
+    if (aiBtn) {
+      aiBtn.addEventListener('click', async () => {
+        await this.fetchAIRecommendations();
+      });
+    }
+
+    if (testBtn) {
+      testBtn.addEventListener('click', () => {
+        this.showTestTable();
       });
     }
   }
@@ -142,6 +156,8 @@ class ZerodhaAuth {
   }
 
   populateHoldingsTable(holdings) {
+    console.log('populateHoldingsTable called with:', holdings);
+    
     const tableBody = document.getElementById('holdings-table-body');
     if (!tableBody) {
       console.error('Holdings table body not found');
@@ -250,6 +266,137 @@ class ZerodhaAuth {
     return symbolMap[symbol] || symbol;
   }
 
+  showTestTable() {
+    console.log('showTestTable called - NEW VERSION!');
+    
+    // Sample holdings data for testing the table
+    const testHoldings = [
+      {
+        tradingsymbol: 'RELIANCE',
+        product: 'CNC',
+        quantity: 50,
+        average_price: 2450.75,
+        last_price: 2520.30,
+        close_price: 2520.30
+      },
+      {
+        tradingsymbol: 'TCS',
+        product: 'CNC',
+        quantity: 25,
+        average_price: 3650.20,
+        last_price: 3580.90,
+        close_price: 3580.90
+      },
+      {
+        tradingsymbol: 'INFY',
+        product: 'CNC',
+        quantity: 30,
+        average_price: 1420.50,
+        last_price: 1485.75,
+        close_price: 1485.75
+      },
+      {
+        tradingsymbol: 'HDFCBANK',
+        product: 'CNC',
+        quantity: 40,
+        average_price: 1650.80,
+        last_price: 1612.25,
+        close_price: 1612.25
+      },
+      {
+        tradingsymbol: 'ICICIBANK',
+        product: 'CNC',
+        quantity: 35,
+        average_price: 1025.60,
+        last_price: 1087.40,
+        close_price: 1087.40
+      }
+    ];
+
+    // Show the table container
+    const tableContainer = document.getElementById('holdings-table-container');
+    if (tableContainer) {
+      tableContainer.style.display = 'block';
+    }
+
+    // Clear any existing message in holdings container
+    const holdingsContainer = document.getElementById('zerodha-holdings-container');
+    if (holdingsContainer) {
+      // Keep only the table container, remove any other content
+      const otherContent = holdingsContainer.querySelectorAll(':not(#holdings-table-container)');
+      otherContent.forEach(element => {
+        if (element.id !== 'holdings-table-container') {
+          element.remove();
+        }
+      });
+    }
+
+    // Populate the table
+    this.populateHoldingsTable(testHoldings);
+
+    this.showMessage('Test table loaded with sample data!', 'success');
+  }
+
+  async fetchAIRecommendations() {
+    const aiContainer = document.getElementById('ai-recommendations-container');
+    const aiContent = document.getElementById('ai-recommendations-content');
+    
+    if (!aiContainer || !aiContent) {
+      console.error('AI recommendations container not found');
+      return;
+    }
+
+    if (!this.sessionToken) {
+      aiContent.textContent = 'Please connect to Zerodha first to get AI recommendations.';
+      aiContainer.style.display = 'block';
+      return;
+    }
+
+    // Show loading state
+    aiContent.textContent = 'Loading AI recommendations...';
+    aiContainer.style.display = 'block';
+    
+    const aiBtn = document.getElementById('ai-recommendation-btn');
+    if (aiBtn) {
+      aiBtn.disabled = true;
+      aiBtn.textContent = '🤖 Loading...';
+    }
+
+    try {
+      const response = await fetch(`${this.baseUrl}/api/zerodha/holdings-ai?session=${this.sessionToken}`);
+      
+      if (response.status === 401) {
+        this.handleSessionExpired();
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const aiRecommendation = await response.text(); // Assuming AI returns text response
+      
+      if (!aiRecommendation || aiRecommendation.trim() === '') {
+        aiContent.textContent = 'No AI recommendations available at this time.';
+      } else {
+        aiContent.textContent = aiRecommendation;
+      }
+
+      this.showMessage('AI recommendations loaded successfully!', 'success');
+
+    } catch (error) {
+      console.error('Error fetching AI recommendations:', error);
+      aiContent.textContent = 'Failed to fetch AI recommendations. Please try again later.\n\nError: ' + error.message;
+      this.showMessage('Failed to fetch AI recommendations', 'error');
+    } finally {
+      // Reset button state
+      if (aiBtn) {
+        aiBtn.disabled = false;
+        aiBtn.textContent = '🤖 AI Recommendations';
+      }
+    }
+  }
+
   handleSessionExpired() {
     console.log('Session expired, clearing stored session');
     this.clearSession();
@@ -265,6 +412,11 @@ class ZerodhaAuth {
       tableContainer.style.display = 'none';
     }
     
+    const aiContainer = document.getElementById('ai-recommendations-container');
+    if (aiContainer) {
+      aiContainer.style.display = 'none';
+    }
+    
     this.showMessage('Session expired. Please login again.', 'warning');
   }
 
@@ -276,6 +428,7 @@ class ZerodhaAuth {
   updateUI() {
     const connectBtn = document.getElementById('connect-zerodha-btn');
     const fetchBtn = document.getElementById('fetch-zerodha-holdings-btn');
+    const aiBtn = document.getElementById('ai-recommendation-btn');
     
     if (connectBtn) {
       connectBtn.textContent = this.sessionToken ? 'Reconnect Zerodha' : 'Connect Zerodha';
@@ -284,6 +437,11 @@ class ZerodhaAuth {
     if (fetchBtn) {
       fetchBtn.disabled = !this.sessionToken;
       fetchBtn.style.opacity = this.sessionToken ? '1' : '0.5';
+    }
+    
+    if (aiBtn) {
+      aiBtn.disabled = !this.sessionToken;
+      aiBtn.style.opacity = this.sessionToken ? '1' : '0.5';
     }
   }
 
