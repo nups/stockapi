@@ -147,12 +147,75 @@ class ZerodhaAuth {
         return;
       }
 
-      // Display information about holdings without using a table
-      holdingsContainer.innerHTML = '<div style="padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px;">' +
-        '<h4 style="margin: 0 0 10px 0; color: #333; font-size: 16px;">📊 Your Holdings</h4>' +
-        '<p>The holdings table feature has been removed.</p>' +
-        '<p>You have ' + holdings.length + ' holdings in your Zerodha account.</p>' +
+      // Calculate totals
+      let totalValue = 0;
+      let totalPnL = 0;
+      
+      holdings.forEach(holding => {
+        const currentValue = holding.quantity * holding.last_price;
+        const investmentValue = holding.quantity * holding.average_price;
+        const pnl = currentValue - investmentValue;
+        
+        totalValue += currentValue;
+        totalPnL += pnl;
+      });
+
+      // Display detailed information about holdings without using a table
+      let holdingsHTML = '<div style="padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px;">' +
+        '<h4 style="margin: 0 0 10px 0; color: #333; font-size: 16px;">📊 Your Holdings</h4>';
+      
+      // Add summary
+      holdingsHTML += '<div style="margin-bottom: 15px; padding: 10px; background-color: #f0f8ff; border: 1px solid #b8daff; border-radius: 5px;">' +
+        '<div style="display: flex; justify-content: space-between; align-items: center;">' +
+        '<span style="font-weight: 600; color: #333;">Total Portfolio Value:</span>' +
+        '<span style="font-weight: 700; font-size: 18px; color: #2c5aa0;">₹' + totalValue.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '</span>' +
+        '</div>' +
+        '<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">' +
+        '<span style="font-weight: 600; color: #333;">Total P&L:</span>' +
+        '<span style="font-weight: 700; font-size: 16px; color: ' + (totalPnL >= 0 ? '#28a745' : '#dc3545') + ';">₹' + totalPnL.toFixed(2) + '</span>' +
+        '</div>' +
         '</div>';
+      
+      // Add individual holdings cards
+      holdings.forEach(holding => {
+        const currentValue = holding.quantity * holding.last_price;
+        const investmentValue = holding.quantity * holding.average_price;
+        const pnl = currentValue - investmentValue;
+        const pnlPercentage = (pnl / investmentValue) * 100;
+        const companyName = this.getCompanyName(holding.tradingsymbol);
+        
+        holdingsHTML += '<div style="margin-bottom: 10px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 6px; background-color: white;">' +
+          '<div style="display: flex; justify-content: space-between; margin-bottom: 8px;">' +
+          '<span style="font-weight: 700; font-size: 16px; color: #333;">' + holding.tradingsymbol + '</span>' +
+          '<span style="font-weight: 700; font-size: 16px; color: ' + (pnl >= 0 ? '#28a745' : '#dc3545') + ';">' + 
+          (pnl >= 0 ? '+' : '') + pnlPercentage.toFixed(2) + '%</span>' +
+          '</div>' +
+          '<div style="font-size: 14px; color: #666; margin-bottom: 8px;">' + companyName + '</div>' +
+          '<div style="display: flex; justify-content: space-between; margin-bottom: 5px;">' +
+          '<span style="font-size: 14px; color: #555;">Quantity</span>' +
+          '<span style="font-weight: 600;">' + holding.quantity + '</span>' +
+          '</div>' +
+          '<div style="display: flex; justify-content: space-between; margin-bottom: 5px;">' +
+          '<span style="font-size: 14px; color: #555;">Avg Price</span>' +
+          '<span style="font-weight: 600;">₹' + holding.average_price.toFixed(2) + '</span>' +
+          '</div>' +
+          '<div style="display: flex; justify-content: space-between; margin-bottom: 5px;">' +
+          '<span style="font-size: 14px; color: #555;">Current Price</span>' +
+          '<span style="font-weight: 600;">₹' + holding.last_price.toFixed(2) + '</span>' +
+          '</div>' +
+          '<div style="display: flex; justify-content: space-between; margin-bottom: 5px;">' +
+          '<span style="font-size: 14px; color: #555;">P&L</span>' +
+          '<span style="font-weight: 600; color: ' + (pnl >= 0 ? '#28a745' : '#dc3545') + ';">₹' + pnl.toFixed(2) + '</span>' +
+          '</div>' +
+          '<div style="display: flex; justify-content: space-between;">' +
+          '<span style="font-size: 14px; color: #555;">Value</span>' +
+          '<span style="font-weight: 600;">₹' + currentValue.toFixed(2) + '</span>' +
+          '</div>' +
+          '</div>';
+      });
+      
+      holdingsHTML += '</div>';
+      holdingsContainer.innerHTML = holdingsHTML;
 
       this.showMessage('Holdings information retrieved successfully!', 'success');
 
@@ -237,8 +300,8 @@ class ZerodhaAuth {
   }
 
   async fetchAIRecommendations() {
-    const aiContainer = document.getElementById('ai-recommendations-container');
-    const aiContent = document.getElementById('ai-recommendations-content');
+    const aiContainer = document.getElementById('zerodha-holdings-container');
+    const aiContent = document.getElementById('zerodha-holdings-container');
     
     if (!aiContainer || !aiContent) {
       console.error('AI recommendations container not found');
