@@ -343,14 +343,14 @@ class ZerodhaAuth {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
-      const aiRecommendation = await response.text(); // Assuming AI returns text response
+      const aiData = await response.json(); // Parse JSON response
       
-      if (!aiRecommendation || aiRecommendation.trim() === '') {
+      if (!aiData || !aiData.holdings || aiData.holdings.length === 0) {
         aiContent.innerHTML = '<p style="padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px;">No AI recommendations available at this time.</p>';
       } else {
-        // Format the AI recommendation for better readability
-        const formattedText = this.formatAIRecommendation(aiRecommendation);
-        aiContent.innerHTML = formattedText;
+        // Format the AI recommendations in a beautiful table
+        const formattedTable = this.formatAIRecommendationsTable(aiData);
+        aiContent.innerHTML = formattedTable;
       }
 
       this.showMessage('AI recommendations loaded successfully!', 'success');
@@ -369,6 +369,169 @@ class ZerodhaAuth {
         aiBtn.disabled = false;
         aiBtn.textContent = '🤖 AI Recommendations';
       }
+    }
+  }
+
+  formatAIRecommendationsTable(aiData) {
+    try {
+      // Create the main container
+      let tableHTML = '<div style="padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px;">';
+      
+      // Add title and summary
+      tableHTML += '<h4 style="margin-top: 0; color: #2c5aa0; border-bottom: 1px solid #dee2e6; padding-bottom: 10px;">🤖 AI Portfolio Analysis</h4>';
+      
+      // Add summary stats
+      const totalHoldings = aiData.total_holdings || aiData.holdings.length;
+      const analyzedCount = aiData.analyzed_count || aiData.holdings.length;
+      const buyCount = aiData.holdings.filter(h => h.ai_recommendation?.recommendation === 'BUY').length;
+      const sellCount = aiData.holdings.filter(h => h.ai_recommendation?.recommendation === 'SELL').length;
+      const holdCount = aiData.holdings.filter(h => h.ai_recommendation?.recommendation === 'HOLD').length;
+      
+      tableHTML += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px;">';
+      tableHTML += `<div style="background: #e3f2fd; padding: 10px; border-radius: 5px; text-align: center;">
+                      <div style="font-size: 20px; font-weight: bold; color: #1976d2;">${totalHoldings}</div>
+                      <div style="font-size: 12px; color: #666;">Total Holdings</div>
+                    </div>`;
+      tableHTML += `<div style="background: #e8f5e8; padding: 10px; border-radius: 5px; text-align: center;">
+                      <div style="font-size: 20px; font-weight: bold; color: #2e7d32;">${buyCount}</div>
+                      <div style="font-size: 12px; color: #666;">BUY Signals</div>
+                    </div>`;
+      tableHTML += `<div style="background: #fff3e0; padding: 10px; border-radius: 5px; text-align: center;">
+                      <div style="font-size: 20px; font-weight: bold; color: #f57c00;">${holdCount}</div>
+                      <div style="font-size: 12px; color: #666;">HOLD Signals</div>
+                    </div>`;
+      tableHTML += `<div style="background: #ffebee; padding: 10px; border-radius: 5px; text-align: center;">
+                      <div style="font-size: 20px; font-weight: bold; color: #c62828;">${sellCount}</div>
+                      <div style="font-size: 12px; color: #666;">SELL Signals</div>
+                    </div>`;
+      tableHTML += '</div>';
+      
+      // Create responsive table
+      tableHTML += '<div style="overflow-x: auto; margin-top: 15px;">';
+      tableHTML += '<table style="width: 100%; border-collapse: collapse; font-size: 14px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">';
+      
+      // Table header
+      tableHTML += '<thead><tr style="background: #f5f5f5; border-bottom: 2px solid #ddd;">';
+      tableHTML += '<th style="padding: 12px 8px; text-align: left; font-weight: 600; color: #333;">Stock</th>';
+      tableHTML += '<th style="padding: 12px 8px; text-align: right; font-weight: 600; color: #333;">Qty</th>';
+      tableHTML += '<th style="padding: 12px 8px; text-align: right; font-weight: 600; color: #333;">Avg Price</th>';
+      tableHTML += '<th style="padding: 12px 8px; text-align: right; font-weight: 600; color: #333;">Current</th>';
+      tableHTML += '<th style="padding: 12px 8px; text-align: right; font-weight: 600; color: #333;">P&L</th>';
+      tableHTML += '<th style="padding: 12px 8px; text-align: center; font-weight: 600; color: #333;">Recommendation</th>';
+      tableHTML += '<th style="padding: 12px 8px; text-align: left; font-weight: 600; color: #333;">AI Insight</th>';
+      tableHTML += '</tr></thead>';
+      
+      // Table body
+      tableHTML += '<tbody>';
+      
+      // Sort holdings by recommendation priority and P&L
+      const sortedHoldings = aiData.holdings.sort((a, b) => {
+        const recommendationOrder = { 'BUY': 1, 'HOLD': 2, 'SELL': 3 };
+        const aOrder = recommendationOrder[a.ai_recommendation?.recommendation] || 4;
+        const bOrder = recommendationOrder[b.ai_recommendation?.recommendation] || 4;
+        
+        if (aOrder !== bOrder) return aOrder - bOrder;
+        return b.pnl - a.pnl; // Secondary sort by P&L
+      });
+      
+      sortedHoldings.forEach((holding, index) => {
+        const pnlPercent = ((holding.pnl / (holding.average_price * holding.quantity)) * 100);
+        const isPositive = holding.pnl >= 0;
+        const dayChangeIsPositive = holding.day_change >= 0;
+        const recommendation = holding.ai_recommendation?.recommendation || 'N/A';
+        
+        // Row styling based on recommendation
+        let rowBg = '#ffffff';
+        if (index % 2 === 1) rowBg = '#f9f9f9';
+        
+        let recommendationBg = '#f5f5f5';
+        let recommendationColor = '#666';
+        switch(recommendation) {
+          case 'BUY':
+            recommendationBg = '#e8f5e8';
+            recommendationColor = '#2e7d32';
+            break;
+          case 'SELL':
+            recommendationBg = '#ffebee';
+            recommendationColor = '#c62828';
+            break;
+          case 'HOLD':
+            recommendationBg = '#fff3e0';
+            recommendationColor = '#f57c00';
+            break;
+        }
+        
+        tableHTML += `<tr style="background: ${rowBg}; border-bottom: 1px solid #eee;">`;
+        
+        // Stock symbol with exchange
+        tableHTML += `<td style="padding: 12px 8px;">
+                        <div style="font-weight: 600; color: #333;">${holding.tradingsymbol}</div>
+                        <div style="font-size: 11px; color: #888;">${holding.exchange}</div>
+                      </td>`;
+        
+        // Quantity
+        tableHTML += `<td style="padding: 12px 8px; text-align: right; font-weight: 500;">${holding.quantity}</td>`;
+        
+        // Average price
+        tableHTML += `<td style="padding: 12px 8px; text-align: right;">₹${holding.average_price.toFixed(2)}</td>`;
+        
+        // Current price with day change
+        tableHTML += `<td style="padding: 12px 8px; text-align: right;">
+                        <div>₹${holding.last_price.toFixed(2)}</div>
+                        <div style="font-size: 11px; color: ${dayChangeIsPositive ? '#2e7d32' : '#c62828'};">
+                          ${dayChangeIsPositive ? '+' : ''}${holding.day_change.toFixed(2)} (${holding.day_change_percentage.toFixed(2)}%)
+                        </div>
+                      </td>`;
+        
+        // P&L
+        tableHTML += `<td style="padding: 12px 8px; text-align: right;">
+                        <div style="font-weight: 600; color: ${isPositive ? '#2e7d32' : '#c62828'};">
+                          ₹${holding.pnl.toFixed(2)}
+                        </div>
+                        <div style="font-size: 11px; color: ${isPositive ? '#2e7d32' : '#c62828'};">
+                          ${isPositive ? '+' : ''}${pnlPercent.toFixed(2)}%
+                        </div>
+                      </td>`;
+        
+        // Recommendation badge
+        tableHTML += `<td style="padding: 12px 8px; text-align: center;">
+                        <span style="background: ${recommendationBg}; color: ${recommendationColor}; 
+                                   padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                          ${recommendation}
+                        </span>
+                      </td>`;
+        
+        // AI Insight
+        const insight = holding.ai_recommendation?.insight || 'No analysis available';
+        const reason = holding.ai_recommendation?.reason || '';
+        tableHTML += `<td style="padding: 12px 8px; max-width: 200px;">
+                        <div style="font-size: 12px; color: #333; line-height: 1.3;">
+                          <strong>Reason:</strong> ${reason}
+                        </div>
+                        <div style="font-size: 11px; color: #666; margin-top: 2px; line-height: 1.3;">
+                          ${insight}
+                        </div>
+                      </td>`;
+        
+        tableHTML += '</tr>';
+      });
+      
+      tableHTML += '</tbody></table></div>';
+      
+      // Add footer with timestamp
+      tableHTML += '<div style="margin-top: 15px; font-style: italic; text-align: right; color: #666; font-size: 12px;">';
+      tableHTML += `Analysis generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`;
+      tableHTML += '</div>';
+      
+      tableHTML += '</div>';
+      
+      return tableHTML;
+    } catch (error) {
+      console.error('Error formatting AI recommendations table:', error);
+      return '<div style="padding: 15px; background-color: #fff0f0; border: 1px solid #ffcccc; border-radius: 8px; color: #cc0000;">' +
+             '<h4>Error Formatting Recommendations</h4>' +
+             '<p>There was an error formatting the AI recommendations. Please try again.</p>' +
+             '</div>';
     }
   }
 
