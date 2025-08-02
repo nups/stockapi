@@ -2,13 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initia                            <!-- AI Recommendations Section -->
-                            <div id="ai-recommendations-container" class="ai-table-container">
-                                <h4 style="margin: 15px 0 10px 0; color: #333; font-size: 16px;">🤖 AI Portfolio Recommendations</h4>
-                                <div id="ai-recommendations-content" style="padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; white-space: pre-wrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6;">
-                                    <!-- AI recommendations will be populated here -->
-                                </div>
-                            </div>=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Watchlist - Indian Markets</title>
     <link rel="stylesheet" href="style.css">
     <style>
@@ -123,7 +117,7 @@
                                 <button class="btn btn--primary" id="connect-zerodha-btn" onclick="console.log('Connect clicked via onclick')">Connect Zerodha</button>
                                 <button class="btn btn--outline" id="fetch-zerodha-holdings-btn" disabled onclick="console.log('Fetch clicked via onclick')">Fetch Holdings</button>
                                 <button class="btn btn--success" id="ai-recommendation-btn" disabled style="background-color: #28a745; color: white;" onclick="console.log('AI clicked via onclick')">🤖 AI Recommendations</button>
-                                <button class="btn btn--secondary" id="test-table-btn" style="background-color: #6c757d; color: white;" onclick="console.log('Test clicked via onclick')">🧪 TEST TABLE (ALWAYS ENABLED)</button>
+                                <button class="btn btn--secondary" id="test-table-btn" style="background-color: #6c757d; color: white;" onclick="console.log('Test clicked via onclick')">🧪 Test AI Table</button>
                             </div>
                         </div>
                         <div id="zerodha-holdings-container" style="margin-top: 15px; min-height: 20px;">
@@ -133,9 +127,9 @@
                             </div>
                             
                             <!-- AI Recommendations Section -->
-                            <div id="ai-recommendations-container">
+                            <div id="ai-recommendations-container" class="ai-table-container">
                                 <h4 style="margin: 15px 0 10px 0; color: #333; font-size: 16px;">🤖 AI Portfolio Recommendations</h4>
-                                <div id="ai-recommendations-content" style="padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; white-space: pre-wrap; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6;">
+                                <div id="ai-recommendations-content" style="padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6;">
                                     <!-- AI recommendations will be populated here -->
                                 </div>
                             </div>
