@@ -286,7 +286,7 @@ class ZerodhaAuth {
   showTestTable() {
     console.log('Testing AI recommendations table with sample data...');
     
-    // Sample data based on your API response
+    // Sample data based on your new API response format
     const sampleData = {
       "holdings": [
         {
@@ -297,8 +297,15 @@ class ZerodhaAuth {
           "last_price": 865.65,
           "pnl": 2088.65,
           "ai_recommendation": {
+            "symbol": "AARTIPHARM",
             "recommendation": "HOLD",
-            "reason": "Positive P&L but below 5%, requires monitoring"
+            "fundamental_score": 3,
+            "technical_score": 3,
+            "overall_score": 3.0,
+            "reason": "Positive P&L but below 5%, requires monitoring",
+            "insight": "Current performance is modest, needs stronger signals",
+            "risk_note": "Monitor for sector headwinds",
+            "action_priority": "Medium"
           }
         },
         {
@@ -309,8 +316,15 @@ class ZerodhaAuth {
           "last_price": 251.45,
           "pnl": 12699.05,
           "ai_recommendation": {
+            "symbol": "ABCAPITAL",
             "recommendation": "BUY",
-            "reason": "Strong fundamentals, positive momentum"
+            "fundamental_score": 4,
+            "technical_score": 4,
+            "overall_score": 4.0,
+            "reason": "Strong fundamentals with positive momentum",
+            "insight": "Quality business with growth catalysts",
+            "risk_note": "Watch market volatility",
+            "action_priority": "High"
           }
         },
         {
@@ -321,8 +335,15 @@ class ZerodhaAuth {
           "last_price": 604.9,
           "pnl": -7989.60,
           "ai_recommendation": {
+            "symbol": "ARVSMART",
             "recommendation": "SELL",
-            "reason": "Negative P&L, significant underperformance"
+            "fundamental_score": 2,
+            "technical_score": 2,
+            "overall_score": 2.0,
+            "reason": "Negative P&L, significant underperformance",
+            "insight": "Substantial loss, needs immediate attention",
+            "risk_note": "High downside risk continues",
+            "action_priority": "High"
           }
         }
       ]
@@ -341,7 +362,7 @@ class ZerodhaAuth {
       const formattedTable = this.formatAIRecommendationsTable(sampleData);
       aiContent.innerHTML = formattedTable;
       
-      this.showMessage('Test AI table displayed!', 'success');
+      this.showMessage('Test AI table displayed with new format!', 'success');
     } else {
       this.showMessage('AI container not found!', 'error');
     }
@@ -429,46 +450,155 @@ class ZerodhaAuth {
         return '<p>No AI recommendations data available</p>';
       }
 
-      // Simple HTML table
+      // Simple HTML table with new format
       let html = '<div style="padding: 15px; background: white; border-radius: 8px;">';
       html += '<h4 style="color: #2c5aa0; margin-bottom: 15px;">🤖 AI Portfolio Analysis</h4>';
       
-      // Simple summary
+      // Enhanced summary with scores
       const buyCount = aiData.holdings.filter(h => h.ai_recommendation?.recommendation === 'BUY').length;
       const sellCount = aiData.holdings.filter(h => h.ai_recommendation?.recommendation === 'SELL').length;
       const holdCount = aiData.holdings.filter(h => h.ai_recommendation?.recommendation === 'HOLD').length;
+      const highPriority = aiData.holdings.filter(h => h.ai_recommendation?.action_priority === 'High').length;
       
-      html += `<p><strong>Summary:</strong> ${buyCount} BUY, ${holdCount} HOLD, ${sellCount} SELL</p>`;
+      html += `<div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">`;
+      html += `<div style="background: #e8f5e8; padding: 10px; border-radius: 5px; text-align: center; min-width: 80px;">
+                 <div style="font-size: 18px; font-weight: bold; color: #2e7d32;">${buyCount}</div>
+                 <div style="font-size: 12px; color: #333;">BUY</div>
+               </div>`;
+      html += `<div style="background: #fff3e0; padding: 10px; border-radius: 5px; text-align: center; min-width: 80px;">
+                 <div style="font-size: 18px; font-weight: bold; color: #f57c00;">${holdCount}</div>
+                 <div style="font-size: 12px; color: #333;">HOLD</div>
+               </div>`;
+      html += `<div style="background: #ffebee; padding: 10px; border-radius: 5px; text-align: center; min-width: 80px;">
+                 <div style="font-size: 18px; font-weight: bold; color: #c62828;">${sellCount}</div>
+                 <div style="font-size: 12px; color: #333;">SELL</div>
+               </div>`;
+      html += `<div style="background: #f3e5f5; padding: 10px; border-radius: 5px; text-align: center; min-width: 80px;">
+                 <div style="font-size: 18px; font-weight: bold; color: #7b1fa2;">${highPriority}</div>
+                 <div style="font-size: 12px; color: #333;">High Priority</div>
+               </div>`;
+      html += `</div>`;
       
-      // Simple table
-      html += '<table style="width: 100%; border-collapse: collapse; margin-top: 15px;">';
+      // Enhanced table with new columns
+      html += '<table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px;">';
       html += '<thead><tr style="background: #f5f5f5;">';
       html += '<th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Stock</th>';
       html += '<th style="border: 1px solid #ddd; padding: 8px; text-align: right;">P&L</th>';
+      html += '<th style="border: 1px solid #ddd; padding: 8px; text-align: center;">Scores</th>';
       html += '<th style="border: 1px solid #ddd; padding: 8px; text-align: center;">Recommendation</th>';
-      html += '<th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Reason</th>';
+      html += '<th style="border: 1px solid #ddd; padding: 8px; text-align: center;">Priority</th>';
+      html += '<th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Analysis</th>';
       html += '</tr></thead><tbody>';
       
-      aiData.holdings.forEach(holding => {
+      // Sort by overall score descending, then by action priority
+      const sortedHoldings = aiData.holdings.sort((a, b) => {
+        const aScore = a.ai_recommendation?.overall_score || 0;
+        const bScore = b.ai_recommendation?.overall_score || 0;
+        if (aScore !== bScore) return bScore - aScore;
+        
+        const priorityOrder = { 'High': 3, 'Medium': 2, 'Low': 1 };
+        const aPriority = priorityOrder[a.ai_recommendation?.action_priority] || 0;
+        const bPriority = priorityOrder[b.ai_recommendation?.action_priority] || 0;
+        return bPriority - aPriority;
+      });
+      
+      sortedHoldings.forEach((holding, index) => {
         const pnl = holding.pnl || 0;
         const pnlColor = pnl >= 0 ? 'green' : 'red';
-        const recommendation = holding.ai_recommendation?.recommendation || 'N/A';
-        const reason = holding.ai_recommendation?.reason || 'No reason provided';
+        const aiRec = holding.ai_recommendation || {};
+        const recommendation = aiRec.recommendation || 'N/A';
+        const reason = aiRec.reason || 'No reason provided';
+        const insight = aiRec.insight || '';
+        const riskNote = aiRec.risk_note || '';
+        const priority = aiRec.action_priority || 'Medium';
+        const fundamentalScore = aiRec.fundamental_score || 0;
+        const technicalScore = aiRec.technical_score || 0;
+        const overallScore = aiRec.overall_score || 0;
         
+        // Row styling
+        const rowBg = index % 2 === 0 ? '#ffffff' : '#f9f9f9';
+        
+        // Recommendation color
         let recColor = '#666';
-        if (recommendation === 'BUY') recColor = 'green';
-        else if (recommendation === 'SELL') recColor = 'red';
-        else if (recommendation === 'HOLD') recColor = 'orange';
+        let recBg = '#f5f5f5';
+        if (recommendation === 'BUY') {
+          recColor = '#2e7d32';
+          recBg = '#e8f5e8';
+        } else if (recommendation === 'SELL') {
+          recColor = '#c62828';
+          recBg = '#ffebee';
+        } else if (recommendation === 'HOLD') {
+          recColor = '#f57c00';
+          recBg = '#fff3e0';
+        }
         
-        html += '<tr>';
-        html += `<td style="border: 1px solid #ddd; padding: 8px;"><strong>${holding.tradingsymbol}</strong><br><small>${holding.exchange}</small></td>`;
-        html += `<td style="border: 1px solid #ddd; padding: 8px; text-align: right; color: ${pnlColor};">₹${pnl.toFixed(2)}</td>`;
-        html += `<td style="border: 1px solid #ddd; padding: 8px; text-align: center; color: ${recColor}; font-weight: bold;">${recommendation}</td>`;
-        html += `<td style="border: 1px solid #ddd; padding: 8px; font-size: 12px;">${reason}</td>`;
+        // Priority color
+        let priorityColor = '#666';
+        let priorityBg = '#f5f5f5';
+        if (priority === 'High') {
+          priorityColor = '#7b1fa2';
+          priorityBg = '#f3e5f5';
+        } else if (priority === 'Medium') {
+          priorityColor = '#f57c00';
+          priorityBg = '#fff3e0';
+        } else if (priority === 'Low') {
+          priorityColor = '#4caf50';
+          priorityBg = '#e8f5e8';
+        }
+        
+        html += `<tr style="background: ${rowBg};">`;
+        
+        // Stock symbol with exchange
+        html += `<td style="border: 1px solid #ddd; padding: 8px;">
+                   <div style="font-weight: bold;">${holding.tradingsymbol}</div>
+                   <div style="font-size: 11px; color: #666;">${holding.exchange}</div>
+                 </td>`;
+        
+        // P&L
+        html += `<td style="border: 1px solid #ddd; padding: 8px; text-align: right; color: ${pnlColor}; font-weight: bold;">₹${pnl.toFixed(2)}</td>`;
+        
+        // Scores (F/T/Overall)
+        html += `<td style="border: 1px solid #ddd; padding: 8px; text-align: center;">
+                   <div style="font-size: 11px;">F:${fundamentalScore} T:${technicalScore}</div>
+                   <div style="font-weight: bold; color: #2c5aa0;">Overall: ${overallScore}</div>
+                 </td>`;
+        
+        // Recommendation badge
+        html += `<td style="border: 1px solid #ddd; padding: 8px; text-align: center;">
+                   <span style="background: ${recBg}; color: ${recColor}; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                     ${recommendation}
+                   </span>
+                 </td>`;
+        
+        // Priority badge
+        html += `<td style="border: 1px solid #ddd; padding: 8px; text-align: center;">
+                   <span style="background: ${priorityBg}; color: ${priorityColor}; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                     ${priority}
+                   </span>
+                 </td>`;
+        
+        // Analysis (reason, insight, risk)
+        html += `<td style="border: 1px solid #ddd; padding: 8px; font-size: 12px; max-width: 250px;">
+                   <div style="margin-bottom: 3px;"><strong>Reason:</strong> ${reason}</div>`;
+        if (insight) {
+          html += `<div style="margin-bottom: 3px; color: #666;"><strong>Insight:</strong> ${insight}</div>`;
+        }
+        if (riskNote) {
+          html += `<div style="color: #d32f2f; font-size: 11px;"><strong>Risk:</strong> ${riskNote}</div>`;
+        }
+        html += `</td>`;
+        
         html += '</tr>';
       });
       
       html += '</tbody></table>';
+      
+      // Add legend
+      html += '<div style="margin-top: 15px; font-size: 11px; color: #666;">';
+      html += '<strong>Legend:</strong> F = Fundamental Score, T = Technical Score | ';
+      html += 'Scores range from 1-5 (5 being best)';
+      html += '</div>';
+      
       html += '</div>';
       
       console.log('Generated HTML length:', html.length);
