@@ -1,9 +1,30 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/stockapi/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#667eea"/><meta name="description" content="Smart Stock Watchlist with AI-powered recommendations and real-time market data"/><link rel="apple-touch-icon" href="/stockapi/logo192.png"/><link rel="manifest" href="/stockapi/manifest.json"/><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>"/><title>Stock Watchlist - AI-Powered Market Intelligence</title><link rel="preconnect" href="https://stockapi3-c6h7ejh2eedabuf6.centralindia-01.azurewebsites.net"><link rel="preconnect" href="https://accounts.google.com"><script src="https://accounts.google.com/gsi/client" async defer="defer"></script><style>#root{min-height:100vh}.app-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#667eea 0,#764ba2 100%);color:#fff}.loading-spinner{width:50px;height:50px;border:4px solid rgba(255,255,255,.3);border-top:4px solid #fff;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:1rem}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.loading-text{font-size:1.2rem;font-weight:500}.app-loaded .app-loading{display:none}</style><script defer="defer" src="/stockapi/static/js/main.5397ca5d.js"></script><link href="/stockapi/static/css/main.51abfd51.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"><div class="app-loading"><div class="loading-spinner"></div><div class="loading-text">📈 Loading Stock Watchlist...</div></div></div><script>
-// Handle SPA redirect from 404.html
+// Handle OAuth callback and SPA routing
 (function(l) {
     var search = l.search;
+    var urlParams = new URLSearchParams(search);
+    
+    // Check if this is an OAuth callback
+    if (urlParams.get('oauth_callback') === 'true') {
+        console.log('OAuth callback detected in main app');
+        // Remove the oauth_callback parameter but keep others
+        urlParams.delete('oauth_callback');
+        var newSearch = urlParams.toString();
+        var newUrl = l.protocol + '//' + l.hostname + l.pathname + (newSearch ? '?' + newSearch : '') + l.hash;
+        window.history.replaceState(null, null, newUrl);
+        
+        // Trigger OAuth processing in the React app
+        window.dispatchEvent(new CustomEvent('oauth-callback', {
+            detail: {
+                code: urlParams.get('code'),
+                state: urlParams.get('state'),
+                error: urlParams.get('error')
+            }
+        }));
+    }
+    
+    // Handle SPA redirect from 404.html (legacy support)
     if (search && search.indexOf('~and~') > -1) {
-        // This is a redirect from 404.html, decode the parameters
         var params = search.slice(1).split('&');
         var route = '';
         var realSearch = '';

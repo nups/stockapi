@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>OAuth Callback - Stock Watchlist</title>
+    <script type="text/javascript">
+        // Extract OAuth parameters from current URL
+        var urlParams = new URLSearchParams(window.location.search);
+        var code = urlParams.get('code');
+        var state = urlParams.get('state');
+        var error = urlParams.get('error');
+        
+        console.log('OAuth callback received:', { code: code, state: state, error: error });
+        
+        if (code && state) {
+            // Successful OAuth callback - redirect to main app with parameters
+            var redirectUrl = window.location.protocol + '//' + window.location.hostname + '/stockapi/' + 
+                              '?code=' + encodeURIComponent(code) + 
+                              '&state=' + encodeURIComponent(state) +
+                              '&oauth_callback=true';
+            
+            console.log('Redirecting to main app:', redirectUrl);
+            window.location.replace(redirectUrl);
+        } else if (error) {
+            // OAuth error - redirect to main app with error
+            var redirectUrl = window.location.protocol + '//' + window.location.hostname + '/stockapi/' + 
+                              '?error=' + encodeURIComponent(error) + '&oauth_callback=true';
+            
+            console.log('OAuth error, redirecting:', redirectUrl);
+            window.location.replace(redirectUrl);
+        } else {
+            // No parameters - just redirect to main app
+            console.log('No OAuth parameters, redirecting to main app');
+            window.location.replace(window.location.protocol + '//' + window.location.hostname + '/stockapi/');
+        }
+    </script>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px; font-family: Arial, sans-serif;">
+        <h2>📈 Stock Watchlist</h2>
+        <p>Processing OAuth callback...</p>
+        <p>If you're not redirected automatically, <a href="/stockapi/">click here</a>.</p>
+    </div>
+</body>
+</html>
