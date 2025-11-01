@@ -8,19 +8,37 @@
         // This script takes the current URL and redirects to the main app
         // with the path and query parameters preserved in the hash
         
-        // Redirect to /stockapi with the current path and search params
+        // GitHub Pages SPA redirect for /stockapi routes
         var l = window.location;
+        var path = l.pathname;
+        var search = l.search;
         
-        // Build the redirect URL to /stockapi with current path and search preserved
-        var redirectUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + '/stockapi/';
+        console.log('404 handler - Current path:', path, 'Search:', search);
         
-        // If we have search params (like OAuth callback), add them
-        if (l.search) {
-            redirectUrl += '?' + l.search.slice(1).replace(/&/g, '~and~');
+        // If this is a /stockapi route, redirect to /stockapi/ with route info
+        if (path.startsWith('/stockapi/')) {
+            // Extract the route after /stockapi/
+            var route = path.substring('/stockapi/'.length);
+            var redirectUrl = l.protocol + '//' + l.hostname + '/stockapi/';
+            
+            // Preserve the route and search params for the SPA
+            if (route || search) {
+                redirectUrl += '?';
+                if (route) {
+                    redirectUrl += '/' + route;
+                }
+                if (search) {
+                    redirectUrl += (route ? '&' : '') + search.slice(1).replace(/&/g, '~and~');
+                }
+            }
+            
+            console.log('Redirecting to:', redirectUrl);
+            l.replace(redirectUrl);
+        } else {
+            // For other 404s, redirect to /stockapi/
+            console.log('Non-stockapi 404, redirecting to /stockapi/');
+            l.replace(l.protocol + '//' + l.hostname + '/stockapi/');
         }
-        
-        console.log('404 redirect from:', l.href, 'to:', redirectUrl);
-        l.replace(redirectUrl);
     </script>
 </head>
 <body>
