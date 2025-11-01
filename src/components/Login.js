@@ -77,10 +77,18 @@ const Login = () => {
     setError('');
     
     // Use direct redirect approach - simpler and more reliable
-    const redirectUri = encodeURIComponent('http://localhost:3000/auth/google/callback');
+    // Dynamic redirect URI based on current environment
+    const currentOrigin = window.location.origin;
+    const redirectUri = encodeURIComponent(`${currentOrigin}/auth/google/callback`);
     const scope = encodeURIComponent('openid email profile');
     const responseType = 'code'; // Use authorization code flow
     const state = 'google_oauth_' + Date.now(); // Security state parameter
+    
+    // Debug logging
+    console.log('🔐 OAuth Debug Info:');
+    console.log('Current Origin:', currentOrigin);
+    console.log('Redirect URI:', `${currentOrigin}/auth/google/callback`);
+    console.log('State:', state);
     
     // Store the state for verification when callback returns
     sessionStorage.setItem('oauth_state', state);

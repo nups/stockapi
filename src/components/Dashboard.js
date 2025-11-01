@@ -6,7 +6,11 @@ import ZerodhaIntegration from './ZerodhaIntegration';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState('recommendations');
+  const [activeTab, setActiveTab] = useState('zerodha'); // Default to Zerodha tab
+  
+  // Debug logging
+  console.log('🎯 Dashboard loaded - Active tab:', activeTab);
+  console.log('👤 User:', user);
   const [userStats, setUserStats] = useState({
     totalStocks: 0,
     watchlistCount: 0,

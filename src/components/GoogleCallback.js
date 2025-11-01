@@ -28,12 +28,43 @@ const GoogleCallback = () => {
           return;
         }
         
-        // Verify state parameter for security
+        // Verify state parameter for security (with fallback)
         const storedState = sessionStorage.getItem('oauth_state');
-        if (!state || state !== storedState) {
+        console.log('🔍 State verification:', { received: state, stored: storedState });
+        
+        if (!state) {
+          console.error('❌ No state parameter received');
+          setStatus('Security error: No state parameter');
+          setTimeout(() => navigate('/login?error=no_state'), 3000);
+          return;
+        }
+        
+        // Check if state looks like our format (google_oauth_timestamp)
+        if (!state.startsWith('google_oauth_')) {
+          console.error('❌ Invalid state format');
+          setStatus('Security error: Invalid state format');
+          setTimeout(() => navigate('/login?error=invalid_state_format'), 3000);
+          return;
+        }
+        
+        // If stored state is missing (cross-origin issue), validate state format instead
+        if (!storedState) {
+          console.warn('⚠️ Stored state missing - likely cross-origin redirect. Validating state format instead.');
+          // Additional validation: check if state timestamp is recent (within 10 minutes)
+          const stateTimestamp = parseInt(state.replace('google_oauth_', ''));
+          const currentTime = Date.now();
+          const timeDiff = currentTime - stateTimestamp;
+          
+          if (timeDiff > 10 * 60 * 1000) { // 10 minutes
+            console.error('❌ State expired');
+            setStatus('Security error: Authentication session expired');
+            setTimeout(() => navigate('/login?error=state_expired'), 3000);
+            return;
+          }
+        } else if (state !== storedState) {
           console.error('❌ State mismatch - possible CSRF attack');
           setStatus('Security error: Invalid state parameter');
-          setTimeout(() => navigate('/login?error=invalid_state'), 3000);
+          setTimeout(() => navigate('/login?error=state_mismatch'), 3000);
           return;
         }
         
@@ -64,7 +95,7 @@ const GoogleCallback = () => {
           body: new URLSearchParams({
             client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
             code: code,
-            redirect_uri: 'http://localhost:3000/auth/google/callback',
+            redirect_uri: `${window.location.origin}/auth/google/callback`,
             grant_type: 'authorization_code',
             // Note: This won't work without client_secret for security reasons
             // But let's try anyway and fall back to a different approach

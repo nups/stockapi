@@ -142,7 +142,7 @@ const ZerodhaIntegration = () => {
     setError('');
     
     try {
-      const response = await fetch(`${baseUrl}/api/zerodha/ai-recommendations?session=${sessionToken}`);
+      const response = await fetch(`${baseUrl}/api/zerodha/holdings-ai?session=${sessionToken}`);
       
       if (response.status === 401) {
         handleSessionExpired();

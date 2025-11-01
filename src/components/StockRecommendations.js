@@ -21,7 +21,7 @@ const StockRecommendations = () => {
       setLoading(true);
       setError('');
       
-      const response = await api.get('/api/ai-recommendations');
+      const response = await api.get('/api/zerodha/holdings-ai');
       
       if (response.data && Array.isArray(response.data)) {
         setRecommendations(response.data);
