@@ -146,7 +146,7 @@ const Dashboard = () => {
           className={`tab-btn ${activeTab === 'recommendations' ? 'active' : ''}`}
           onClick={() => setActiveTab('recommendations')}
         >
-          🤖 AI Recommendations
+          🤖 Recommendations
         </button>
         <button
           className={`tab-btn ${activeTab === 'watchlist' ? 'active' : ''}`}

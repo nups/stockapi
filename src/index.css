@@ -1306,6 +1306,106 @@ code {
   text-align: center;
 }
 
+/* Recommendations Content for Tables */
+.recommendations-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.recommendations-table-section {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.recommendations-table-section h3 {
+  margin: 0;
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Table cell styling for recommendations */
+.recommended-date {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.target-price {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.reason, .goal, .remarks {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  max-width: 200px;
+}
+
+.time-badge {
+  padding: 0.25rem 0.5rem;
+  background: #e8f5e8;
+  color: #2e7d32;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Price and P/L styling */
+.suggested-price, .current-price {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.loading-price {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.price-error {
+  color: #dc3545;
+  font-size: 0.9rem;
+}
+
+.pl-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+}
+
+.pl-badge.profit {
+  background: #28a745;
+}
+
+.pl-badge.loss {
+  background: #dc3545;
+}
+
+.profit-loss {
+  text-align: center;
+}
+
+/* Responsive adjustments for two tables */
+@media (min-width: 1200px) {
+  .recommendations-content {
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+  
+  .recommendations-table-section {
+    flex: 1;
+  }
+}
+
 .recommendations-list {
   display: flex;
   flex-direction: column;
