@@ -35,15 +35,23 @@ const ZerodhaIntegration = () => {
     const requestToken = urlParams.get('request_token');
     const status = urlParams.get('status');
     
+    console.log('🔍 ZerodhaIntegration - checkForSessionToken called');
     console.log('🔍 URL Parameters:', {
       session: token,
       request_token: requestToken,
       status: status,
-      fullURL: window.location.href
+      fullURL: window.location.href,
+      search: window.location.search,
+      hash: window.location.hash
     });
     
+    // Also check localStorage to see current state
+    const currentSession = localStorage.getItem('zerodha_session');
+    console.log('🔍 Current localStorage session:', currentSession);
+    
     if (token) {
-      console.log('Session token found in URL:', token);
+      console.log('✅ Session token found in URL:', token);
+      console.log('📝 Setting session token in state and localStorage');
       setSessionToken(token);
       localStorage.setItem('zerodha_session', token);
       
@@ -52,12 +60,17 @@ const ZerodhaIntegration = () => {
       url.searchParams.delete('session');
       window.history.replaceState({}, document.title, url);
       
+      console.log('🧹 URL cleaned up, session stored');
+      
       // Show success message
       setMessage('Zerodha authentication successful!');
       setTimeout(() => setMessage(''), 5000);
     } else if (requestToken && status === 'success') {
-      console.log('Request token found, exchanging for session token:', requestToken);
+      console.log('🔄 Request token found, exchanging for session token:', requestToken);
       exchangeRequestTokenForSession(requestToken);
+    } else {
+      console.log('❌ No session token or request token found in URL');
+      console.log('🔍 Available URL params:', Array.from(urlParams.entries()));
     }
   };
   
@@ -107,10 +120,16 @@ const ZerodhaIntegration = () => {
   };
 
   const loadStoredSession = () => {
+    console.log('🔍 loadStoredSession called');
     const storedSession = localStorage.getItem('zerodha_session');
+    console.log('🔍 Stored session from localStorage:', storedSession);
+    
     if (storedSession) {
+      console.log('✅ Setting session token from stored session:', storedSession);
       setSessionToken(storedSession);
-      console.log('Loaded stored session token');
+      console.log('✅ Session token set in state');
+    } else {
+      console.log('❌ No stored session found in localStorage');
     }
   };
 

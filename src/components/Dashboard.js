@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import StockRecommendations from './StockRecommendations';
 import WatchlistManager from './WatchlistManager';
 import ZerodhaIntegration from './ZerodhaIntegration';
+import RecommendationsPreview from './RecommendationsPreview';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
@@ -21,6 +21,42 @@ const Dashboard = () => {
   useEffect(() => {
     // Fetch user stats on component mount
     fetchUserStats();
+    
+    // Check for URL tab parameter first
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    const sessionToken = urlParams.get('session');
+    const requestToken = urlParams.get('request_token');
+    
+    // Also check for pending Zerodha tokens from localStorage (post-login)
+    const pendingRedirect = localStorage.getItem('zerodha_pending_redirect');
+    const pendingSession = localStorage.getItem('zerodha_session');
+    const pendingRequestToken = localStorage.getItem('zerodha_pending_request_token');
+    
+    console.log('🎯 Dashboard - URL and storage parameters:', {
+      tab: tabParam,
+      session: sessionToken,
+      request_token: requestToken,
+      pendingRedirect: pendingRedirect,
+      pendingSession: pendingSession,
+      pendingRequestToken: pendingRequestToken,
+      fullURL: window.location.href
+    });
+    
+    // Set tab from URL parameter or default logic or pending redirect
+    if (tabParam) {
+      console.log('🎯 Dashboard - Setting tab from URL parameter:', tabParam);
+      setActiveTab(tabParam);
+    } else if (sessionToken || requestToken) {
+      console.log('🎯 Dashboard - Zerodha token detected in URL, switching to zerodha tab');
+      setActiveTab('zerodha');
+    } else if (pendingRedirect === 'true' && (pendingSession || pendingRequestToken)) {
+      console.log('🎯 Dashboard - Pending Zerodha redirect detected, switching to zerodha tab');
+      setActiveTab('zerodha');
+      // Clear the pending redirect flag
+      localStorage.removeItem('zerodha_pending_redirect');
+      localStorage.removeItem('zerodha_pending_request_token');
+    }
   }, []);
 
   const fetchUserStats = async () => {
@@ -140,7 +176,21 @@ const Dashboard = () => {
 
       {/* Tab Content */}
       <div className="dashboard-content">
-        {activeTab === 'recommendations' && <StockRecommendations />}
+        {activeTab === 'recommendations' && (
+          <div className="recommendations-tab">
+            <RecommendationsPreview />
+            <div style={{marginTop: '2rem', padding: '1rem', backgroundColor: '#f8f9fa', borderRadius: '8px'}}>
+              <h4>🔗 Want Real-Time AI Recommendations?</h4>
+              <p>Connect your Zerodha account to get personalized AI recommendations based on your actual holdings.</p>
+              <button 
+                className="btn btn-primary"
+                onClick={() => setActiveTab('zerodha')}
+              >
+                Go to Zerodha Integration
+              </button>
+            </div>
+          </div>
+        )}
         {activeTab === 'watchlist' && <WatchlistManager />}
         {activeTab === 'portfolio' && (
           <div className="coming-soon">
@@ -154,7 +204,15 @@ const Dashboard = () => {
             <p>Coming soon! Advanced charts and market insights.</p>
           </div>
         )}
-        {activeTab === 'zerodha' && <ZerodhaIntegration />}
+        {activeTab === 'zerodha' && (
+          <div className="zerodha-tab">
+            <ZerodhaIntegration />
+            <div style={{marginTop: '2rem', padding: '1rem', backgroundColor: '#e8f5e8', borderRadius: '8px'}}>
+              <h4>💡 Pro Tip</h4>
+              <p>After connecting to Zerodha, use the "AI Recommendations" button in the integration to get personalized recommendations based on your holdings.</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

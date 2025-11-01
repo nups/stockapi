@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import AuthCallback from './components/AuthCallback';
 import GoogleCallback from './components/GoogleCallback';
+import ZerodhaCallback from './components/ZerodhaCallback';
 
 // Loading Component
 function LoadingScreen({ message = "Loading..." }) {
@@ -51,6 +52,60 @@ function PublicRoute({ children }) {
   return !isAuthenticated ? children : <Navigate to="/dashboard" />;
 }
 
+// Root Handler - Check for Zerodha tokens and route appropriately
+function RootHandler() {
+  const { isAuthenticated, loading } = useAuth();
+  
+  console.log('🏠 RootHandler - checking for Zerodha tokens');
+  
+  if (loading) {
+    return <LoadingScreen message="Checking authentication..." />;
+  }
+  
+  // Check for Zerodha session parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const sessionToken = urlParams.get('session');
+  const requestToken = urlParams.get('request_token');
+  
+  console.log('🏠 RootHandler - URL parameters:', {
+    session: sessionToken,
+    request_token: requestToken,
+    isAuthenticated: isAuthenticated
+  });
+  
+  if (sessionToken || requestToken) {
+    console.log('🏠 RootHandler - Zerodha tokens detected, processing...');
+    
+    if (sessionToken) {
+      // Store session token and redirect to dashboard
+      localStorage.setItem('zerodha_session', sessionToken);
+      console.log('✅ Session token stored in localStorage');
+    }
+    
+    if (isAuthenticated) {
+      // User is logged in, redirect to dashboard with zerodha tab
+      const redirectUrl = sessionToken || requestToken 
+        ? `/dashboard?tab=zerodha&${sessionToken ? `session=${sessionToken}` : `request_token=${requestToken}&status=success`}`
+        : '/dashboard?tab=zerodha';
+      
+      console.log('🏠 RootHandler - Redirecting authenticated user to:', redirectUrl);
+      return <Navigate to={redirectUrl} replace />;
+    } else {
+      // User not logged in, redirect to login but preserve token in URL
+      const loginUrl = sessionToken || requestToken 
+        ? `/login?${sessionToken ? `session=${sessionToken}` : `request_token=${requestToken}&status=success`}`
+        : '/login';
+      
+      console.log('🏠 RootHandler - Redirecting unauthenticated user to:', loginUrl);
+      return <Navigate to={loginUrl} replace />;
+    }
+  }
+  
+  // No Zerodha tokens, use normal routing
+  console.log('🏠 RootHandler - No Zerodha tokens, using normal routing');
+  return isAuthenticated ? <Navigate to="/dashboard" /> : <Navigate to="/login" />;
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -70,6 +125,7 @@ function App() {
             {/* Auth Callback Routes */}
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/auth/google/callback" element={<GoogleCallback />} />
+            <Route path="/auth/zerodha/callback" element={<ZerodhaCallback />} />
             
             {/* Protected Routes */}
             <Route 
@@ -81,8 +137,8 @@ function App() {
               } 
             />
             
-            {/* Default Route */}
-            <Route path="/" element={<Navigate to="/login" />} />
+            {/* Default Route - Check for Zerodha session first */}
+            <Route path="/" element={<RootHandler />} />
             
             {/* Catch all route */}
             <Route path="*" element={<Navigate to="/login" />} />

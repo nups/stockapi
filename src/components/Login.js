@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import RecommendationsPreview from './RecommendationsPreview';
 
 // Google OAuth configuration
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -19,7 +18,27 @@ const Login = () => {
   const [error, setError] = useState('');
   const [googleLoaded, setGoogleLoaded] = useState(false);
 
-
+  // Check for Zerodha tokens on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionToken = urlParams.get('session');
+    const requestToken = urlParams.get('request_token');
+    
+    console.log('🔍 Login - Checking for Zerodha tokens:', {
+      session: sessionToken,
+      request_token: requestToken
+    });
+    
+    if (sessionToken) {
+      console.log('✅ Login - Session token found, storing for post-login');
+      localStorage.setItem('zerodha_session', sessionToken);
+      localStorage.setItem('zerodha_pending_redirect', 'true');
+    } else if (requestToken) {
+      console.log('🔄 Login - Request token found, storing for post-login');
+      localStorage.setItem('zerodha_pending_request_token', requestToken);
+      localStorage.setItem('zerodha_pending_redirect', 'true');
+    }
+  }, []);
 
   // Initialize Google OAuth with simplified approach
   useEffect(() => {
@@ -233,8 +252,7 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Stock Recommendations Section */}
-        <RecommendationsPreview />
+
       </div>
 
       <div className="login-background">
