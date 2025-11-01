@@ -1358,6 +1358,51 @@ code {
   font-weight: 500;
 }
 
+/* CMP and P/L columns styling */
+.suggested-price, .current-price {
+  font-weight: 600;
+  color: var(--primary-color);
+  text-align: right;
+}
+
+.loading-price {
+  color: #ffc107;
+  font-size: 0.9rem;
+}
+
+.price-error {
+  color: #dc3545;
+  font-size: 0.9rem;
+}
+
+.profit-loss {
+  text-align: center;
+}
+
+.pl-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+}
+
+.pl-badge.profit {
+  background: #28a745;
+}
+
+.pl-badge.loss {
+  background: #dc3545;
+}
+
+/* Responsive table adjustments */
+@media (max-width: 1200px) {
+  .reason, .goal, .remarks {
+    max-width: 150px;
+    font-size: 0.85rem;
+  }
+}
+
 /* Price and P/L styling */
 .suggested-price, .current-price {
   font-weight: 600;
