@@ -14,8 +14,14 @@ const StockRecommendations = () => {
   useEffect(() => {
     // Check if user has Zerodha session on component mount
     const zerodhaSession = localStorage.getItem('zerodha_session');
+    console.log('StockRecommendations - Checking session:', zerodhaSession);
+    console.log('StockRecommendations - All localStorage keys:', Object.keys(localStorage));
+    
     if (!zerodhaSession) {
       setError('Please connect to Zerodha first to get AI recommendations based on your holdings. Go to the "Zerodha Integration" tab to connect.');
+    } else {
+      // Clear error if session exists
+      setError('');
     }
   }, []);
 

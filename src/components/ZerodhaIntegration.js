@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
 
 const ZerodhaIntegration = () => {
-  const { user } = useAuth();
   const [zerodhaConnected, setZerodhaConnected] = useState(false);
   const [holdings, setHoldings] = useState([]);
   const [aiRecommendations, setAIRecommendations] = useState([]);
@@ -34,6 +32,15 @@ const ZerodhaIntegration = () => {
   const checkForSessionToken = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('session');
+    const requestToken = urlParams.get('request_token');
+    const status = urlParams.get('status');
+    
+    console.log('🔍 URL Parameters:', {
+      session: token,
+      request_token: requestToken,
+      status: status,
+      fullURL: window.location.href
+    });
     
     if (token) {
       console.log('Session token found in URL:', token);
@@ -47,6 +54,54 @@ const ZerodhaIntegration = () => {
       
       // Show success message
       setMessage('Zerodha authentication successful!');
+      setTimeout(() => setMessage(''), 5000);
+    } else if (requestToken && status === 'success') {
+      console.log('Request token found, exchanging for session token:', requestToken);
+      exchangeRequestTokenForSession(requestToken);
+    }
+  };
+  
+  const exchangeRequestTokenForSession = async (requestToken) => {
+    try {
+      setIsLoading(true);
+      setMessage('Completing Zerodha authentication...');
+      
+      // Call backend to exchange request_token for session token
+      const response = await fetch(`${baseUrl}/api/zerodha/auth/session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ request_token: requestToken })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.session) {
+        console.log('✅ Session token received from backend:', data.session);
+        setSessionToken(data.session);
+        localStorage.setItem('zerodha_session', data.session);
+        setMessage('Zerodha authentication successful!');
+        
+        // Clean up URL
+        const url = new URL(window.location);
+        url.searchParams.delete('request_token');
+        url.searchParams.delete('status');
+        url.searchParams.delete('action');
+        url.searchParams.delete('type');
+        window.history.replaceState({}, document.title, url);
+      } else {
+        throw new Error('No session token received from backend');
+      }
+    } catch (error) {
+      console.error('Error exchanging request token:', error);
+      setError(`Authentication failed: ${error.message}`);
+    } finally {
+      setIsLoading(false);
       setTimeout(() => setMessage(''), 5000);
     }
   };
