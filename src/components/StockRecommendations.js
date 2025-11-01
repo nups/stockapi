@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import api from '../services/authService';
 
 const StockRecommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
@@ -13,7 +12,11 @@ const StockRecommendations = () => {
   });
 
   useEffect(() => {
-    fetchRecommendations();
+    // Check if user has Zerodha session on component mount
+    const zerodhaSession = localStorage.getItem('zerodha_session');
+    if (!zerodhaSession) {
+      setError('Please connect to Zerodha first to get AI recommendations based on your holdings. Go to the "Zerodha Integration" tab to connect.');
+    }
   }, []);
 
   const fetchRecommendations = async () => {
@@ -21,10 +24,35 @@ const StockRecommendations = () => {
       setLoading(true);
       setError('');
       
-      const response = await api.get('/api/zerodha/holdings-ai');
+      // Check if user has a Zerodha session token
+      const zerodhaSession = localStorage.getItem('zerodha_session');
+      if (!zerodhaSession) {
+        setError('Please connect to Zerodha first to get AI recommendations based on your holdings.');
+        setLoading(false);
+        return;
+      }
       
-      if (response.data && Array.isArray(response.data)) {
-        setRecommendations(response.data);
+      // Use direct fetch with session token instead of api service
+      const response = await fetch(`https://stockapi3-c6h7ejh2eedabuf6.centralindia-01.azurewebsites.net/api/zerodha/holdings-ai?session=${zerodhaSession}`);
+      
+      if (response.status === 401) {
+        setError('Zerodha session expired. Please reconnect to Zerodha.');
+        localStorage.removeItem('zerodha_session');
+        setLoading(false);
+        return;
+      }
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data && data.holdings && Array.isArray(data.holdings)) {
+        setRecommendations(data.holdings);
+        setLastUpdated(new Date().toLocaleString());
+      } else if (Array.isArray(data)) {
+        setRecommendations(data);
         setLastUpdated(new Date().toLocaleString());
       } else {
         throw new Error('Invalid response format');
