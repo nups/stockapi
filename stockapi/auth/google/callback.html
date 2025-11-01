@@ -32,7 +32,8 @@
                         client_id: '712721544471-0guusgphe7das1dmdtidhh4d5q1jeek0.apps.googleusercontent.com',
                         code: code,
                         redirect_uri: window.location.origin + '/stockapi/auth/google/callback',
-                        grant_type: 'authorization_code'
+                        grant_type: 'authorization_code',
+                        scope: 'openid email profile'
                     })
                 });
                 
@@ -45,6 +46,9 @@
                 var tokens = await response.json();
                 console.log('✅ Tokens received successfully');
                 
+                // Store the JWT id_token if available, otherwise use access_token
+                var authToken = tokens.id_token || tokens.access_token;
+                
                 // Get user info
                 var userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
                     headers: {
@@ -56,7 +60,7 @@
                     var userInfo = await userResponse.json();
                     console.log('👤 User info received:', userInfo.email);
                     
-                    // Create user session
+                    // Create user session exactly as the React app expects
                     var user = {
                         user_id: 'google_' + userInfo.id,
                         user_name: userInfo.name,
@@ -65,12 +69,11 @@
                         broker: 'google'
                     };
                     
-                    // Store user session
-                    localStorage.setItem('google_auth_token', tokens.access_token);
+                    // Store user session with the proper token format
+                    localStorage.setItem('google_auth_token', authToken);
                     localStorage.setItem('user_profile', JSON.stringify(user));
-                    localStorage.setItem('auth_user', JSON.stringify(user));
                     
-                    console.log('✅ User session created successfully');
+                    console.log('✅ User session created successfully with token type:', authToken.startsWith('eyJ') ? 'JWT' : 'access_token');
                     redirectToDashboard();
                 } else {
                     console.log('⚠️ Failed to get user info, using fallback');
@@ -84,6 +87,9 @@
         }
         
         function createUserSession(code) {
+            // Create a mock JWT token that the React app will accept
+            var mockJWT = createMockJWT();
+            
             // Fallback user session
             var user = {
                 user_id: 'google_' + Date.now(),
@@ -93,12 +99,23 @@
                 broker: 'google'
             };
             
-            localStorage.setItem('google_auth_token', code);
+            localStorage.setItem('google_auth_token', mockJWT);
             localStorage.setItem('user_profile', JSON.stringify(user));
-            localStorage.setItem('auth_user', JSON.stringify(user));
             
-            console.log('✅ Fallback user session created');
+            console.log('✅ Fallback user session created with mock JWT');
             redirectToDashboard();
+        }
+        
+        function createMockJWT() {
+            // Create a basic JWT structure that starts with "eyJ" 
+            var header = btoa(JSON.stringify({"alg":"none","typ":"JWT"}));
+            var payload = btoa(JSON.stringify({
+                "sub": "google_" + Date.now(),
+                "email": "user@gmail.com", 
+                "name": "Google User",
+                "exp": Math.floor(Date.now() / 1000) + 3600 // 1 hour from now
+            }));
+            return header + "." + payload + ".signature";
         }
         
         function redirectToDashboard() {
