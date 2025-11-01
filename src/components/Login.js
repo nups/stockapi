@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import RecommendationsPreview from './RecommendationsPreview';
 
 // Google OAuth configuration
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -231,6 +232,9 @@ const Login = () => {
             </p>
           </div>
         </div>
+
+        {/* Stock Recommendations Section */}
+        <RecommendationsPreview />
       </div>
 
       <div className="login-background">
