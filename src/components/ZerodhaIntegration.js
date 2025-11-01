@@ -231,24 +231,28 @@ const ZerodhaIntegration = () => {
       console.log('AI recommendations received:', data);
       console.log('AI recommendations data structure:', JSON.stringify(data, null, 2));
 
-      if (data.success) {
-        // Check if data is in different format
-        let recommendations = data.data || [];
-        
-        // Handle different possible data structures
-        if (data.holdings && Array.isArray(data.holdings)) {
-          recommendations = data.holdings;
-        } else if (Array.isArray(data)) {
-          recommendations = data;
-        }
-        
-        console.log('Processed recommendations:', recommendations);
-        setAIRecommendations(recommendations);
-        setMessage(`AI recommendations loaded successfully! Found ${recommendations.length} recommendations.`);
-        setTimeout(() => setMessage(''), 3000);
+      // Handle the direct response format from /holdings-ai endpoint
+      let recommendations = [];
+      
+      if (data.holdings && Array.isArray(data.holdings)) {
+        // Response has holdings array directly
+        recommendations = data.holdings;
+      } else if (data.success && data.data) {
+        // Response has success wrapper
+        recommendations = data.data;
+      } else if (Array.isArray(data)) {
+        // Response is direct array
+        recommendations = data;
+      } else if (data.error) {
+        throw new Error(data.error);
       } else {
-        throw new Error(data.error || 'Failed to get AI recommendations');
+        throw new Error('Unexpected response format');
       }
+      
+      console.log('Processed recommendations:', recommendations);
+      setAIRecommendations(recommendations);
+      setMessage(`AI recommendations loaded successfully! Found ${recommendations.length} recommendations.`);
+      setTimeout(() => setMessage(''), 3000);
 
     } catch (error) {
       console.error('Error fetching AI recommendations:', error);
