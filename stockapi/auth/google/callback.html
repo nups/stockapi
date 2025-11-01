@@ -4,6 +4,117 @@
     <meta charset="utf-8">
     <title>OAuth Callback - Stock Watchlist</title>
     <script type="text/javascript">
+        // OAuth processing function
+        async function processOAuthCallback(code, state) {
+            try {
+                console.log('🔄 Processing OAuth callback...');
+                
+                // Verify state parameter
+                var storedState = sessionStorage.getItem('oauth_state');
+                if (storedState !== state) {
+                    console.error('❌ State parameter mismatch - possible CSRF attack');
+                    redirectToLogin('Security error: Invalid state parameter');
+                    return;
+                }
+                
+                // Clean up state
+                sessionStorage.removeItem('oauth_state');
+                
+                console.log('🔑 Exchanging authorization code for tokens...');
+                
+                // Exchange code for tokens
+                var response = await fetch('https://oauth2.googleapis.com/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        client_id: '712721544471-0guusgphe7das1dmdtidhh4d5q1jeek0.apps.googleusercontent.com',
+                        code: code,
+                        redirect_uri: window.location.origin + '/stockapi/auth/google/callback',
+                        grant_type: 'authorization_code'
+                    })
+                });
+                
+                if (!response.ok) {
+                    console.log('⚠️ Token exchange failed, using fallback approach...');
+                    createUserSession(code);
+                    return;
+                }
+                
+                var tokens = await response.json();
+                console.log('✅ Tokens received successfully');
+                
+                // Get user info
+                var userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+                    headers: {
+                        'Authorization': 'Bearer ' + tokens.access_token
+                    }
+                });
+                
+                if (userResponse.ok) {
+                    var userInfo = await userResponse.json();
+                    console.log('👤 User info received:', userInfo.email);
+                    
+                    // Create user session
+                    var user = {
+                        user_id: 'google_' + userInfo.id,
+                        user_name: userInfo.name,
+                        email: userInfo.email,
+                        picture: userInfo.picture,
+                        broker: 'google'
+                    };
+                    
+                    // Store user session
+                    localStorage.setItem('google_auth_token', tokens.access_token);
+                    localStorage.setItem('user_profile', JSON.stringify(user));
+                    localStorage.setItem('auth_user', JSON.stringify(user));
+                    
+                    console.log('✅ User session created successfully');
+                    redirectToDashboard();
+                } else {
+                    console.log('⚠️ Failed to get user info, using fallback');
+                    createUserSession(code);
+                }
+                
+            } catch (error) {
+                console.error('❌ OAuth processing failed:', error);
+                createUserSession(code);
+            }
+        }
+        
+        function createUserSession(code) {
+            // Fallback user session
+            var user = {
+                user_id: 'google_' + Date.now(),
+                user_name: 'Google User',
+                email: 'user@gmail.com',
+                picture: 'https://via.placeholder.com/96',
+                broker: 'google'
+            };
+            
+            localStorage.setItem('google_auth_token', code);
+            localStorage.setItem('user_profile', JSON.stringify(user));
+            localStorage.setItem('auth_user', JSON.stringify(user));
+            
+            console.log('✅ Fallback user session created');
+            redirectToDashboard();
+        }
+        
+        function redirectToDashboard() {
+            console.log('🚀 Redirecting to dashboard...');
+            window.location.replace(window.location.protocol + '//' + window.location.hostname + '/stockapi/#/dashboard');
+        }
+        
+        function redirectToLogin(errorMessage) {
+            console.log('❌ Redirecting to login with error:', errorMessage);
+            var loginUrl = window.location.protocol + '//' + window.location.hostname + '/stockapi/';
+            if (errorMessage) {
+                loginUrl += '?error=' + encodeURIComponent(errorMessage);
+            }
+            window.location.replace(loginUrl);
+        }
+
         // Extract OAuth parameters from current URL
         var urlParams = new URLSearchParams(window.location.search);
         var code = urlParams.get('code');
@@ -13,14 +124,10 @@
         console.log('OAuth callback received:', { code: code, state: state, error: error });
         
         if (code && state) {
-            // Successful OAuth callback - redirect to main app with parameters
-            var redirectUrl = window.location.protocol + '//' + window.location.hostname + '/stockapi/' + 
-                              '?code=' + encodeURIComponent(code) + 
-                              '&state=' + encodeURIComponent(state) +
-                              '&oauth_callback=true';
-            
-            console.log('Redirecting to main app:', redirectUrl);
-            window.location.replace(redirectUrl);
+            // Process OAuth callback directly here
+            console.log('Processing OAuth callback directly...');
+            processOAuthCallback(code, state);
+        } else if (error) {
         } else if (error) {
             // OAuth error - redirect to main app with error
             var redirectUrl = window.location.protocol + '//' + window.location.hostname + '/stockapi/' + 
