@@ -725,29 +725,86 @@ code {
 
 /* Recommendations Table */
 .recommendations-table-container {
-  overflow-x: auto;
   width: 100%;
+  overflow-x: hidden;
 }
 
 .recommendations-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* Compact column widths */
+.recommendations-table th:nth-child(1), /* Symbol */
+.recommendations-table td:nth-child(1) {
+  width: 10%;
+}
+
+.recommendations-table th:nth-child(2), /* Industry */
+.recommendations-table td:nth-child(2) {
+  width: 8%;
+}
+
+.recommendations-table th:nth-child(3), /* Date */
+.recommendations-table td:nth-child(3) {
+  width: 6%;
+}
+
+.recommendations-table th:nth-child(4), /* Suggested Price */
+.recommendations-table td:nth-child(4),
+.recommendations-table th:nth-child(5), /* CMP */
+.recommendations-table td:nth-child(5),
+.recommendations-table th:nth-child(7), /* Target Price */
+.recommendations-table td:nth-child(7) {
+  width: 8%;
+}
+
+.recommendations-table th:nth-child(6), /* P/L % */
+.recommendations-table td:nth-child(6) {
+  width: 7%;
+}
+
+.recommendations-table th:nth-child(8), /* PE */
+.recommendations-table td:nth-child(8),
+.recommendations-table th:nth-child(9), /* Industry PE */
+.recommendations-table td:nth-child(9) {
+  width: 5%;
+}
+
+.recommendations-table th:nth-child(10), /* Position */
+.recommendations-table td:nth-child(10) {
+  width: 6%;
+}
+
+.recommendations-table th:nth-child(11), /* Reason */
+.recommendations-table td:nth-child(11),
+.recommendations-table th:nth-child(12), /* Remarks */
+.recommendations-table td:nth-child(12) {
+  width: 4%;
+}
+
+.recommendations-table th:nth-child(13), /* Time Frame */
+.recommendations-table td:nth-child(13) {
+  width: 8%;
 }
 
 .recommendations-table th {
   background: var(--bg-secondary);
-  padding: 1rem 0.75rem;
+  padding: 0.5rem 0.4rem;
   text-align: left;
   font-weight: 600;
   color: var(--text-primary);
   border-bottom: 1px solid var(--border-color);
   white-space: nowrap;
+  font-size: 0.85rem;
 }
 
 .recommendations-table td {
-  padding: 1rem 0.75rem;
+  padding: 0.5rem 0.4rem;
   border-bottom: 1px solid var(--border-color);
-  vertical-align: top;
+  vertical-align: middle;
+  font-size: 0.85rem;
 }
 
 .stock-symbol strong {
@@ -1227,14 +1284,14 @@ code {
   
   .recommendations-table,
   .stocks-table {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
   }
   
   .recommendations-table th,
   .recommendations-table td,
   .stocks-table th,
   .stocks-table td {
-    padding: 0.5rem 0.25rem;
+    padding: 0.3rem 0.15rem;
   }
 }
 
@@ -1342,27 +1399,34 @@ code {
 
 /* Table cell styling for recommendations */
 .recommended-date {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
+  white-space: nowrap;
 }
 
-.target-price {
+.target-price, .suggested-price, .current-price {
   font-weight: 600;
   color: var(--primary-color);
+  white-space: nowrap;
 }
 
-.reason, .goal, .remarks {
-  font-size: 0.9rem;
-  line-height: 1.4;
-  max-width: 200px;
+.stock-symbol {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.industry {
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: 500;
 }
 
 .time-badge {
-  padding: 0.25rem 0.5rem;
+  padding: 0.15rem 0.3rem;
   background: #e8f5e8;
   color: #2e7d32;
-  border-radius: 12px;
-  font-size: 0.8rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
   font-weight: 500;
 }
 
@@ -1422,9 +1486,9 @@ code {
 
 /* Position badge styling */
 .position-badge {
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
+  padding: 0.15rem 0.3rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
   font-weight: 600;
   color: white;
   text-transform: uppercase;
@@ -1458,10 +1522,46 @@ code {
   font-weight: 500;
 }
 
+/* Info button tooltip styling */
+.info-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.info-btn:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.1);
+}
+
+.reason-tooltip, .remarks-tooltip {
+  text-align: center;
+  width: 40px;
+}
+
 /* Responsive table adjustments */
 @media (max-width: 1200px) {
-  .reason, .goal, .remarks {
-    max-width: 150px;
+  .recommendations-table {
+    font-size: 0.75rem;
+  }
+  
+  .recommendations-table th,
+  .recommendations-table td {
+    padding: 0.3rem 0.2rem;
+  }
+  
+  .info-btn {
+    width: 20px;
+    height: 20px;
     font-size: 0.85rem;
   }
 }
@@ -1483,9 +1583,9 @@ code {
 }
 
 .pl-badge {
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
+  padding: 0.15rem 0.3rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
   font-weight: 600;
   color: white;
 }

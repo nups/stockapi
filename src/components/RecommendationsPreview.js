@@ -291,7 +291,7 @@ const RecommendationsPreview = () => {
             <tr>
               <th>Symbol</th>
               <th>Industry</th>
-              <th>Recommended Date</th>
+              <th>Date</th>
               <th>Suggested Price</th>
               <th>CMP</th>
               <th>P/L %</th>
@@ -300,7 +300,6 @@ const RecommendationsPreview = () => {
               <th>Industry PE</th>
               <th>Position</th>
               <th>Reason</th>
-              <th>Goal</th>
               <th>Remarks</th>
               <th>Time Frame</th>
             </tr>
@@ -320,7 +319,7 @@ const RecommendationsPreview = () => {
                     {stock.industry || 'N/A'}
                   </td>
                   <td className="recommended-date">
-                    📅 {stock.recommendedDate || 'N/A'}
+                    {stock.recommendedDate ? stock.recommendedDate.replace('Oct ', '').replace(', 2024', '') : 'N/A'}
                   </td>
                   <td className="suggested-price">
                     <strong>₹{stock.suggested_price || 'N/A'}</strong>
@@ -365,14 +364,23 @@ const RecommendationsPreview = () => {
                       {(stock.position || 'buy').toUpperCase()}
                     </span>
                   </td>
-                  <td className="reason">
-                    {stock.reason || 'N/A'}
+                  <td className="reason-tooltip">
+                    <button 
+                      className="info-btn" 
+                      title={stock.reason || 'No reason provided'}
+                      aria-label="View reason"
+                    >
+                      ℹ️
+                    </button>
                   </td>
-                  <td className="goal">
-                    {stock.goal || 'N/A'}
-                  </td>
-                  <td className="remarks">
-                    {stock.remarks || 'N/A'}
+                  <td className="remarks-tooltip">
+                    <button 
+                      className="info-btn" 
+                      title={stock.remarks || 'No remarks'}
+                      aria-label="View remarks"
+                    >
+                      💬
+                    </button>
                   </td>
                   <td className="time-frame">
                     <span className="time-badge">
