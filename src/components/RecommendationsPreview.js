@@ -152,7 +152,7 @@ const RecommendationsPreview = () => {
   const [currentPrices, setCurrentPrices] = useState({});
   const [peData, setPeData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [chartModal, setChartModal] = useState({ isOpen: false, symbol: '' });
+  const [chartModal, setChartModal] = useState({ isOpen: false, symbol: '', displaySymbol: '' });
 
   // Industry PE mapping - could be fetched from a financial data API
   const INDUSTRY_PE_MAP = {
@@ -380,7 +380,7 @@ const RecommendationsPreview = () => {
                   <td className="chart-button">
                     <button 
                       className="chart-btn" 
-                      onClick={() => setChartModal({ isOpen: true, symbol: stock.symbol })}
+                      onClick={() => setChartModal({ isOpen: true, symbol: stock.symbol, displaySymbol: stock.displaySymbol })}
                       title="View Chart"
                     >
                       📈
@@ -418,26 +418,103 @@ const RecommendationsPreview = () => {
     if (!chartModal.isOpen) return null;
 
     return (
-      <div className="chart-modal-overlay" onClick={() => setChartModal({ isOpen: false, symbol: '' })}>
+      <div className="chart-modal-overlay" onClick={() => setChartModal({ isOpen: false, symbol: '', displaySymbol: '' })}>
         <div className="chart-modal-content" onClick={(e) => e.stopPropagation()}>
           <div className="chart-modal-header">
-            <h3>📈 {chartModal.symbol} - Candlestick Chart</h3>
+            <h3>📈 {chartModal.displaySymbol || chartModal.symbol} - Stock Chart</h3>
             <button 
               className="chart-modal-close"
-              onClick={() => setChartModal({ isOpen: false, symbol: '' })}
+              onClick={() => setChartModal({ isOpen: false, symbol: '', displaySymbol: '' })}
             >
               ✕
             </button>
           </div>
           <div className="chart-container">
-            <iframe
-              src={`https://s.tradingview.com/widgetembed/?frameElementId=tradingview_chart&symbol=${chartModal.symbol}&interval=D&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=[]&hideideas=1&theme=Light&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=localhost&utm_medium=widget&utm_campaign=chart&utm_term=${chartModal.symbol}`}
-              title={`${chartModal.symbol} Chart`}
-              width="100%"
-              height="500"
-              frameBorder="0"
-              style={{ border: 'none' }}
-            ></iframe>
+            {/* Chart Links Section */}
+            <div style={{ 
+              padding: '30px', 
+              textAlign: 'center', 
+              backgroundColor: '#f8f9fa', 
+              margin: '10px 0',
+              borderRadius: '12px',
+              border: '1px solid #dee2e6'
+            }}>
+              <h4 style={{ margin: '0 0 15px 0', fontSize: '18px', color: '#2c3e50' }}>
+                📊 Stock Chart for {chartModal.displaySymbol || chartModal.symbol}
+              </h4>
+              <p style={{ margin: '10px 0', fontSize: '14px', color: '#6c757d' }}>
+                View detailed candlestick charts and technical analysis:
+              </p>
+              
+              <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
+                <a 
+                  href={`https://finance.yahoo.com/quote/${chartModal.displaySymbol || chartModal.symbol.replace('NSE:', '') + '.NS'}/chart`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    padding: '12px 20px',
+                    backgroundColor: '#6f42c1',
+                    color: 'white',
+                    textDecoration: 'none',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    display: 'inline-block',
+                    transition: 'background-color 0.3s'
+                  }}
+                  onMouseOver={(e) => e.target.style.backgroundColor = '#5a359a'}
+                  onMouseOut={(e) => e.target.style.backgroundColor = '#6f42c1'}
+                >
+                  📈 Yahoo Finance Chart
+                </a>
+                
+                <a 
+                  href={`https://www.google.com/finance/quote/${(chartModal.displaySymbol || chartModal.symbol).replace('.NS', '').replace('NSE:', '')}:NSE`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    padding: '12px 20px',  
+                    backgroundColor: '#28a745',
+                    color: 'white',
+                    textDecoration: 'none',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    display: 'inline-block',
+                    transition: 'background-color 0.3s'
+                  }}
+                  onMouseOver={(e) => e.target.style.backgroundColor = '#218838'}
+                  onMouseOut={(e) => e.target.style.backgroundColor = '#28a745'}
+                >
+                  📊 Google Finance Chart
+                </a>
+                
+                <a 
+                  href={`https://in.tradingview.com/chart/?symbol=NSE%3A${(chartModal.displaySymbol || chartModal.symbol).replace('.NS', '').replace('NSE:', '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    padding: '12px 20px',
+                    backgroundColor: '#007bff',
+                    color: 'white',
+                    textDecoration: 'none',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    display: 'inline-block',
+                    transition: 'background-color 0.3s'
+                  }}
+                  onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
+                  onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
+                >
+                  📈 TradingView Pro
+                </a>
+              </div>
+              
+              <div style={{ marginTop: '20px', fontSize: '12px', color: '#868e96' }}>
+                <p>💡 <strong>Tip:</strong> These external charts provide full candlestick analysis, technical indicators, and real-time data.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
