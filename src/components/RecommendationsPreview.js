@@ -82,8 +82,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'BSE:506685',
     displaySymbol: '506685.BO',
     recommendedDate: 'July 19, 2025',
-    suggested_price: 145, // Price when recommended
-    target_price: '₹180',
+    suggested_price: 590, // Buy Signal price
+    target_price: '₹710',
     reason: 'Niche player in pigments sector with strong export potential and improving margins.',
     goal: 'Small-cap growth story with 20-25% potential returns',
     remarks: 'Specialized chemical company with focused product portfolio and export growth.',
@@ -96,8 +96,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'BSE:538734',
     displaySymbol: '538734.BO',
     recommendedDate: 'Feb 2, 2025',
-    suggested_price: 78, // Price when recommended
-    target_price: '₹95',
+    suggested_price: 1730, // Buy Signal price
+    target_price: '₹2100',
     reason: 'Technology services company with growing order book and digital transformation focus.',
     goal: 'Mid-cap IT play with 18-22% growth potential',
     remarks: 'Strong fundamentals in niche technology solutions with government contracts.',
@@ -110,8 +110,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:GRWRHITECH',
     displaySymbol: 'GRWRHITECH.NS',
     recommendedDate: 'Nov 15, 2024',
-    suggested_price: 850, // Price when recommended
-    target_price: '₹1000',
+    suggested_price: 4000, // Buy Signal price
+    target_price: '₹4800',
     reason: 'Leading packaging films manufacturer with strong automotive and industrial demand.',
     goal: 'Quality manufacturing play with 15-18% returns',
     remarks: 'Strong market position in specialty films with expanding capacity.',
@@ -124,8 +124,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:ARVINDFASN',
     displaySymbol: 'ARVINDFASN.NS',
     recommendedDate: 'Nov 25, 2025',
-    suggested_price: 320, // Price when recommended
-    target_price: '₹380',
+    suggested_price: 575, // Buy Signal price
+    target_price: '₹690',
     reason: 'Fashion retail recovery story with strong brand portfolio and omnichannel presence.',
     goal: 'Consumer discretionary recovery with 18-20% upside',
     remarks: 'Improving same-store sales growth and margin expansion in key brands.',
@@ -138,8 +138,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:RATEGAIN',
     displaySymbol: 'RATEGAIN.NS',
     recommendedDate: 'Oct 25, 2025',
-    suggested_price: 450, // Price when recommended
-    target_price: '₹550',
+    suggested_price: 720, // Buy Signal price
+    target_price: '₹860',
     reason: 'Travel technology platform benefiting from hospitality sector recovery and digitization.',
     goal: 'High-growth SaaS model with 20-25% potential',
     remarks: 'Strong recurring revenue model with global hotel chain partnerships.',
@@ -152,8 +152,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:SHAKTIPUMP',
     displaySymbol: 'SHAKTIPUMP.NS',
     recommendedDate: 'Sep 1, 2025',
-    suggested_price: 2200, // Price when recommended
-    target_price: '₹2600',
+    suggested_price: 890, // Buy Signal price
+    target_price: '₹1070',
     reason: 'Leading pump manufacturer benefiting from agriculture and solar pump demand.',
     goal: 'Infrastructure play with 15-18% growth potential',
     remarks: 'Strong order book and government policy support for solar pumps.',
@@ -166,8 +166,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:ENTERO',
     displaySymbol: 'ENTERO.NS',
     recommendedDate: 'Sep 9, 2025',
-    suggested_price: 890, // Price when recommended
-    target_price: '₹1100',
+    suggested_price: 1200, // Buy Signal price
+    target_price: '₹1440',
     reason: 'Healthcare solutions provider with growing hospital chain partnerships.',
     goal: 'Healthcare sector growth with 22-25% returns',
     remarks: 'Expanding service portfolio and strong client retention rates.',
@@ -180,8 +180,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:INFOLION',
     displaySymbol: 'INFOLION.NS',
     recommendedDate: 'Jan 11, 2025',
-    suggested_price: 125, // Price when recommended
-    target_price: '₹155',
+    suggested_price: 424, // Buy Signal price
+    target_price: '₹510',
     reason: 'Research and analytics services company with growing institutional client base.',
     goal: 'Knowledge services play with 20-24% upside',
     remarks: 'Niche player in financial research with strong moat and recurring revenues.',
@@ -194,8 +194,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:JUBLPHARMA',
     displaySymbol: 'JUBLPHARMA.NS',
     recommendedDate: 'Oct 25, 2025',
-    suggested_price: 680, // Price when recommended
-    target_price: '₹820',
+    suggested_price: 1176, // Buy Signal price
+    target_price: '₹1410',
     reason: 'Pharmaceutical company with strong CDMO business and improving margins.',
     goal: 'Pharma sector recovery with 18-20% potential',
     remarks: 'Diversified pharma portfolio with contract manufacturing growth.',
@@ -208,8 +208,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:INNOVACAP',
     displaySymbol: 'INNOVACAP.NS',
     recommendedDate: 'Apr 14, 2025',
-    suggested_price: 165, // Price when recommended
-    target_price: '₹200',
+    suggested_price: 875, // Buy Signal price
+    target_price: '₹1050',
     reason: 'Specialty chemicals company with focus on pharmaceutical intermediates.',
     goal: 'Chemical sector play with 20-22% growth',
     remarks: 'Strong R&D capabilities and expanding product pipeline.',
@@ -222,8 +222,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'BSE:539551',
     displaySymbol: '539551.BO',
     recommendedDate: 'Sep 1, 2025',
-    suggested_price: 1250, // Price when recommended
-    target_price: '₹1500',
+    suggested_price: 1750, // Buy Signal price
+    target_price: '₹2100',
     reason: 'Leading healthcare chain with strong fundamentals and expansion plans.',
     goal: 'Healthcare infrastructure growth with 18-20% returns',
     remarks: 'Premium healthcare provider with strong brand and operational efficiency.',
@@ -236,8 +236,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:SANGHVIMOV',
     displaySymbol: 'SANGHVIMOV.NS',
     recommendedDate: 'Sep 1, 2025',
-    suggested_price: 420, // Price when recommended
-    target_price: '₹500',
+    suggested_price: 387, // Buy Signal price
+    target_price: '₹465',
     reason: 'Heavy equipment rental services benefiting from infrastructure development.',
     goal: 'Infrastructure capex play with 18-19% upside',
     remarks: 'Strong fleet utilization and growing order book from infra projects.',
@@ -250,8 +250,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:BETA',
     displaySymbol: 'BETA.NS',
     recommendedDate: 'Aug 1, 2025',
-    suggested_price: 290, // Price when recommended
-    target_price: '₹350',
+    suggested_price: 1800, // Buy Signal price
+    target_price: '₹2160',
     reason: 'Pharmaceutical company with strong generic portfolio and export presence.',
     goal: 'Pharma generic play with 20-21% potential',
     remarks: 'Growing international business and new product launches.',
@@ -264,8 +264,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:ASTRAMICRO',
     displaySymbol: 'ASTRAMICRO.NS',
     recommendedDate: 'Aug 1, 2025',
-    suggested_price: 680, // Price when recommended
-    target_price: '₹820',
+    suggested_price: 1000, // Buy Signal price
+    target_price: '₹1200',
     reason: 'Defense electronics company benefiting from government defense spending.',
     goal: 'Defense sector growth with 20-21% returns',
     remarks: 'Strong order book and focus on indigenization initiatives.',
@@ -278,8 +278,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:SAMHI',
     displaySymbol: 'SAMHI.NS',
     recommendedDate: 'Apr 20, 2025',
-    suggested_price: 145, // Price when recommended
-    target_price: '₹175',
+    suggested_price: 193, // Buy Signal price
+    target_price: '₹232',
     reason: 'Hotel asset management company benefiting from hospitality sector recovery.',
     goal: 'Tourism recovery play with 20-21% upside',
     remarks: 'Asset-light model with strong portfolio of premium hotels.',
@@ -292,8 +292,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:THANGAMAYIL',
     displaySymbol: 'THANGAMAYIL.NS',
     recommendedDate: 'Apr 20, 2025',
-    suggested_price: 2100, // Price when recommended
-    target_price: '₹2500',
+    suggested_price: 2000, // Buy Signal price
+    target_price: '₹2400',
     reason: 'Regional jewelry chain with strong brand presence and expansion strategy.',
     goal: 'Consumer discretionary play with 19% potential',
     remarks: 'Growing store network and improving same-store sales growth.',
@@ -306,8 +306,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'BSE:519600',
     displaySymbol: '519600.BO',
     recommendedDate: 'Jun 1, 2025',
-    suggested_price: 550, // Price when recommended
-    target_price: '₹650',
+    suggested_price: 786, // Buy Signal price
+    target_price: '₹943',
     reason: 'Coffee processing and export company with strong international presence.',
     goal: 'FMCG export play with 18% growth potential',
     remarks: 'Leading instant coffee manufacturer with global reach and brand strength.',
@@ -320,8 +320,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     symbol: 'NSE:CARYSIL',
     displaySymbol: 'CARYSIL.NS',
     recommendedDate: 'Jun 1, 2025',
-    suggested_price: 950, // Price when recommended
-    target_price: '₹1150',
+    suggested_price: 850, // Buy Signal price
+    target_price: '₹1020',
     reason: 'Kitchen sink manufacturer with strong brand presence and export growth.',
     goal: 'Consumer durables play with 21% upside',
     remarks: 'Market leader in quartz sinks with expanding domestic and export markets.',
