@@ -748,7 +748,7 @@ code {
 
 .recommendations-table th:nth-child(3), /* Date */
 .recommendations-table td:nth-child(3) {
-  width: 6%;
+  width: 10%;
 }
 
 .recommendations-table th:nth-child(4), /* Suggested Price */
@@ -1630,9 +1630,9 @@ code {
 }
 
 /* Column width constraints to make table more compact */
-.recommendations-table th:nth-child(1) { width: 12%; } /* Symbol */
-.recommendations-table th:nth-child(2) { width: 10%; } /* Industry */
-.recommendations-table th:nth-child(3) { width: 6%; }  /* Date */
+.recommendations-table th:nth-child(1) { width: 11%; } /* Symbol */
+.recommendations-table th:nth-child(2) { width: 9%; } /* Industry */
+.recommendations-table th:nth-child(3) { width: 10%; }  /* Date */
 .recommendations-table th:nth-child(4) { width: 8%; }  /* Suggested Price */
 .recommendations-table th:nth-child(5) { width: 8%; }  /* CMP */
 .recommendations-table th:nth-child(6) { width: 8%; }  /* P/L % */
@@ -1642,7 +1642,7 @@ code {
 .recommendations-table th:nth-child(10) { width: 7%; } /* Position */
 .recommendations-table th:nth-child(11) { width: 5%; } /* Reason */
 .recommendations-table th:nth-child(12) { width: 5%; } /* Remarks */
-.recommendations-table th:nth-child(13) { width: 11%; } /* Time Frame */
+.recommendations-table th:nth-child(13) { width: 9%; } /* Time Frame */
 
 /* Ensure vertical stacking on all screen sizes */
 @media (min-width: 1200px) {

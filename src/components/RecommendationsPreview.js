@@ -319,7 +319,7 @@ const RecommendationsPreview = () => {
                     {stock.industry || 'N/A'}
                   </td>
                   <td className="recommended-date">
-                    {stock.recommendedDate ? stock.recommendedDate.replace('Oct ', '').replace(', 2024', '') : 'N/A'}
+                    {stock.recommendedDate || 'N/A'}
                   </td>
                   <td className="suggested-price">
                     <strong>₹{stock.suggested_price || 'N/A'}</strong>
