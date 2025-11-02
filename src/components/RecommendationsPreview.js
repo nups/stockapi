@@ -142,6 +142,7 @@ const RecommendationsPreview = () => {
   const [currentPrices, setCurrentPrices] = useState({});
   const [peData, setPeData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [chartModal, setChartModal] = useState({ isOpen: false, symbol: '' });
 
   // Industry PE mapping - could be fetched from a financial data API
   const INDUSTRY_PE_MAP = {
@@ -299,6 +300,7 @@ const RecommendationsPreview = () => {
               <th>PE</th>
               <th>Industry PE</th>
               <th>Position</th>
+              <th>Chart</th>
               <th>Reason</th>
               <th>Remarks</th>
             </tr>
@@ -363,6 +365,15 @@ const RecommendationsPreview = () => {
                       {(stock.position || 'buy').toUpperCase()}
                     </span>
                   </td>
+                  <td className="chart-button">
+                    <button 
+                      className="chart-btn" 
+                      onClick={() => setChartModal({ isOpen: true, symbol: stock.symbol })}
+                      title="View Chart"
+                    >
+                      📈
+                    </button>
+                  </td>
                   <td className="reason-tooltip">
                     <button 
                       className="info-btn" 
@@ -390,6 +401,37 @@ const RecommendationsPreview = () => {
     </div>
   );
 
+  // Chart Modal Component
+  const ChartModal = () => {
+    if (!chartModal.isOpen) return null;
+
+    return (
+      <div className="chart-modal-overlay" onClick={() => setChartModal({ isOpen: false, symbol: '' })}>
+        <div className="chart-modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="chart-modal-header">
+            <h3>📈 {chartModal.symbol} - Candlestick Chart</h3>
+            <button 
+              className="chart-modal-close"
+              onClick={() => setChartModal({ isOpen: false, symbol: '' })}
+            >
+              ✕
+            </button>
+          </div>
+          <div className="chart-container">
+            <iframe
+              src={`https://s.tradingview.com/widgetembed/?frameElementId=tradingview_chart&symbol=NSE%3A${chartModal.symbol.replace('.NS', '')}&interval=D&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=[]&hideideas=1&theme=Light&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=localhost&utm_medium=widget&utm_campaign=chart&utm_term=NSE%3A${chartModal.symbol.replace('.NS', '')}`}
+              title={`${chartModal.symbol} Chart`}
+              width="100%"
+              height="500"
+              frameBorder="0"
+              style={{ border: 'none' }}
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="recommendations-preview">
       <h3>🤖 Recommendations</h3>
@@ -409,6 +451,9 @@ const RecommendationsPreview = () => {
           Please conduct your own research and consult with a financial advisor before making investment decisions.
         </p>
       </div>
+      
+      {/* Chart Modal */}
+      <ChartModal />
     </div>
   );
 };

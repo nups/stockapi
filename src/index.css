@@ -1552,6 +1552,115 @@ code {
   transform: scale(1.1);
 }
 
+/* Chart button styling */
+.chart-btn {
+  background: #28a745;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: white;
+  font-weight: bold;
+}
+
+.chart-btn:hover {
+  background-color: #218838;
+  transform: scale(1.1);
+}
+
+/* Chart Modal Styling */
+.chart-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.chart-modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 1000px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.chart-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
+}
+
+.chart-modal-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.chart-modal-close {
+  background: #dc3545;
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.chart-modal-close:hover {
+  background: #c82333;
+  transform: scale(1.1);
+}
+
+.chart-container {
+  padding: 0;
+  height: 500px;
+  overflow: hidden;
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+  .chart-modal-content {
+    width: 95%;
+    margin: 10px;
+  }
+  
+  .chart-container {
+    height: 400px;
+  }
+  
+  .chart-modal-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .chart-modal-header h3 {
+    font-size: 1rem;
+  }
+}
+
 .reason-tooltip, .remarks-tooltip {
   text-align: center;
   width: 40px;
@@ -1627,18 +1736,19 @@ code {
 }
 
 /* Column width constraints to make table more compact */
-.recommendations-table th:nth-child(1) { width: 13%; } /* Symbol */
-.recommendations-table th:nth-child(2) { width: 11%; } /* Industry */
-.recommendations-table th:nth-child(3) { width: 12%; }  /* Date */
-.recommendations-table th:nth-child(4) { width: 10%; }  /* Suggested Price */
-.recommendations-table th:nth-child(5) { width: 10%; }  /* CMP */
-.recommendations-table th:nth-child(6) { width: 10%; }  /* P/L % */
-.recommendations-table th:nth-child(7) { width: 10%; }  /* Target Price */
-.recommendations-table th:nth-child(8) { width: 8%; }  /* PE */
-.recommendations-table th:nth-child(9) { width: 8%; }  /* Industry PE */
-.recommendations-table th:nth-child(10) { width: 8%; } /* Position */
-.recommendations-table th:nth-child(11) { width: 5%; } /* Reason */
-.recommendations-table th:nth-child(12) { width: 5%; } /* Remarks */
+.recommendations-table th:nth-child(1) { width: 12%; } /* Symbol */
+.recommendations-table th:nth-child(2) { width: 10%; } /* Industry */
+.recommendations-table th:nth-child(3) { width: 10%; }  /* Date */
+.recommendations-table th:nth-child(4) { width: 9%; }  /* Suggested Price */
+.recommendations-table th:nth-child(5) { width: 9%; }  /* CMP */
+.recommendations-table th:nth-child(6) { width: 9%; }  /* P/L % */
+.recommendations-table th:nth-child(7) { width: 9%; }  /* Target Price */
+.recommendations-table th:nth-child(8) { width: 7%; }  /* PE */
+.recommendations-table th:nth-child(9) { width: 7%; }  /* Industry PE */
+.recommendations-table th:nth-child(10) { width: 7%; } /* Position */
+.recommendations-table th:nth-child(11) { width: 5%; } /* Chart */
+.recommendations-table th:nth-child(12) { width: 4%; } /* Reason */
+.recommendations-table th:nth-child(13) { width: 4%; } /* Remarks */
 
 /* Ensure vertical stacking on all screen sizes */
 @media (min-width: 1200px) {
