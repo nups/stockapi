@@ -145,6 +145,259 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     time_frame: '12-18 months',
     industry: 'Banking',
     position: 'sell'
+  },
+  // New stocks added from user request
+  {
+    id: 6,
+    symbol: 'BSE:506685',
+    displaySymbol: '506685.BO',
+    recommendedDate: 'July 19, 2025',
+    suggested_price: 145, // Price when recommended
+    target_price: '₹180',
+    reason: 'Niche player in pigments sector with strong export potential and improving margins.',
+    goal: 'Small-cap growth story with 20-25% potential returns',
+    remarks: 'Specialized chemical company with focused product portfolio and export growth.',
+    time_frame: '12-18 months',
+    industry: 'Chemicals',
+    position: 'buy'
+  },
+  {
+    id: 7,
+    symbol: 'BSE:538734',
+    displaySymbol: '538734.BO',
+    recommendedDate: 'Feb 2, 2025',
+    suggested_price: 78, // Price when recommended
+    target_price: '₹95',
+    reason: 'Technology services company with growing order book and digital transformation focus.',
+    goal: 'Mid-cap IT play with 18-22% growth potential',
+    remarks: 'Strong fundamentals in niche technology solutions with government contracts.',
+    time_frame: '15-20 months',
+    industry: 'IT Services',
+    position: 'buy'
+  },
+  {
+    id: 8,
+    symbol: 'NSE:GRWRHITECH',
+    displaySymbol: 'GRWRHITECH.NS',
+    recommendedDate: 'Nov 15, 2024',
+    suggested_price: 850, // Price when recommended
+    target_price: '₹1000',
+    reason: 'Leading packaging films manufacturer with strong automotive and industrial demand.',
+    goal: 'Quality manufacturing play with 15-18% returns',
+    remarks: 'Strong market position in specialty films with expanding capacity.',
+    time_frame: '12-15 months',
+    industry: 'Packaging',
+    position: 'buy'
+  },
+  {
+    id: 9,
+    symbol: 'NSE:ARVINDFASN',
+    displaySymbol: 'ARVINDFASN.NS',
+    recommendedDate: 'Nov 25, 2025',
+    suggested_price: 320, // Price when recommended
+    target_price: '₹380',
+    reason: 'Fashion retail recovery story with strong brand portfolio and omnichannel presence.',
+    goal: 'Consumer discretionary recovery with 18-20% upside',
+    remarks: 'Improving same-store sales growth and margin expansion in key brands.',
+    time_frame: '10-14 months',
+    industry: 'Textiles & Apparel',
+    position: 'buy'
+  },
+  {
+    id: 10,
+    symbol: 'NSE:RATEGAIN',
+    displaySymbol: 'RATEGAIN.NS',
+    recommendedDate: 'Oct 25, 2025',
+    suggested_price: 450, // Price when recommended
+    target_price: '₹550',
+    reason: 'Travel technology platform benefiting from hospitality sector recovery and digitization.',
+    goal: 'High-growth SaaS model with 20-25% potential',
+    remarks: 'Strong recurring revenue model with global hotel chain partnerships.',
+    time_frame: '12-18 months',
+    industry: 'Technology',
+    position: 'buy'
+  },
+  {
+    id: 11,
+    symbol: 'NSE:SHAKTIPUMP',
+    displaySymbol: 'SHAKTIPUMP.NS',
+    recommendedDate: 'Sep 1, 2025',
+    suggested_price: 2200, // Price when recommended
+    target_price: '₹2600',
+    reason: 'Leading pump manufacturer benefiting from agriculture and solar pump demand.',
+    goal: 'Infrastructure play with 15-18% growth potential',
+    remarks: 'Strong order book and government policy support for solar pumps.',
+    time_frame: '12-16 months',
+    industry: 'Industrial Equipment',
+    position: 'buy'
+  },
+  {
+    id: 12,
+    symbol: 'NSE:ENTERO',
+    displaySymbol: 'ENTERO.NS',
+    recommendedDate: 'Sep 9, 2025',
+    suggested_price: 890, // Price when recommended
+    target_price: '₹1100',
+    reason: 'Healthcare solutions provider with growing hospital chain partnerships.',
+    goal: 'Healthcare sector growth with 22-25% returns',
+    remarks: 'Expanding service portfolio and strong client retention rates.',
+    time_frame: '15-20 months',
+    industry: 'Healthcare',
+    position: 'buy'
+  },
+  {
+    id: 13,
+    symbol: 'NSE:INFOLION',
+    displaySymbol: 'INFOLION.NS',
+    recommendedDate: 'Jan 11, 2025',
+    suggested_price: 125, // Price when recommended
+    target_price: '₹155',
+    reason: 'Research and analytics services company with growing institutional client base.',
+    goal: 'Knowledge services play with 20-24% upside',
+    remarks: 'Niche player in financial research with strong moat and recurring revenues.',
+    time_frame: '12-18 months',
+    industry: 'Financial Services',
+    position: 'buy'
+  },
+  {
+    id: 14,
+    symbol: 'NSE:JUBLPHARMA',
+    displaySymbol: 'JUBLPHARMA.NS',
+    recommendedDate: 'Oct 25, 2025',
+    suggested_price: 680, // Price when recommended
+    target_price: '₹820',
+    reason: 'Pharmaceutical company with strong CDMO business and improving margins.',
+    goal: 'Pharma sector recovery with 18-20% potential',
+    remarks: 'Diversified pharma portfolio with contract manufacturing growth.',
+    time_frame: '14-18 months',
+    industry: 'Pharmaceuticals',
+    position: 'buy'
+  },
+  {
+    id: 15,
+    symbol: 'NSE:INNOVACAP',
+    displaySymbol: 'INNOVACAP.NS',
+    recommendedDate: 'Apr 14, 2025',
+    suggested_price: 165, // Price when recommended
+    target_price: '₹200',
+    reason: 'Specialty chemicals company with focus on pharmaceutical intermediates.',
+    goal: 'Chemical sector play with 20-22% growth',
+    remarks: 'Strong R&D capabilities and expanding product pipeline.',
+    time_frame: '12-15 months',
+    industry: 'Chemicals',
+    position: 'buy'
+  },
+  {
+    id: 16,
+    symbol: 'BSE:539551',
+    displaySymbol: '539551.BO',
+    recommendedDate: 'Sep 1, 2025',
+    suggested_price: 1250, // Price when recommended
+    target_price: '₹1500',
+    reason: 'Leading healthcare chain with strong fundamentals and expansion plans.',
+    goal: 'Healthcare infrastructure growth with 18-20% returns',
+    remarks: 'Premium healthcare provider with strong brand and operational efficiency.',
+    time_frame: '15-20 months',
+    industry: 'Healthcare',
+    position: 'buy'
+  },
+  {
+    id: 17,
+    symbol: 'NSE:SANGHVIMOV',
+    displaySymbol: 'SANGHVIMOV.NS',
+    recommendedDate: 'Sep 1, 2025',
+    suggested_price: 420, // Price when recommended
+    target_price: '₹500',
+    reason: 'Heavy equipment rental services benefiting from infrastructure development.',
+    goal: 'Infrastructure capex play with 18-19% upside',
+    remarks: 'Strong fleet utilization and growing order book from infra projects.',
+    time_frame: '12-16 months',
+    industry: 'Industrial Services',
+    position: 'buy'
+  },
+  {
+    id: 18,
+    symbol: 'NSE:BETA',
+    displaySymbol: 'BETA.NS',
+    recommendedDate: 'Aug 1, 2025',
+    suggested_price: 290, // Price when recommended
+    target_price: '₹350',
+    reason: 'Pharmaceutical company with strong generic portfolio and export presence.',
+    goal: 'Pharma generic play with 20-21% potential',
+    remarks: 'Growing international business and new product launches.',
+    time_frame: '14-18 months',
+    industry: 'Pharmaceuticals',
+    position: 'buy'
+  },
+  {
+    id: 19,
+    symbol: 'NSE:ASTRAMICRO',
+    displaySymbol: 'ASTRAMICRO.NS',
+    recommendedDate: 'Aug 1, 2025',
+    suggested_price: 680, // Price when recommended
+    target_price: '₹820',
+    reason: 'Defense electronics company benefiting from government defense spending.',
+    goal: 'Defense sector growth with 20-21% returns',
+    remarks: 'Strong order book and focus on indigenization initiatives.',
+    time_frame: '15-20 months',
+    industry: 'Defense',
+    position: 'buy'
+  },
+  {
+    id: 20,
+    symbol: 'NSE:SAMHI',
+    displaySymbol: 'SAMHI.NS',
+    recommendedDate: 'Apr 20, 2025',
+    suggested_price: 145, // Price when recommended
+    target_price: '₹175',
+    reason: 'Hotel asset management company benefiting from hospitality sector recovery.',
+    goal: 'Tourism recovery play with 20-21% upside',
+    remarks: 'Asset-light model with strong portfolio of premium hotels.',
+    time_frame: '12-16 months',
+    industry: 'Hotels & Tourism',
+    position: 'buy'
+  },
+  {
+    id: 21,
+    symbol: 'NSE:THANGAMAYIL',
+    displaySymbol: 'THANGAMAYIL.NS',
+    recommendedDate: 'Apr 20, 2025',
+    suggested_price: 2100, // Price when recommended
+    target_price: '₹2500',
+    reason: 'Regional jewelry chain with strong brand presence and expansion strategy.',
+    goal: 'Consumer discretionary play with 19% potential',
+    remarks: 'Growing store network and improving same-store sales growth.',
+    time_frame: '14-18 months',
+    industry: 'Retail',
+    position: 'buy'
+  },
+  {
+    id: 22,
+    symbol: 'BSE:519600',
+    displaySymbol: '519600.BO',
+    recommendedDate: 'Jun 1, 2025',
+    suggested_price: 550, // Price when recommended
+    target_price: '₹650',
+    reason: 'Coffee processing and export company with strong international presence.',
+    goal: 'FMCG export play with 18% growth potential',
+    remarks: 'Leading instant coffee manufacturer with global reach and brand strength.',
+    time_frame: '12-15 months',
+    industry: 'FMCG',
+    position: 'buy'
+  },
+  {
+    id: 23,
+    symbol: 'NSE:CARYSIL',
+    displaySymbol: 'CARYSIL.NS',
+    recommendedDate: 'Jun 1, 2025',
+    suggested_price: 950, // Price when recommended
+    target_price: '₹1150',
+    reason: 'Kitchen sink manufacturer with strong brand presence and export growth.',
+    goal: 'Consumer durables play with 21% upside',
+    remarks: 'Market leader in quartz sinks with expanding domestic and export markets.',
+    time_frame: '12-16 months',
+    industry: 'Consumer Durables',
+    position: 'buy'
   }
 ];
 
@@ -163,7 +416,19 @@ const RecommendationsPreview = () => {
     'Automobiles': 22.1,
     'FMCG': 31.5,
     'Metals': 15.2,
-    'Telecommunications': 19.8
+    'Telecommunications': 19.8,
+    'Chemicals': 22.5,
+    'Packaging': 25.1,
+    'Textiles & Apparel': 19.3,
+    'Technology': 28.7,
+    'Industrial Equipment': 21.4,
+    'Healthcare': 27.8,
+    'Financial Services': 16.9,
+    'Industrial Services': 18.6,
+    'Defense': 32.1,
+    'Hotels & Tourism': 24.3,
+    'Retail': 26.8,
+    'Consumer Durables': 23.4
   };
 
   // Function to fetch PE data from API
