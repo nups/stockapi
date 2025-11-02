@@ -726,6 +726,7 @@ code {
 /* Recommendations Table */
 .recommendations-table-container {
   overflow-x: auto;
+  width: 100%;
 }
 
 .recommendations-table {
@@ -1314,6 +1315,13 @@ code {
   margin-bottom: 2rem;
 }
 
+.recommendations-content-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
 .recommendations-table-section {
   background: white;
   border-radius: 8px;
@@ -1395,6 +1403,61 @@ code {
   background: #dc3545;
 }
 
+/* Row styling based on profit/loss */
+.recommendations-table .loss-row {
+  background-color: #ffebee !important;
+  border-left: 4px solid #f44336;
+}
+
+.recommendations-table .profit-row {
+  background-color: #e8f5e8 !important;
+  border-left: 4px solid #4caf50;
+}
+
+.recommendations-table .loss-row:hover, 
+.recommendations-table .profit-row:hover {
+  transform: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Position badge styling */
+.position-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+}
+
+.position-badge.buy {
+  background: #28a745;
+  color: white;
+}
+
+.position-badge.sell {
+  background: #dc3545;
+  color: white;
+}
+
+.position-badge.hold {
+  background: #fd7e14;
+  color: white;
+}
+
+/* PE ratio and industry styling */
+.pe-ratio, .industry-pe {
+  font-weight: 500;
+  color: #666;
+  text-align: center;
+}
+
+.industry {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
 /* Responsive table adjustments */
 @media (max-width: 1200px) {
   .reason, .goal, .remarks {
@@ -1428,26 +1491,41 @@ code {
 }
 
 .pl-badge.profit {
-  background: #28a745;
+  background: #92eda7;
 }
 
 .pl-badge.loss {
-  background: #dc3545;
+  background: #ea99a1;
 }
 
 .profit-loss {
   text-align: center;
 }
 
-/* Responsive adjustments for two tables */
+/* Keep tables stacked vertically always */
+.recommendations-content,
+.recommendations-content-vertical {
+  flex-direction: column !important;
+  width: 100%;
+}
+
+.recommendations-table-section {
+  width: 100%;
+  max-width: 100%;
+  flex: none;
+}
+
+/* Ensure vertical stacking on all screen sizes */
 @media (min-width: 1200px) {
-  .recommendations-content {
-    flex-direction: row;
-    gap: 1.5rem;
+  .recommendations-content,
+  .recommendations-content-vertical {
+    flex-direction: column !important;
+    width: 100%;
   }
   
   .recommendations-table-section {
-    flex: 1;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 }
 
