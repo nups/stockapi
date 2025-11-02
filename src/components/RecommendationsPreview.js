@@ -76,79 +76,9 @@ const TECHNICAL_SAMPLE_DATA = [
 
 // Fundamental Analysis Sample Data
 const FUNDAMENTAL_SAMPLE_DATA = [
-  {
-    id: 1,
-    symbol: 'NSE:RELIANCE',
-    displaySymbol: 'RELIANCE.NS',
-    recommendedDate: 'Oct 15, 2024',
-    suggested_price: 2850, // Price when recommended
-    target_price: '₹3400',
-    reason: 'Strong balance sheet with diversified revenue streams. Oil-to-chemicals transition showing results.',
-    goal: 'Long-term wealth creation with dividend income potential of 15-20%',
-    remarks: 'Blue-chip fundamentals with strong cash flow generation and market leadership.',
-    time_frame: '12-18 months',
-    industry: 'Oil & Gas',
-    position: 'buy'
-  },
-  {
-    id: 2,
-    symbol: 'NSE:INFY',
-    displaySymbol: 'INFY.NS',
-    recommendedDate: 'Oct 12, 2024',
-    suggested_price: 1780, // Price when recommended
-    target_price: '₹2000',
-    reason: 'Consistent revenue growth with strong digital capabilities and healthy profit margins.',
-    goal: 'Growth investment with potential for 15-20% annual returns',
-    remarks: 'Leading IT services company with strong client relationships and global presence.',
-    time_frame: '12-24 months',
-    industry: 'IT Services',
-    position: 'buy'
-  },
-  {
-    id: 3,
-    symbol: 'NSE:HDFCBANK',
-    displaySymbol: 'HDFCBANK.NS',
-    recommendedDate: 'Oct 10, 2024',
-    suggested_price: 1650, // Price when recommended
-    target_price: '₹1850',
-    reason: 'Premium valuation justified by strong asset quality and consistent performance track record.',
-    goal: 'Steady growth with dividend yield of 1-2% plus capital appreciation',
-    remarks: 'Market leader in retail banking with strong fundamentals and brand value.',
-    time_frame: '12-18 months',
-    industry: 'Banking',
-    position: 'hold'
-  },
-  {
-    id: 4,
-    symbol: 'NSE:TCS',
-    displaySymbol: 'TCS.NS',
-    recommendedDate: 'Oct 8, 2024',
-    suggested_price: 4200, // Price when recommended
-    target_price: '₹4600',
-    reason: 'Market leadership in IT services with strong client relationships and consistent cash generation.',
-    goal: 'Quality growth stock for long-term portfolio with 12-15% returns',
-    remarks: 'Excellent fundamentals with strong ROE and consistent dividend payments.',
-    time_frame: '18-24 months',
-    industry: 'IT Services',
-    position: 'buy'
-  },
-  {
-    id: 5,
-    symbol: 'NSE:ICICIBANK',
-    displaySymbol: 'ICICIBANK.NS',
-    recommendedDate: 'Oct 5, 2024',
-    suggested_price: 1180, // Price when recommended
-    target_price: '₹1320',
-    reason: 'Improving asset quality with retail banking focus paying off. Strong growth trajectory.',
-    goal: 'Growth with value - targeting 12-15% annual returns',
-    remarks: 'Strong fundamentals with improving ROE and reduced NPA levels.',
-    time_frame: '12-18 months',
-    industry: 'Banking',
-    position: 'sell'
-  },
   // New stocks added from user request
   {
-    id: 6,
+    id: 1,
     symbol: 'BSE:506685',
     displaySymbol: '506685.BO',
     recommendedDate: 'July 19, 2025',
@@ -176,7 +106,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 8,
+    id: 2,
     symbol: 'NSE:GRWRHITECH',
     displaySymbol: 'GRWRHITECH.NS',
     recommendedDate: 'Nov 15, 2024',
@@ -190,7 +120,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 9,
+    id: 3,
     symbol: 'NSE:ARVINDFASN',
     displaySymbol: 'ARVINDFASN.NS',
     recommendedDate: 'Nov 25, 2025',
@@ -204,7 +134,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 10,
+    id: 4,
     symbol: 'NSE:RATEGAIN',
     displaySymbol: 'RATEGAIN.NS',
     recommendedDate: 'Oct 25, 2025',
@@ -218,7 +148,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 11,
+    id: 5,
     symbol: 'NSE:SHAKTIPUMP',
     displaySymbol: 'SHAKTIPUMP.NS',
     recommendedDate: 'Sep 1, 2025',
@@ -232,7 +162,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 12,
+    id: 6,
     symbol: 'NSE:ENTERO',
     displaySymbol: 'ENTERO.NS',
     recommendedDate: 'Sep 9, 2025',
@@ -246,7 +176,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 13,
+    id: 7,
     symbol: 'NSE:INFOLION',
     displaySymbol: 'INFOLION.NS',
     recommendedDate: 'Jan 11, 2025',
@@ -260,7 +190,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 14,
+    id: 8,
     symbol: 'NSE:JUBLPHARMA',
     displaySymbol: 'JUBLPHARMA.NS',
     recommendedDate: 'Oct 25, 2025',
@@ -274,7 +204,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 15,
+    id: 9,
     symbol: 'NSE:INNOVACAP',
     displaySymbol: 'INNOVACAP.NS',
     recommendedDate: 'Apr 14, 2025',
@@ -288,7 +218,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 16,
+    id: 10,
     symbol: 'BSE:539551',
     displaySymbol: '539551.BO',
     recommendedDate: 'Sep 1, 2025',
@@ -302,7 +232,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 17,
+    id: 11,
     symbol: 'NSE:SANGHVIMOV',
     displaySymbol: 'SANGHVIMOV.NS',
     recommendedDate: 'Sep 1, 2025',
@@ -316,7 +246,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 18,
+    id: 12,
     symbol: 'NSE:BETA',
     displaySymbol: 'BETA.NS',
     recommendedDate: 'Aug 1, 2025',
@@ -330,7 +260,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 19,
+    id: 13,
     symbol: 'NSE:ASTRAMICRO',
     displaySymbol: 'ASTRAMICRO.NS',
     recommendedDate: 'Aug 1, 2025',
@@ -344,7 +274,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 20,
+    id: 14,
     symbol: 'NSE:SAMHI',
     displaySymbol: 'SAMHI.NS',
     recommendedDate: 'Apr 20, 2025',
@@ -358,7 +288,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 21,
+    id: 15,
     symbol: 'NSE:THANGAMAYIL',
     displaySymbol: 'THANGAMAYIL.NS',
     recommendedDate: 'Apr 20, 2025',
@@ -372,7 +302,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 22,
+    id: 16,
     symbol: 'BSE:519600',
     displaySymbol: '519600.BO',
     recommendedDate: 'Jun 1, 2025',
@@ -386,7 +316,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 23,
+    id: 17,
     symbol: 'NSE:CARYSIL',
     displaySymbol: 'CARYSIL.NS',
     recommendedDate: 'Jun 1, 2025',
