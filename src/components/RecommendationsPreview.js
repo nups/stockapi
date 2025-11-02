@@ -172,8 +172,10 @@ const RecommendationsPreview = () => {
       // Try to get PE data from your backend API first
       const response = await fetch(`https://stockapi3-c6h7ejh2eedabuf6.centralindia-01.azurewebsites.net/api/stock-details/${symbol}`, {
         method: 'GET',
+        mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       });
       
@@ -254,10 +256,10 @@ const RecommendationsPreview = () => {
     return ((currentPrice - suggestedPrice) / suggestedPrice * 100).toFixed(2);
   };
 
-  // Function to get all unique symbols from both datasets
+  // Function to get all unique symbols from both datasets (use displaySymbol for API calls)
   const getAllSymbols = () => {
-    const technicalSymbols = TECHNICAL_SAMPLE_DATA.map(item => item.symbol);
-    const fundamentalSymbols = FUNDAMENTAL_SAMPLE_DATA.map(item => item.symbol);
+    const technicalSymbols = TECHNICAL_SAMPLE_DATA.map(item => item.displaySymbol);
+    const fundamentalSymbols = FUNDAMENTAL_SAMPLE_DATA.map(item => item.displaySymbol);
     return [...new Set([...technicalSymbols, ...fundamentalSymbols])];
   };
 
@@ -319,7 +321,7 @@ const RecommendationsPreview = () => {
           </thead>
           <tbody>
             {data.map((stock, index) => {
-              const currentPrice = currentPrices[stock.symbol];
+              const currentPrice = currentPrices[stock.displaySymbol];
               const profitLoss = calculateProfitLoss(stock.suggested_price, currentPrice);
               const isLoss = currentPrice && currentPrice < stock.suggested_price;
               
@@ -363,8 +365,8 @@ const RecommendationsPreview = () => {
                   <td className="pe-ratio">
                     {loading ? (
                       <span className="loading-price">⏳</span>
-                    ) : peData[stock.symbol] ? (
-                      peData[stock.symbol].toFixed(1)
+                    ) : peData[stock.displaySymbol] ? (
+                      peData[stock.displaySymbol].toFixed(1)
                     ) : (
                       'N/A'
                     )}
