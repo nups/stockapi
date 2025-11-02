@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 const TECHNICAL_SAMPLE_DATA = [
   {
     id: 1,
-    symbol: 'RELIANCE.NS',
+    symbol: 'NSE:RELIANCE',
+    displaySymbol: 'RELIANCE.NS',
     recommendedDate: 'Oct 15, 2024',
     suggested_price: 2850, // Price when recommended
     target_price: '₹3200',
@@ -17,7 +18,8 @@ const TECHNICAL_SAMPLE_DATA = [
   },
   {
     id: 2,
-    symbol: 'INFY.NS',
+    symbol: 'NSE:INFY',
+    displaySymbol: 'INFY.NS',
     recommendedDate: 'Oct 12, 2024',
     suggested_price: 1780, // Price when recommended
     target_price: '₹1950',
@@ -30,7 +32,8 @@ const TECHNICAL_SAMPLE_DATA = [
   },
   {
     id: 3,
-    symbol: 'HDFCBANK.NS',
+    symbol: 'NSE:HDFCBANK',
+    displaySymbol: 'HDFCBANK.NS',
     recommendedDate: 'Oct 10, 2024',
     suggested_price: 1650, // Price when recommended
     target_price: '₹1800',
@@ -43,7 +46,8 @@ const TECHNICAL_SAMPLE_DATA = [
   },
   {
     id: 4,
-    symbol: 'TCS.NS',
+    symbol: 'NSE:TCS',
+    displaySymbol: 'TCS.NS',
     recommendedDate: 'Oct 8, 2024',
     suggested_price: 4200, // Price when recommended
     target_price: '₹4500',
@@ -56,7 +60,8 @@ const TECHNICAL_SAMPLE_DATA = [
   },
   {
     id: 5,
-    symbol: 'ICICIBANK.NS',
+    symbol: 'NSE:ICICIBANK',
+    displaySymbol: 'ICICIBANK.NS',
     recommendedDate: 'Oct 5, 2024',
     suggested_price: 1180, // Price when recommended
     target_price: '₹1300',
@@ -73,7 +78,8 @@ const TECHNICAL_SAMPLE_DATA = [
 const FUNDAMENTAL_SAMPLE_DATA = [
   {
     id: 1,
-    symbol: 'RELIANCE.NS',
+    symbol: 'NSE:RELIANCE',
+    displaySymbol: 'RELIANCE.NS',
     recommendedDate: 'Oct 15, 2024',
     suggested_price: 2850, // Price when recommended
     target_price: '₹3400',
@@ -86,7 +92,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 2,
-    symbol: 'INFY.NS',
+    symbol: 'NSE:INFY',
+    displaySymbol: 'INFY.NS',
     recommendedDate: 'Oct 12, 2024',
     suggested_price: 1780, // Price when recommended
     target_price: '₹2000',
@@ -99,7 +106,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 3,
-    symbol: 'HDFCBANK.NS',
+    symbol: 'NSE:HDFCBANK',
+    displaySymbol: 'HDFCBANK.NS',
     recommendedDate: 'Oct 10, 2024',
     suggested_price: 1650, // Price when recommended
     target_price: '₹1850',
@@ -112,7 +120,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 4,
-    symbol: 'TCS.NS',
+    symbol: 'NSE:TCS',
+    displaySymbol: 'TCS.NS',
     recommendedDate: 'Oct 8, 2024',
     suggested_price: 4200, // Price when recommended
     target_price: '₹4600',
@@ -125,7 +134,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 5,
-    symbol: 'ICICIBANK.NS',
+    symbol: 'NSE:ICICIBANK',
+    displaySymbol: 'ICICIBANK.NS',
     recommendedDate: 'Oct 5, 2024',
     suggested_price: 1180, // Price when recommended
     target_price: '₹1320',
@@ -283,6 +293,8 @@ const RecommendationsPreview = () => {
     fetchAllData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+
+
   const renderRecommendationTable = (data, title) => (
     <div className="recommendations-table-section">
       <h3>{title}</h3>
@@ -419,7 +431,7 @@ const RecommendationsPreview = () => {
           </div>
           <div className="chart-container">
             <iframe
-              src={`https://s.tradingview.com/widgetembed/?frameElementId=tradingview_chart&symbol=NSE%3A${chartModal.symbol.replace('.NS', '')}&interval=D&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=[]&hideideas=1&theme=Light&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=localhost&utm_medium=widget&utm_campaign=chart&utm_term=NSE%3A${chartModal.symbol.replace('.NS', '')}`}
+              src={`https://s.tradingview.com/widgetembed/?frameElementId=tradingview_chart&symbol=${chartModal.symbol}&interval=D&hidesidetoolbar=1&hidetoptoolbar=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=[]&hideideas=1&theme=Light&style=1&timezone=Etc%2FUTC&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=en&utm_source=localhost&utm_medium=widget&utm_campaign=chart&utm_term=${chartModal.symbol}`}
               title={`${chartModal.symbol} Chart`}
               width="100%"
               height="500"
