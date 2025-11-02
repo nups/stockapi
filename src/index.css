@@ -791,20 +791,26 @@ code {
 
 .recommendations-table th {
   background: var(--bg-secondary);
-  padding: 0.5rem 0.4rem;
-  text-align: left;
+  padding: 0.6rem 0.4rem;
+  text-align: center;
   font-weight: 600;
   color: var(--text-primary);
   border-bottom: 1px solid var(--border-color);
   white-space: nowrap;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  vertical-align: middle;
 }
 
 .recommendations-table td {
   padding: 0.5rem 0.4rem;
   border-bottom: 1px solid var(--border-color);
   vertical-align: middle;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.stock-symbol {
+  text-align: left !important;
 }
 
 .stock-symbol strong {
@@ -1425,9 +1431,11 @@ code {
   padding: 0.15rem 0.3rem;
   background: #e8f5e8;
   color: #2e7d32;
-  border-radius: 8px;
-  font-size: 0.7rem;
+  border-radius: 6px;
+  font-size: 0.65rem;
   font-weight: 500;
+  display: inline-block;
+  white-space: nowrap;
 }
 
 /* CMP and P/L columns styling */
@@ -1486,12 +1494,14 @@ code {
 
 /* Position badge styling */
 .position-badge {
-  padding: 0.15rem 0.3rem;
-  border-radius: 8px;
-  font-size: 0.7rem;
+  padding: 0.12rem 0.3rem;
+  border-radius: 6px;
+  font-size: 0.65rem;
   font-weight: 600;
   color: white;
   text-transform: uppercase;
+  white-space: nowrap;
+  display: inline-block;
 }
 
 .position-badge.buy {
@@ -1524,22 +1534,24 @@ code {
 
 /* Info button tooltip styling */
 .info-btn {
-  background: none;
+  background: #17a2b8;
   border: none;
-  font-size: 1rem;
+  font-size: 0.8rem;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0;
   border-radius: 50%;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
+  color: white;
+  font-weight: bold;
 }
 
 .info-btn:hover {
-  background-color: #f0f0f0;
+  background-color: #138496;
   transform: scale(1.1);
 }
 
@@ -1583,11 +1595,13 @@ code {
 }
 
 .pl-badge {
-  padding: 0.15rem 0.3rem;
-  border-radius: 8px;
-  font-size: 0.7rem;
+  padding: 0.12rem 0.3rem;
+  border-radius: 6px;
+  font-size: 0.65rem;
   font-weight: 600;
   color: white;
+  white-space: nowrap;
+  display: inline-block;
 }
 
 .pl-badge.profit {
@@ -1614,6 +1628,21 @@ code {
   max-width: 100%;
   flex: none;
 }
+
+/* Column width constraints to make table more compact */
+.recommendations-table th:nth-child(1) { width: 12%; } /* Symbol */
+.recommendations-table th:nth-child(2) { width: 10%; } /* Industry */
+.recommendations-table th:nth-child(3) { width: 6%; }  /* Date */
+.recommendations-table th:nth-child(4) { width: 8%; }  /* Suggested Price */
+.recommendations-table th:nth-child(5) { width: 8%; }  /* CMP */
+.recommendations-table th:nth-child(6) { width: 8%; }  /* P/L % */
+.recommendations-table th:nth-child(7) { width: 8%; }  /* Target Price */
+.recommendations-table th:nth-child(8) { width: 6%; }  /* PE */
+.recommendations-table th:nth-child(9) { width: 6%; }  /* Industry PE */
+.recommendations-table th:nth-child(10) { width: 7%; } /* Position */
+.recommendations-table th:nth-child(11) { width: 5%; } /* Reason */
+.recommendations-table th:nth-child(12) { width: 5%; } /* Remarks */
+.recommendations-table th:nth-child(13) { width: 11%; } /* Time Frame */
 
 /* Ensure vertical stacking on all screen sizes */
 @media (min-width: 1200px) {
