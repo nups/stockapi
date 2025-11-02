@@ -784,10 +784,7 @@ code {
   width: 4%;
 }
 
-.recommendations-table th:nth-child(13), /* Time Frame */
-.recommendations-table td:nth-child(13) {
-  width: 8%;
-}
+
 
 .recommendations-table th {
   background: var(--bg-secondary);
@@ -1630,19 +1627,18 @@ code {
 }
 
 /* Column width constraints to make table more compact */
-.recommendations-table th:nth-child(1) { width: 11%; } /* Symbol */
-.recommendations-table th:nth-child(2) { width: 9%; } /* Industry */
-.recommendations-table th:nth-child(3) { width: 10%; }  /* Date */
-.recommendations-table th:nth-child(4) { width: 8%; }  /* Suggested Price */
-.recommendations-table th:nth-child(5) { width: 8%; }  /* CMP */
-.recommendations-table th:nth-child(6) { width: 8%; }  /* P/L % */
-.recommendations-table th:nth-child(7) { width: 8%; }  /* Target Price */
-.recommendations-table th:nth-child(8) { width: 6%; }  /* PE */
-.recommendations-table th:nth-child(9) { width: 6%; }  /* Industry PE */
-.recommendations-table th:nth-child(10) { width: 7%; } /* Position */
+.recommendations-table th:nth-child(1) { width: 13%; } /* Symbol */
+.recommendations-table th:nth-child(2) { width: 11%; } /* Industry */
+.recommendations-table th:nth-child(3) { width: 12%; }  /* Date */
+.recommendations-table th:nth-child(4) { width: 10%; }  /* Suggested Price */
+.recommendations-table th:nth-child(5) { width: 10%; }  /* CMP */
+.recommendations-table th:nth-child(6) { width: 10%; }  /* P/L % */
+.recommendations-table th:nth-child(7) { width: 10%; }  /* Target Price */
+.recommendations-table th:nth-child(8) { width: 8%; }  /* PE */
+.recommendations-table th:nth-child(9) { width: 8%; }  /* Industry PE */
+.recommendations-table th:nth-child(10) { width: 8%; } /* Position */
 .recommendations-table th:nth-child(11) { width: 5%; } /* Reason */
 .recommendations-table th:nth-child(12) { width: 5%; } /* Remarks */
-.recommendations-table th:nth-child(13) { width: 9%; } /* Time Frame */
 
 /* Ensure vertical stacking on all screen sizes */
 @media (min-width: 1200px) {

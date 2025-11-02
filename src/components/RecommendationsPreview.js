@@ -301,7 +301,6 @@ const RecommendationsPreview = () => {
               <th>Position</th>
               <th>Reason</th>
               <th>Remarks</th>
-              <th>Time Frame</th>
             </tr>
           </thead>
           <tbody>
@@ -381,11 +380,6 @@ const RecommendationsPreview = () => {
                     >
                       💬
                     </button>
-                  </td>
-                  <td className="time-frame">
-                    <span className="time-badge">
-                      {stock.time_frame || 'N/A'}
-                    </span>
                   </td>
                 </tr>
               );
