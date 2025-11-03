@@ -289,8 +289,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 15,
-    symbol: 'NSE:THANGAMAYIL',
-    displaySymbol: 'THANGAMAYIL.NS',
+    symbol: 'NSE:THANGAMAYL',
+    displaySymbol: 'THANGAMAYL.NS',
     recommendedDate: 'Apr 20, 2025',
     suggested_price: 2000, // Buy Signal price
     target_price: '₹2400',
