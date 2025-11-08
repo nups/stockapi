@@ -971,11 +971,9 @@ const RecommendationsPreview = () => {
 
   return (
     <div className="recommendations-preview">
-      <h3>🤖 Stock Recommendations</h3>
-      
       <div className="recommendations-content-vertical">
-        {/* Stock Recommendations Table */}
-        {renderRecommendationTable(FUNDAMENTAL_SAMPLE_DATA, '📊 Stock Recommendations')}
+        {/* Stock Analysis Table */}
+        {renderRecommendationTable(FUNDAMENTAL_SAMPLE_DATA, '� Market Analysis')}
       </div>
       
       <div className="recommendations-disclaimer">
