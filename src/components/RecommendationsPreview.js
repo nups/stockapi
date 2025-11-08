@@ -80,7 +80,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   {
     id: 1,
     symbol: 'ULTRAMAR.BO',
-    displaySymbol: 'UltraMarine PigULTRAMAR.BO',
+    displaySymbol: ' ULTRAMAR.BO',
     recommendedDate: 'July 19, 2025',
     suggested_price: 590, // Buy Signal price
     target_price: '₹710',
@@ -178,7 +178,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   {
     id: 7,
     symbol: 'NSE:INFOLION',
-    displaySymbol: 'INFOLION.NS',
+    displaySymbol: 'INFOLLION-SM.NS',
     recommendedDate: 'Jan 11, 2025',
     suggested_price: 424, // Buy Signal price
     target_price: '₹510',
@@ -220,7 +220,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   {
     id: 10,
     symbol: 'BSE:539551',
-    displaySymbol: 'Narayana Hrudayalaya',
+    displaySymbol: 'NH.NS',
     recommendedDate: 'Sep 1, 2025',
     suggested_price: 1750, // Buy Signal price
     target_price: '₹2100',
@@ -304,7 +304,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   {
     id: 16,
     symbol: 'BSE:519600',
-    displaySymbol: 'CCL Products',
+    displaySymbol: 'CCL.NS',
     recommendedDate: 'Jun 1, 2025',
     suggested_price: 786, // Buy Signal price
     target_price: '₹943',
