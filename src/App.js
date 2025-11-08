@@ -16,7 +16,7 @@ function LoadingScreen({ message = "Loading..." }) {
     <div className="login-container">
       <div className="login-card" style={{ textAlign: 'center' }}>
         <div className="loading-spinner" style={{ margin: '0 auto 1rem' }}></div>
-        <h2 style={{ color: '#667eea', marginBottom: '0.5rem' }}>MarketHub</h2>
+        <h2 style={{ color: '#667eea', marginBottom: '0.5rem' }}>NoobScan</h2>
         <p style={{ color: '#6b7280' }}>{message}</p>
         <p style={{ color: '#9ca3af', fontSize: '0.875rem', marginTop: '1rem' }}>
           If this takes too long, please refresh the page

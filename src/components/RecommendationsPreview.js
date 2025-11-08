@@ -995,10 +995,10 @@ const styles = `
 .filter-controls-modern {
   background: white;
   border: 1px solid #e1e5e9;
-  border-radius: 16px;
-  padding: 32px;
-  margin: 24px 0;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   max-width: none;
   width: 100%;
 }
@@ -1151,11 +1151,8 @@ const styles = `
 .recommendations-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 12px;
   background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   font-size: 15px;
 }
 
@@ -1165,22 +1162,20 @@ const styles = `
   font-weight: 600;
   text-align: left;
   border: none;
-  padding: 20px 16px;
-  font-size: 15px;
-  letter-spacing: 0.5px;
+  padding: 12px 10px;
+  font-size: 14px;
+  letter-spacing: 0.3px;
 }
 
 .recommendations-table td {
-  padding: 20px 16px;
-  border-bottom: 1px solid #e8ecf0;
+  padding: 12px 10px;
+  border-bottom: 1px solid #f1f3f4;
   vertical-align: middle;
   font-size: 14px;
 }
 
 .recommendations-table tbody tr:hover {
   background-color: #f8fafc;
-  transform: translateY(-1px);
-  transition: all 0.2s ease;
 }
 
 .recommendations-table tbody tr:last-child td {
@@ -1190,13 +1185,13 @@ const styles = `
 .recommendations-table-section {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 16px;
 }
 
 .recommendations-preview {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 16px;
 }
 
 @media (max-width: 768px) {
