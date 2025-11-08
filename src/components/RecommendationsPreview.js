@@ -1157,14 +1157,14 @@ const styles = `
   table-layout: fixed;
 }
 
-.recommendations-table th:nth-child(1) { width: 20%; } /* Stock */
-.recommendations-table th:nth-child(2) { width: 12%; } /* Sector */
-.recommendations-table th:nth-child(3) { width: 12%; } /* Entry */
-.recommendations-table th:nth-child(4) { width: 12%; } /* Current */
-.recommendations-table th:nth-child(5) { width: 12%; } /* Returns */
-.recommendations-table th:nth-child(6) { width: 12%; } /* Target */
+.recommendations-table th:nth-child(1) { width: 22%; } /* Stock */
+.recommendations-table th:nth-child(2) { width: 10%; } /* Sector */
+.recommendations-table th:nth-child(3) { width: 11%; } /* Entry */
+.recommendations-table th:nth-child(4) { width: 11%; } /* Current */
+.recommendations-table th:nth-child(5) { width: 11%; } /* Returns */
+.recommendations-table th:nth-child(6) { width: 11%; } /* Target */
 .recommendations-table th:nth-child(7) { width: 8%; }  /* PE */
-.recommendations-table th:nth-child(8) { width: 12%; } /* Actions */
+.recommendations-table th:nth-child(8) { width: 16%; } /* Actions */
 
 .recommendations-table th {
   background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
@@ -1306,25 +1306,31 @@ const styles = `
 
 .action-buttons {
   display: flex;
-  gap: 10px;
+  gap: 6px;
   justify-content: center;
+  align-items: center;
+  min-width: 80px;
 }
 
 .action-btn {
   background: #ffffff;
-  border: 2px solid #e1e8ed;
-  border-radius: 10px;
-  padding: 12px 16px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 8px 10px;
   cursor: pointer;
-  font-size: 16px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-size: 14px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  min-width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .action-btn:hover {
   background: #f8fafc;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .chart-btn:hover {
