@@ -2,76 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 // Technical Analysis Sample Data
 const TECHNICAL_SAMPLE_DATA = [
-  {
-    id: 1,
-    symbol: 'NSE:RELIANCE',
-    displaySymbol: 'RELIANCE.NS',
-    recommendedDate: 'Oct 15, 2024',
-    suggested_price: 2850, // Price when recommended
-    target_price: '₹3200',
-    reason: 'Strong technical breakout above resistance. Volume confirmation present with bullish momentum indicators.',
-    goal: 'Short-term gains of 12-15% within 3-6 months',
-    remarks: 'Strong technical setup with RSI showing bullish divergence.',
-    time_frame: '3-6 months',
-    industry: 'Oil & Gas',
-    position: 'buy'
-  },
-  {
-    id: 2,
-    symbol: 'NSE:INFY',
-    displaySymbol: 'INFY.NS',
-    recommendedDate: 'Oct 12, 2024',
-    suggested_price: 1780, // Price when recommended
-    target_price: '₹1950',
-    reason: 'Uptrend intact with strong support levels. Technical indicators showing continued momentum.',
-    goal: 'Steady growth targeting 8-10% returns',
-    remarks: 'Moving averages support upward trend. Watch for volume confirmation.',
-    time_frame: '6-12 months',
-    industry: 'IT Services',
-    position: 'buy'
-  },
-  {
-    id: 3,
-    symbol: 'NSE:HDFCBANK',
-    displaySymbol: 'HDFCBANK.NS',
-    recommendedDate: 'Oct 10, 2024',
-    suggested_price: 1650, // Price when recommended
-    target_price: '₹1800',
-    reason: 'Consolidating in range. Wait for breakout confirmation above key resistance.',
-    goal: 'Range-bound trading with 8-9% potential',
-    remarks: 'Technical consolidation phase. Monitor for breakout signals.',
-    time_frame: '6-9 months',
-    industry: 'Banking',
-    position: 'hold'
-  },
-  {
-    id: 4,
-    symbol: 'NSE:TCS',
-    displaySymbol: 'TCS.NS',
-    recommendedDate: 'Oct 8, 2024',
-    suggested_price: 4200, // Price when recommended
-    target_price: '₹4500',
-    reason: 'Technical indicators showing bullish momentum. Chart patterns suggest upward movement.',
-    goal: 'Quality growth with 7-10% technical gains',
-    remarks: 'Strong support at current levels. Bullish flag pattern forming.',
-    time_frame: '9-12 months',
-    industry: 'IT Services',
-    position: 'buy'
-  },
-  {
-    id: 5,
-    symbol: 'NSE:ICICIBANK',
-    displaySymbol: 'ICICIBANK.NS',
-    recommendedDate: 'Oct 5, 2024',
-    suggested_price: 1180, // Price when recommended
-    target_price: '₹1300',
-    reason: 'Mixed signals with RSI approaching overbought levels but trend remains positive.',
-    goal: 'Cautious approach with 8-10% potential',
-    remarks: 'Technical correction possible. Entry on dips recommended.',
-    time_frame: '6-8 months',
-    industry: 'Banking',
-    position: 'sell'
-  }
 ];
 
 // Fundamental Analysis Sample Data
@@ -79,8 +9,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   // New stocks added from user request
   {
     id: 1,
-    symbol: 'ULTRAMAR.BO',
-    displaySymbol: 'ULTRAMAR.BO',
+    tradingViewSymbol: 'BSE:ULTRAMAR',
+    yahooSymbol: 'ULTRAMAR.BO',
+    companyName: 'UltraMarine Pigments',
     recommendedDate: 'July 19, 2025',
     suggested_price: 590, // Buy Signal price
     target_price: '₹710',
@@ -93,8 +24,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 17,
-    symbol: 'CEINSYSTECH.BO',
-    displaySymbol: 'CEINSYSTECH.BO',
+    tradingViewSymbol: 'BSE:CEINSYSTECH',
+    yahooSymbol: 'CEINSYSTECH.BO',
+    companyName: 'CEInfo Systech',
     recommendedDate: 'Feb 2, 2025',
     suggested_price: 1730, // Buy Signal price
     target_price: '₹2100',
@@ -107,8 +39,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 2,
-    symbol: 'NSE:GRWRHITECH',
-    displaySymbol: 'GRWRHITECH.NS',
+    tradingViewSymbol: 'NSE:GRWRHITECH',
+    yahooSymbol: 'GRWRHITECH.NS',
+    companyName: 'Garware Hi-Tech Films',
     recommendedDate: 'Nov 15, 2024',
     suggested_price: 4000, // Buy Signal price
     target_price: '₹4800',
@@ -121,8 +54,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 3,
-    symbol: 'NSE:ARVINDFASN',
-    displaySymbol: 'ARVINDFASN.NS',
+    tradingViewSymbol: 'NSE:ARVINDFASN',
+    yahooSymbol: 'ARVINDFASN.NS',
+    companyName: 'Arvind Fashions',
     recommendedDate: 'Nov 25, 2025',
     suggested_price: 575, // Buy Signal price
     target_price: '₹690',
@@ -135,8 +69,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 4,
-    symbol: 'NSE:RATEGAIN',
-    displaySymbol: 'RATEGAIN.NS',
+    tradingViewSymbol: 'NSE:RATEGAIN',
+    yahooSymbol: 'RATEGAIN.NS',
+    companyName: 'RateGain Travel Technologies',
     recommendedDate: 'Oct 25, 2025',
     suggested_price: 720, // Buy Signal price
     target_price: '₹860',
@@ -149,8 +84,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 5,
-    symbol: 'NSE:SHAKTIPUMP',
-    displaySymbol: 'SHAKTIPUMP.NS',
+    tradingViewSymbol: 'NSE:SHAKTIPUMP',
+    yahooSymbol: 'SHAKTIPUMP.NS',
+    companyName: 'Shakti Pumps',
     recommendedDate: 'Sep 1, 2025',
     suggested_price: 890, // Buy Signal price
     target_price: '₹1070',
@@ -163,8 +99,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 6,
-    symbol: 'NSE:ENTERO',
-    displaySymbol: 'ENTERO.NS',
+    tradingViewSymbol: 'NSE:ENTERO',
+    yahooSymbol: 'ENTERO.NS',
+    companyName: 'Entero Healthcare Solutions',
     recommendedDate: 'Sep 9, 2025',
     suggested_price: 1200, // Buy Signal price
     target_price: '₹1440',
@@ -177,8 +114,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 7,
-    symbol: 'NSE:INFOLION',
-    displaySymbol: 'INFOLLION-SM.NS',
+    tradingViewSymbol: 'NSE:INFOLLION',
+    yahooSymbol: 'INFOLLION-SM.NS',
+    companyName: 'Infollion Research Services',
     recommendedDate: 'Jan 11, 2025',
     suggested_price: 424, // Buy Signal price
     target_price: '₹510',
@@ -191,8 +129,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 8,
-    symbol: 'NSE:JUBLPHARMA',
-    displaySymbol: 'JUBLPHARMA.NS',
+    tradingViewSymbol: 'NSE:JUBLPHARMA',
+    yahooSymbol: 'JUBLPHARMA.NS',
+    companyName: 'Jubilant Pharmova',
     recommendedDate: 'Oct 25, 2025',
     suggested_price: 1176, // Buy Signal price
     target_price: '₹1410',
@@ -205,8 +144,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 9,
-    symbol: 'NSE:INNOVACAP',
-    displaySymbol: 'INNOVACAP.NS',
+    tradingViewSymbol: 'NSE:INNOVACAP',
+    yahooSymbol: 'INNOVACAP.NS',
+    companyName: 'Innova Captab',
     recommendedDate: 'Apr 14, 2025',
     suggested_price: 875, // Buy Signal price
     target_price: '₹1050',
@@ -219,8 +159,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 10,
-    symbol: 'BSE:539551',
-    displaySymbol: 'NH.NS',
+    tradingViewSymbol: 'BSE:539551',
+    yahooSymbol: 'NH.NS',
+    companyName: 'Narayana Hrudayalaya',
     recommendedDate: 'Sep 1, 2025',
     suggested_price: 1750, // Buy Signal price
     target_price: '₹2100',
@@ -233,8 +174,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 11,
-    symbol: 'NSE:SANGHVIMOV',
-    displaySymbol: 'SANGHVIMOV.NS',
+    tradingViewSymbol: 'NSE:SANGHVIMOV',
+    yahooSymbol: 'SANGHVIMOV.NS',
+    companyName: 'Sanghvi Movers',
     recommendedDate: 'Sep 1, 2025',
     suggested_price: 387, // Buy Signal price
     target_price: '₹465',
@@ -247,8 +189,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 12,
-    symbol: 'NSE:BETA',
-    displaySymbol: 'BETA.NS',
+    tradingViewSymbol: 'NSE:BETA',
+    yahooSymbol: 'BETA.NS',
+    companyName: 'Beta Drugs',
     recommendedDate: 'Aug 1, 2025',
     suggested_price: 1800, // Buy Signal price
     target_price: '₹2160',
@@ -261,8 +204,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 13,
-    symbol: 'NSE:ASTRAMICRO',
-    displaySymbol: 'ASTRAMICRO.NS',
+    tradingViewSymbol: 'NSE:ASTRAMICRO',
+    yahooSymbol: 'ASTRAMICRO.NS',
+    companyName: 'Astra Microwave Products',
     recommendedDate: 'Aug 1, 2025',
     suggested_price: 1000, // Buy Signal price
     target_price: '₹1200',
@@ -275,8 +219,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 14,
-    symbol: 'NSE:SAMHI',
-    displaySymbol: 'SAMHI.NS',
+    tradingViewSymbol: 'NSE:SAMHI',
+    yahooSymbol: 'SAMHI.NS',
+    companyName: 'Samhi Hotels',
     recommendedDate: 'Apr 20, 2025',
     suggested_price: 193, // Buy Signal price
     target_price: '₹232',
@@ -289,8 +234,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 15,
-    symbol: 'NSE:THANGAMAYL',
-    displaySymbol: 'THANGAMAYL.NS',
+    tradingViewSymbol: 'NSE:THANGAMAYL',
+    yahooSymbol: 'THANGAMAYL.NS',
+    companyName: 'Thangamayil Jewellery',
     recommendedDate: 'Apr 20, 2025',
     suggested_price: 2000, // Buy Signal price
     target_price: '₹2800',
@@ -303,8 +249,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 16,
-    symbol: 'BSE:519600',
-    displaySymbol: 'CCL.NS',
+    tradingViewSymbol: 'BSE:519600',
+    yahooSymbol: 'CCL.NS',
+    companyName: 'CCL Products (India)',
     recommendedDate: 'Jun 1, 2025',
     suggested_price: 786, // Buy Signal price
     target_price: '₹943',
@@ -317,8 +264,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 17,
-    symbol: 'NSE:CARYSIL',
-    displaySymbol: 'CARYSIL.NS',
+    tradingViewSymbol: 'NSE:CARYSIL',
+    yahooSymbol: 'CARYSIL.NS',
+    companyName: 'Carysil Limited',
     recommendedDate: 'Jun 1, 2025',
     suggested_price: 850, // Buy Signal price
     target_price: '₹1020',
@@ -335,7 +283,27 @@ const RecommendationsPreview = () => {
   const [currentPrices, setCurrentPrices] = useState({});
   const [peData, setPeData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [chartModal, setChartModal] = useState({ isOpen: false, symbol: '', displaySymbol: '' });
+  const [chartModal, setChartModal] = useState({ isOpen: false, tradingViewSymbol: '', yahooSymbol: '', companyName: '' });
+  
+  // Filter and Sort State
+  const [filters, setFilters] = useState({
+    search: '',
+    industry: '',
+    position: '',
+    dateFrom: '',
+    dateTo: '',
+    minPrice: '',
+    maxPrice: '',
+    minPL: '',
+    maxPL: '',
+    minPE: '',
+    maxPE: ''
+  });
+  
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: 'asc'
+  });
 
   // Industry PE mapping - could be fetched from a financial data API
   const INDUSTRY_PE_MAP = {
@@ -389,11 +357,25 @@ const RecommendationsPreview = () => {
       // Fallback PE values - these should ideally come from a reliable financial data source
       // In production, you might want to use Yahoo Finance API, Alpha Vantage, or similar
       const fallbackPE = {
-        'RELIANCE.NS': 26.5,
-        'INFY.NS': 24.8,
-        'HDFCBANK.NS': 19.3,
-        'TCS.NS': 29.1,
-        'ICICIBANK.NS': 16.7
+        // Fundamental Analysis stocks
+        'ULTRAMAR.BO': 18.5,
+        'CEINSYSTECH.BO': 22.3,
+        'GRWRHITECH.NS': 28.7,
+        'ARVINDFASN.NS': 15.2,
+        'RATEGAIN.NS': 32.1,
+        'SHAKTIPUMP.NS': 24.8,
+        'ENTERO.NS': 19.6,
+        'INFOLLION-SM.NS': 21.4,
+        'JUBLPHARMA.NS': 26.3,
+        'INNOVACAP.NS': 17.8,
+        'NH.NS': 22.9,
+        'SANGHVIMOV.NS': 16.7,
+        'BETA.NS': 25.1,
+        'ASTRAMICRO.NS': 31.2,
+        'SAMHI.NS': 18.9,
+        'THANGAMAYL.NS': 27.4,
+        'CCL.NS': 23.6,
+        'CARYSIL.NS': 20.8
       };
       
       const pe = fallbackPE[symbol];
@@ -427,11 +409,27 @@ const RecommendationsPreview = () => {
       
       // Fallback: Enhanced mock data with slight randomization for demo
       const basePrices = {
-        'RELIANCE.NS': 2920.50,
-        'INFY.NS': 1825.75,
-        'HDFCBANK.NS': 1685.30,
-        'TCS.NS': 4320.80,
-        'ICICIBANK.NS': 1210.25
+        // Technical Analysis stocks (currently empty)
+        
+        // Fundamental Analysis stocks
+        'ULTRAMAR.BO': 625.30,
+        'CEINSYSTECH.BO': 1890.50,
+        'GRWRHITECH.NS': 4240.75,
+        'ARVINDFASN.NS': 598.20,
+        'RATEGAIN.NS': 785.40,
+        'SHAKTIPUMP.NS': 945.80,
+        'ENTERO.NS': 1285.60,
+        'INFOLLION-SM.NS': 445.90,
+        'JUBLPHARMA.NS': 1245.30,
+        'INNOVACAP.NS': 912.75,
+        'NH.NS': 1825.40,
+        'SANGHVIMOV.NS': 402.60,
+        'BETA.NS': 1875.20,
+        'ASTRAMICRO.NS': 1085.30,
+        'SAMHI.NS': 205.80,
+        'THANGAMAYL.NS': 2180.90,
+        'CCL.NS': 825.70,
+        'CARYSIL.NS': 892.40
       };
       
       const basePrice = basePrices[symbol];
@@ -451,10 +449,10 @@ const RecommendationsPreview = () => {
     return ((currentPrice - suggestedPrice) / suggestedPrice * 100).toFixed(2);
   };
 
-  // Function to get all unique symbols from both datasets (use displaySymbol for API calls)
+  // Function to get all unique symbols from both datasets (use yahooSymbol for API calls)
   const getAllSymbols = () => {
-    const technicalSymbols = TECHNICAL_SAMPLE_DATA.map(item => item.displaySymbol);
-    const fundamentalSymbols = FUNDAMENTAL_SAMPLE_DATA.map(item => item.displaySymbol);
+    const technicalSymbols = TECHNICAL_SAMPLE_DATA.map(item => item.yahooSymbol);
+    const fundamentalSymbols = FUNDAMENTAL_SAMPLE_DATA.map(item => item.yahooSymbol);
     return [...new Set([...technicalSymbols, ...fundamentalSymbols])];
   };
 
@@ -490,40 +488,362 @@ const RecommendationsPreview = () => {
     fetchAllData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Utility function to get unique values for filter dropdowns
+  const getUniqueValues = (data, key) => {
+    const values = data.map(item => item[key]).filter(Boolean);
+    return [...new Set(values)].sort();
+  };
 
+  // Utility function to parse date for sorting
+  const parseDate = (dateString) => {
+    if (!dateString) return new Date(0);
+    const [month, day, year] = dateString.split(' ');
+    const monthMap = {
+      'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+      'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+    };
+    return new Date(parseInt(year), monthMap[month] || 0, parseInt(day) || 1);
+  };
 
-  const renderRecommendationTable = (data, title) => (
-    <div className="recommendations-table-section">
-      <h3>{title}</h3>
-      <div className="recommendations-table-container">
-        <table className="recommendations-table">
-          <thead>
-            <tr>
-              <th>Symbol</th>
-              <th>Industry</th>
-              <th>Date</th>
-              <th>Suggested Price</th>
-              <th>CMP</th>
-              <th>P/L %</th>
-              <th>Target Price</th>
-              <th>PE</th>
-              <th>Industry PE</th>
-              <th>Position</th>
-              <th>Chart</th>
-              <th>Reason</th>
-              <th>Remarks</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((stock, index) => {
-              const currentPrice = currentPrices[stock.displaySymbol];
+  // Filter function
+  const filterData = (data) => {
+    return data.filter(stock => {
+      const currentPrice = currentPrices[stock.yahooSymbol];
+      const profitLoss = calculateProfitLoss(stock.suggested_price, currentPrice);
+      const pe = peData[stock.yahooSymbol];
+      
+      // Search filter
+      if (filters.search) {
+        const searchTerm = filters.search.toLowerCase();
+        const matchesSearch = 
+          stock.companyName?.toLowerCase().includes(searchTerm) ||
+          stock.yahooSymbol?.toLowerCase().includes(searchTerm) ||
+          stock.tradingViewSymbol?.toLowerCase().includes(searchTerm);
+        if (!matchesSearch) return false;
+      }
+      
+      // Industry filter
+      if (filters.industry && stock.industry !== filters.industry) return false;
+      
+      // Position filter
+      if (filters.position && (stock.position || 'buy') !== filters.position) return false;
+      
+      // Date range filter
+      if (filters.dateFrom || filters.dateTo) {
+        const stockDate = parseDate(stock.recommendedDate);
+        if (filters.dateFrom && stockDate < new Date(filters.dateFrom)) return false;
+        if (filters.dateTo && stockDate > new Date(filters.dateTo)) return false;
+      }
+      
+      // Price range filter
+      if (filters.minPrice && currentPrice && currentPrice < parseFloat(filters.minPrice)) return false;
+      if (filters.maxPrice && currentPrice && currentPrice > parseFloat(filters.maxPrice)) return false;
+      
+      // P/L range filter
+      if (filters.minPL && profitLoss && parseFloat(profitLoss) < parseFloat(filters.minPL)) return false;
+      if (filters.maxPL && profitLoss && parseFloat(profitLoss) > parseFloat(filters.maxPL)) return false;
+      
+      // PE range filter
+      if (filters.minPE && pe && pe < parseFloat(filters.minPE)) return false;
+      if (filters.maxPE && pe && pe > parseFloat(filters.maxPE)) return false;
+      
+      return true;
+    });
+  };
+
+  // Sort function
+  const sortData = (data) => {
+    if (!sortConfig.key) return data;
+    
+    return [...data].sort((a, b) => {
+      let aValue, bValue;
+      
+      switch (sortConfig.key) {
+        case 'symbol':
+          aValue = a.companyName || a.yahooSymbol || '';
+          bValue = b.companyName || b.yahooSymbol || '';
+          break;
+        case 'industry':
+          aValue = a.industry || '';
+          bValue = b.industry || '';
+          break;
+        case 'date':
+          aValue = parseDate(a.recommendedDate);
+          bValue = parseDate(b.recommendedDate);
+          break;
+        case 'suggestedPrice':
+          aValue = a.suggested_price || 0;
+          bValue = b.suggested_price || 0;
+          break;
+        case 'currentPrice':
+          aValue = currentPrices[a.yahooSymbol] || 0;
+          bValue = currentPrices[b.yahooSymbol] || 0;
+          break;
+        case 'profitLoss':
+          aValue = parseFloat(calculateProfitLoss(a.suggested_price, currentPrices[a.yahooSymbol])) || 0;
+          bValue = parseFloat(calculateProfitLoss(b.suggested_price, currentPrices[b.yahooSymbol])) || 0;
+          break;
+        case 'targetPrice':
+          aValue = parseFloat(a.target_price?.replace('₹', '')) || 0;
+          bValue = parseFloat(b.target_price?.replace('₹', '')) || 0;
+          break;
+        case 'pe':
+          aValue = peData[a.yahooSymbol] || 0;
+          bValue = peData[b.yahooSymbol] || 0;
+          break;
+        case 'industryPE':
+          aValue = INDUSTRY_PE_MAP[a.industry] || 0;
+          bValue = INDUSTRY_PE_MAP[b.industry] || 0;
+          break;
+        case 'position':
+          aValue = a.position || 'buy';
+          bValue = b.position || 'buy';
+          break;
+        default:
+          aValue = a[sortConfig.key] || '';
+          bValue = b[sortConfig.key] || '';
+      }
+      
+      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+  };
+
+  // Handle sort
+  const handleSort = (key) => {
+    setSortConfig(prevConfig => ({
+      key,
+      direction: prevConfig.key === key && prevConfig.direction === 'asc' ? 'desc' : 'asc'
+    }));
+  };
+
+  // Get sort icon
+  const getSortIcon = (key) => {
+    if (sortConfig.key !== key) return '↕️';
+    return sortConfig.direction === 'asc' ? '↑' : '↓';
+  };
+
+  // Process data with filters and sorting
+  const processData = (data) => {
+    const filtered = filterData(data);
+    return sortData(filtered);
+  };
+
+  // Filter controls component
+  const FilterControls = ({ data }) => {
+    const industries = getUniqueValues(data, 'industry');
+    const positions = getUniqueValues(data, 'position');
+    
+    return (
+      <div className="filter-controls">
+        <div className="filter-row">
+          <div className="filter-group">
+            <label>🔍 Search:</label>
+            <input
+              type="text"
+              value={filters.search}
+              onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
+              placeholder="Company name or symbol..."
+              className="filter-input"
+            />
+          </div>
+          
+          <div className="filter-group">
+            <label>🏭 Industry:</label>
+            <select
+              value={filters.industry}
+              onChange={(e) => setFilters(prev => ({ ...prev, industry: e.target.value }))}
+              className="filter-select"
+            >
+              <option value="">All Industries</option>
+              {industries.map(industry => (
+                <option key={industry} value={industry}>{industry}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div className="filter-group">
+            <label>📊 Position:</label>
+            <select
+              value={filters.position}
+              onChange={(e) => setFilters(prev => ({ ...prev, position: e.target.value }))}
+              className="filter-select"
+            >
+              <option value="">All Positions</option>
+              {positions.length > 0 ? positions.map(position => (
+                <option key={position} value={position}>{position.toUpperCase()}</option>
+              )) : <option value="buy">BUY</option>}
+            </select>
+          </div>
+        </div>
+        
+        <div className="filter-row">
+          <div className="filter-group">
+            <label>📅 Date From:</label>
+            <input
+              type="date"
+              value={filters.dateFrom}
+              onChange={(e) => setFilters(prev => ({ ...prev, dateFrom: e.target.value }))}
+              className="filter-input"
+            />
+          </div>
+          
+          <div className="filter-group">
+            <label>📅 Date To:</label>
+            <input
+              type="date"
+              value={filters.dateTo}
+              onChange={(e) => setFilters(prev => ({ ...prev, dateTo: e.target.value }))}
+              className="filter-input"
+            />
+          </div>
+          
+          <div className="filter-group">
+            <label>💰 Price Range:</label>
+            <div className="range-inputs">
+              <input
+                type="number"
+                value={filters.minPrice}
+                onChange={(e) => setFilters(prev => ({ ...prev, minPrice: e.target.value }))}
+                placeholder="Min ₹"
+                className="filter-input range-input"
+              />
+              <span>-</span>
+              <input
+                type="number"
+                value={filters.maxPrice}
+                onChange={(e) => setFilters(prev => ({ ...prev, maxPrice: e.target.value }))}
+                placeholder="Max ₹"
+                className="filter-input range-input"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <div className="filter-row">
+          <div className="filter-group">
+            <label>📈 P/L Range (%):</label>
+            <div className="range-inputs">
+              <input
+                type="number"
+                value={filters.minPL}
+                onChange={(e) => setFilters(prev => ({ ...prev, minPL: e.target.value }))}
+                placeholder="Min %"
+                className="filter-input range-input"
+              />
+              <span>-</span>
+              <input
+                type="number"
+                value={filters.maxPL}
+                onChange={(e) => setFilters(prev => ({ ...prev, maxPL: e.target.value }))}
+                placeholder="Max %"
+                className="filter-input range-input"
+              />
+            </div>
+          </div>
+          
+          <div className="filter-group">
+            <label>📊 PE Range:</label>
+            <div className="range-inputs">
+              <input
+                type="number"
+                value={filters.minPE}
+                onChange={(e) => setFilters(prev => ({ ...prev, minPE: e.target.value }))}
+                placeholder="Min PE"
+                className="filter-input range-input"
+              />
+              <span>-</span>
+              <input
+                type="number"
+                value={filters.maxPE}
+                onChange={(e) => setFilters(prev => ({ ...prev, maxPE: e.target.value }))}
+                placeholder="Max PE"
+                className="filter-input range-input"
+              />
+            </div>
+          </div>
+          
+          <div className="filter-group">
+            <button
+              onClick={() => setFilters({
+                search: '', industry: '', position: '', dateFrom: '', dateTo: '',
+                minPrice: '', maxPrice: '', minPL: '', maxPL: '', minPE: '', maxPE: ''
+              })}
+              className="clear-filters-btn"
+            >
+              🗑️ Clear Filters
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderRecommendationTable = (data, title) => {
+    const processedData = processData(data);
+    
+    return (
+      <div className="recommendations-table-section">
+        <h3>{title} ({processedData.length} stocks)</h3>
+        
+        {/* Filter Controls */}
+        <FilterControls data={data} />
+        
+        <div className="recommendations-table-container">
+          <table className="recommendations-table">
+            <thead>
+              <tr>
+                <th onClick={() => handleSort('symbol')} className="sortable-header">
+                  Symbol {getSortIcon('symbol')}
+                </th>
+                <th onClick={() => handleSort('industry')} className="sortable-header">
+                  Industry {getSortIcon('industry')}
+                </th>
+                <th onClick={() => handleSort('date')} className="sortable-header">
+                  Date {getSortIcon('date')}
+                </th>
+                <th onClick={() => handleSort('suggestedPrice')} className="sortable-header">
+                  Suggested Price {getSortIcon('suggestedPrice')}
+                </th>
+                <th onClick={() => handleSort('currentPrice')} className="sortable-header">
+                  CMP {getSortIcon('currentPrice')}
+                </th>
+                <th onClick={() => handleSort('profitLoss')} className="sortable-header">
+                  P/L % {getSortIcon('profitLoss')}
+                </th>
+                <th onClick={() => handleSort('targetPrice')} className="sortable-header">
+                  Target Price {getSortIcon('targetPrice')}
+                </th>
+                <th onClick={() => handleSort('pe')} className="sortable-header">
+                  PE {getSortIcon('pe')}
+                </th>
+                <th onClick={() => handleSort('industryPE')} className="sortable-header">
+                  Industry PE {getSortIcon('industryPE')}
+                </th>
+                <th onClick={() => handleSort('position')} className="sortable-header">
+                  Position {getSortIcon('position')}
+                </th>
+                <th>Chart</th>
+                <th>Reason</th>
+                <th>Remarks</th>
+              </tr>
+            </thead>
+            <tbody>
+              {processedData.map((stock, index) => {
+              const currentPrice = currentPrices[stock.yahooSymbol];
               const profitLoss = calculateProfitLoss(stock.suggested_price, currentPrice);
               const isLoss = currentPrice && currentPrice < stock.suggested_price;
               
               return (
-                <tr key={stock.symbol || index} className={isLoss ? 'loss-row' : 'profit-row'}>
+                <tr key={stock.tradingViewSymbol || index} className={isLoss ? 'loss-row' : 'profit-row'}>
                   <td className="stock-symbol">
-                    <strong>{stock.symbol || 'N/A'}</strong>
+                    <div>
+                      <strong>{stock.companyName || 'N/A'}</strong>
+                      <div style={{ fontSize: '0.8em', color: '#666', marginTop: '2px' }}>
+                        {stock.yahooSymbol || stock.tradingViewSymbol || 'N/A'}
+                      </div>
+                    </div>
                   </td>
                   <td className="industry">
                     {stock.industry || 'N/A'}
@@ -560,8 +880,8 @@ const RecommendationsPreview = () => {
                   <td className="pe-ratio">
                     {loading ? (
                       <span className="loading-price">⏳</span>
-                    ) : peData[stock.displaySymbol] ? (
-                      peData[stock.displaySymbol].toFixed(1)
+                    ) : peData[stock.yahooSymbol] ? (
+                      peData[stock.yahooSymbol].toFixed(1)
                     ) : (
                       'N/A'
                     )}
@@ -577,7 +897,7 @@ const RecommendationsPreview = () => {
                   <td className="chart-button">
                     <button 
                       className="chart-btn" 
-                      onClick={() => setChartModal({ isOpen: true, symbol: stock.symbol, displaySymbol: stock.displaySymbol })}
+                      onClick={() => setChartModal({ isOpen: true, tradingViewSymbol: stock.tradingViewSymbol, yahooSymbol: stock.yahooSymbol, companyName: stock.companyName })}
                       title="View Chart"
                     >
                       📈
@@ -603,25 +923,26 @@ const RecommendationsPreview = () => {
                   </td>
                 </tr>
               );
-            })}
-          </tbody>
-        </table>
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   // Chart Modal Component
   const ChartModal = () => {
     if (!chartModal.isOpen) return null;
 
     return (
-      <div className="chart-modal-overlay" onClick={() => setChartModal({ isOpen: false, symbol: '', displaySymbol: '' })}>
+      <div className="chart-modal-overlay" onClick={() => setChartModal({ isOpen: false, tradingViewSymbol: '', yahooSymbol: '', companyName: '' })}>
         <div className="chart-modal-content" onClick={(e) => e.stopPropagation()}>
           <div className="chart-modal-header">
-            <h3>📈 {chartModal.displaySymbol || chartModal.symbol} - Stock Chart</h3>
+            <h3>📈 {chartModal.companyName || chartModal.yahooSymbol || chartModal.tradingViewSymbol} - Stock Chart</h3>
             <button 
               className="chart-modal-close"
-              onClick={() => setChartModal({ isOpen: false, symbol: '', displaySymbol: '' })}
+              onClick={() => setChartModal({ isOpen: false, tradingViewSymbol: '', yahooSymbol: '', companyName: '' })}
             >
               ✕
             </button>
@@ -637,7 +958,7 @@ const RecommendationsPreview = () => {
               border: '1px solid #dee2e6'
             }}>
               <h4 style={{ margin: '0 0 15px 0', fontSize: '18px', color: '#2c3e50' }}>
-                📊 Stock Chart for {chartModal.displaySymbol || chartModal.symbol}
+                📊 Stock Chart for {chartModal.companyName || chartModal.yahooSymbol}
               </h4>
               <p style={{ margin: '10px 0', fontSize: '14px', color: '#6c757d' }}>
                 View detailed candlestick charts and technical analysis:
@@ -645,7 +966,7 @@ const RecommendationsPreview = () => {
               
               <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
                 <a 
-                  href={`https://finance.yahoo.com/quote/${chartModal.displaySymbol || chartModal.symbol.replace('NSE:', '') + '.NS'}/chart`}
+                  href={`https://finance.yahoo.com/quote/${chartModal.yahooSymbol}/chart`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -666,7 +987,7 @@ const RecommendationsPreview = () => {
                 </a>
                 
                 <a 
-                  href={`https://www.google.com/finance/quote/${(chartModal.displaySymbol || chartModal.symbol).replace('.NS', '').replace('NSE:', '')}:NSE`}
+                  href={`https://www.google.com/finance/quote/${chartModal.yahooSymbol?.replace('.NS', '').replace('.BO', '')}:${chartModal.tradingViewSymbol?.includes('BSE:') ? 'BOM' : 'NSE'}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -687,7 +1008,7 @@ const RecommendationsPreview = () => {
                 </a>
                 
                 <a 
-                  href={`https://in.tradingview.com/chart/?symbol=NSE%3A${(chartModal.displaySymbol || chartModal.symbol).replace('.NS', '').replace('NSE:', '')}`}
+                  href={`https://in.tradingview.com/chart/?symbol=${chartModal.tradingViewSymbol}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -745,3 +1066,125 @@ const RecommendationsPreview = () => {
 };
 
 export default RecommendationsPreview;
+
+// Add these styles to your main CSS file or use styled-components
+const styles = `
+.filter-controls {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 15px 0;
+}
+
+.filter-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  align-items: end;
+}
+
+.filter-row:last-child {
+  margin-bottom: 0;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+  flex: 1;
+}
+
+.filter-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 4px;
+}
+
+.filter-input, .filter-select {
+  padding: 8px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.filter-input:focus, .filter-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+.range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.range-input {
+  width: 80px;
+}
+
+.clear-filters-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.clear-filters-btn:hover {
+  background: #c82333;
+}
+
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+  padding: 12px 8px;
+}
+
+.sortable-header:hover {
+  background-color: #f8f9fa;
+}
+
+.recommendations-table th {
+  background: #e9ecef;
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 2px solid #dee2e6;
+}
+
+@media (max-width: 768px) {
+  .filter-row {
+    flex-direction: column;
+  }
+  
+  .filter-group {
+    min-width: auto;
+  }
+  
+  .range-inputs {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .range-input {
+    width: 100%;
+  }
+}
+`;
+
+// Inject styles if not already injected
+if (typeof document !== 'undefined' && !document.getElementById('recommendations-filter-styles')) {
+  const styleSheet = document.createElement('style');
+  styleSheet.id = 'recommendations-filter-styles';
+  styleSheet.textContent = styles;
+  document.head.appendChild(styleSheet);
+}
