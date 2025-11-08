@@ -80,7 +80,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   {
     id: 1,
     symbol: 'ULTRAMAR.BO',
-    displaySymbol: ' ULTRAMAR.BO',
+    displaySymbol: 'ULTRAMAR.BO',
     recommendedDate: 'July 19, 2025',
     suggested_price: 590, // Buy Signal price
     target_price: '₹710',
