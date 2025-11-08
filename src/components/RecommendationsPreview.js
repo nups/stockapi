@@ -289,11 +289,11 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   },
   {
     id: 15,
-    symbol: 'NSE:THANGAMAYIL',
-    displaySymbol: 'THANGAMAYIL.NS',
+    symbol: 'NSE:THANGAMAYL',
+    displaySymbol: 'THANGAMAYL.NS',
     recommendedDate: 'Apr 20, 2025',
     suggested_price: 2000, // Buy Signal price
-    target_price: '₹2400',
+    target_price: '₹2800',
     reason: 'Regional jewelry chain with strong brand presence and expansion strategy.',
     goal: 'Consumer discretionary play with 19% potential',
     remarks: 'Growing store network and improving same-store sales growth.',
