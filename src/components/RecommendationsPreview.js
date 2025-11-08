@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// Technical Analysis Sample Data
-const TECHNICAL_SAMPLE_DATA = [
-];
-
 // Fundamental Analysis Sample Data
 const FUNDAMENTAL_SAMPLE_DATA = [
   // New stocks added from user request
@@ -23,7 +19,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 17,
+    id: 2,
     tradingViewSymbol: 'BSE:CEINSYSTECH',
     yahooSymbol: 'CEINSYSTECH.BO',
     companyName: 'CEInfo Systech',
@@ -38,7 +34,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 2,
+    id: 3,
     tradingViewSymbol: 'NSE:GRWRHITECH',
     yahooSymbol: 'GRWRHITECH.NS',
     companyName: 'Garware Hi-Tech Films',
@@ -53,7 +49,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 3,
+    id: 4,
     tradingViewSymbol: 'NSE:ARVINDFASN',
     yahooSymbol: 'ARVINDFASN.NS',
     companyName: 'Arvind Fashions',
@@ -68,7 +64,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 4,
+    id: 5,
     tradingViewSymbol: 'NSE:RATEGAIN',
     yahooSymbol: 'RATEGAIN.NS',
     companyName: 'RateGain Travel Technologies',
@@ -83,7 +79,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 5,
+    id: 6,
     tradingViewSymbol: 'NSE:SHAKTIPUMP',
     yahooSymbol: 'SHAKTIPUMP.NS',
     companyName: 'Shakti Pumps',
@@ -98,7 +94,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 6,
+    id: 7,
     tradingViewSymbol: 'NSE:ENTERO',
     yahooSymbol: 'ENTERO.NS',
     companyName: 'Entero Healthcare Solutions',
@@ -113,7 +109,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 7,
+    id: 8,
     tradingViewSymbol: 'NSE:INFOLLION',
     yahooSymbol: 'INFOLLION-SM.NS',
     companyName: 'Infollion Research Services',
@@ -128,7 +124,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 8,
+    id: 9,
     tradingViewSymbol: 'NSE:JUBLPHARMA',
     yahooSymbol: 'JUBLPHARMA.NS',
     companyName: 'Jubilant Pharmova',
@@ -143,7 +139,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 9,
+    id: 10,
     tradingViewSymbol: 'NSE:INNOVACAP',
     yahooSymbol: 'INNOVACAP.NS',
     companyName: 'Innova Captab',
@@ -158,7 +154,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 10,
+    id: 11,
     tradingViewSymbol: 'BSE:539551',
     yahooSymbol: 'NH.NS',
     companyName: 'Narayana Hrudayalaya',
@@ -173,7 +169,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 11,
+    id: 12,
     tradingViewSymbol: 'NSE:SANGHVIMOV',
     yahooSymbol: 'SANGHVIMOV.NS',
     companyName: 'Sanghvi Movers',
@@ -188,7 +184,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 12,
+    id: 13,
     tradingViewSymbol: 'NSE:BETA',
     yahooSymbol: 'BETA.NS',
     companyName: 'Beta Drugs',
@@ -203,7 +199,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 13,
+    id: 14,
     tradingViewSymbol: 'NSE:ASTRAMICRO',
     yahooSymbol: 'ASTRAMICRO.NS',
     companyName: 'Astra Microwave Products',
@@ -218,7 +214,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 14,
+    id: 15,
     tradingViewSymbol: 'NSE:SAMHI',
     yahooSymbol: 'SAMHI.NS',
     companyName: 'Samhi Hotels',
@@ -233,7 +229,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 15,
+    id: 16,
     tradingViewSymbol: 'NSE:THANGAMAYL',
     yahooSymbol: 'THANGAMAYL.NS',
     companyName: 'Thangamayil Jewellery',
@@ -248,7 +244,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 16,
+    id: 17,
     tradingViewSymbol: 'BSE:519600',
     yahooSymbol: 'CCL.NS',
     companyName: 'CCL Products (India)',
@@ -263,7 +259,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 17,
+    id: 18,
     tradingViewSymbol: 'NSE:CARYSIL',
     yahooSymbol: 'CARYSIL.NS',
     companyName: 'Carysil Limited',
@@ -357,7 +353,7 @@ const RecommendationsPreview = () => {
       // Fallback PE values - these should ideally come from a reliable financial data source
       // In production, you might want to use Yahoo Finance API, Alpha Vantage, or similar
       const fallbackPE = {
-        // Fundamental Analysis stocks
+        // Stock recommendations
         'ULTRAMAR.BO': 18.5,
         'CEINSYSTECH.BO': 22.3,
         'GRWRHITECH.NS': 28.7,
@@ -409,9 +405,7 @@ const RecommendationsPreview = () => {
       
       // Fallback: Enhanced mock data with slight randomization for demo
       const basePrices = {
-        // Technical Analysis stocks (currently empty)
-        
-        // Fundamental Analysis stocks
+        // Stock recommendations
         'ULTRAMAR.BO': 625.30,
         'CEINSYSTECH.BO': 1890.50,
         'GRWRHITECH.NS': 4240.75,
@@ -449,11 +443,10 @@ const RecommendationsPreview = () => {
     return ((currentPrice - suggestedPrice) / suggestedPrice * 100).toFixed(2);
   };
 
-  // Function to get all unique symbols from both datasets (use yahooSymbol for API calls)
+  // Function to get all unique symbols from fundamental dataset only
   const getAllSymbols = () => {
-    const technicalSymbols = TECHNICAL_SAMPLE_DATA.map(item => item.yahooSymbol);
     const fundamentalSymbols = FUNDAMENTAL_SAMPLE_DATA.map(item => item.yahooSymbol);
-    return [...new Set([...technicalSymbols, ...fundamentalSymbols])];
+    return [...new Set(fundamentalSymbols)];
   };
 
   // Fetch current prices and PE data for all stocks
@@ -630,152 +623,122 @@ const RecommendationsPreview = () => {
     return sortData(filtered);
   };
 
-  // Filter controls component
+  // Simplified Filter controls component
   const FilterControls = ({ data }) => {
     const industries = getUniqueValues(data, 'industry');
-    const positions = getUniqueValues(data, 'position');
+    const [showAdvanced, setShowAdvanced] = useState(false);
     
     return (
-      <div className="filter-controls">
-        <div className="filter-row">
-          <div className="filter-group">
-            <label>🔍 Search:</label>
+      <div className="filter-controls-modern">
+        {/* Primary Filters - Always Visible */}
+        <div className="primary-filters">
+          <div className="search-filter">
             <input
               type="text"
               value={filters.search}
               onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
-              placeholder="Company name or symbol..."
-              className="filter-input"
+              placeholder="🔍 Search stocks..."
+              className="search-input"
             />
           </div>
           
-          <div className="filter-group">
-            <label>🏭 Industry:</label>
-            <select
-              value={filters.industry}
-              onChange={(e) => setFilters(prev => ({ ...prev, industry: e.target.value }))}
-              className="filter-select"
-            >
-              <option value="">All Industries</option>
-              {industries.map(industry => (
-                <option key={industry} value={industry}>{industry}</option>
-              ))}
-            </select>
-          </div>
+          <select
+            value={filters.industry}
+            onChange={(e) => setFilters(prev => ({ ...prev, industry: e.target.value }))}
+            className="industry-select"
+          >
+            <option value="">All Industries</option>
+            {industries.map(industry => (
+              <option key={industry} value={industry}>{industry}</option>
+            ))}
+          </select>
           
-          <div className="filter-group">
-            <label>📊 Position:</label>
-            <select
-              value={filters.position}
-              onChange={(e) => setFilters(prev => ({ ...prev, position: e.target.value }))}
-              className="filter-select"
-            >
-              <option value="">All Positions</option>
-              {positions.length > 0 ? positions.map(position => (
-                <option key={position} value={position}>{position.toUpperCase()}</option>
-              )) : <option value="buy">BUY</option>}
-            </select>
-          </div>
-        </div>
-        
-        <div className="filter-row">
-          <div className="filter-group">
-            <label>📅 Date From:</label>
-            <input
-              type="date"
-              value={filters.dateFrom}
-              onChange={(e) => setFilters(prev => ({ ...prev, dateFrom: e.target.value }))}
-              className="filter-input"
-            />
-          </div>
+          <button
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            className="advanced-toggle"
+          >
+            {showAdvanced ? '🔼 Less Filters' : '🔽 More Filters'}
+          </button>
           
-          <div className="filter-group">
-            <label>📅 Date To:</label>
-            <input
-              type="date"
-              value={filters.dateTo}
-              onChange={(e) => setFilters(prev => ({ ...prev, dateTo: e.target.value }))}
-              className="filter-input"
-            />
-          </div>
-          
-          <div className="filter-group">
-            <label>💰 Price Range:</label>
-            <div className="range-inputs">
-              <input
-                type="number"
-                value={filters.minPrice}
-                onChange={(e) => setFilters(prev => ({ ...prev, minPrice: e.target.value }))}
-                placeholder="Min ₹"
-                className="filter-input range-input"
-              />
-              <span>-</span>
-              <input
-                type="number"
-                value={filters.maxPrice}
-                onChange={(e) => setFilters(prev => ({ ...prev, maxPrice: e.target.value }))}
-                placeholder="Max ₹"
-                className="filter-input range-input"
-              />
-            </div>
-          </div>
-        </div>
-        
-        <div className="filter-row">
-          <div className="filter-group">
-            <label>📈 P/L Range (%):</label>
-            <div className="range-inputs">
-              <input
-                type="number"
-                value={filters.minPL}
-                onChange={(e) => setFilters(prev => ({ ...prev, minPL: e.target.value }))}
-                placeholder="Min %"
-                className="filter-input range-input"
-              />
-              <span>-</span>
-              <input
-                type="number"
-                value={filters.maxPL}
-                onChange={(e) => setFilters(prev => ({ ...prev, maxPL: e.target.value }))}
-                placeholder="Max %"
-                className="filter-input range-input"
-              />
-            </div>
-          </div>
-          
-          <div className="filter-group">
-            <label>📊 PE Range:</label>
-            <div className="range-inputs">
-              <input
-                type="number"
-                value={filters.minPE}
-                onChange={(e) => setFilters(prev => ({ ...prev, minPE: e.target.value }))}
-                placeholder="Min PE"
-                className="filter-input range-input"
-              />
-              <span>-</span>
-              <input
-                type="number"
-                value={filters.maxPE}
-                onChange={(e) => setFilters(prev => ({ ...prev, maxPE: e.target.value }))}
-                placeholder="Max PE"
-                className="filter-input range-input"
-              />
-            </div>
-          </div>
-          
-          <div className="filter-group">
+          {(filters.search || filters.industry || filters.minPrice || filters.maxPrice || 
+            filters.minPL || filters.maxPL || filters.dateFrom || filters.dateTo) && (
             <button
               onClick={() => setFilters({
                 search: '', industry: '', position: '', dateFrom: '', dateTo: '',
                 minPrice: '', maxPrice: '', minPL: '', maxPL: '', minPE: '', maxPE: ''
               })}
-              className="clear-filters-btn"
+              className="clear-all-btn"
             >
-              🗑️ Clear Filters
+              ✖ Clear All
             </button>
-          </div>
+          )}
         </div>
+        
+        {/* Advanced Filters - Collapsible */}
+        {showAdvanced && (
+          <div className="advanced-filters">
+            <div className="filter-section">
+              <h4>💰 Price Filters</h4>
+              <div className="range-group">
+                <input
+                  type="number"
+                  value={filters.minPrice}
+                  onChange={(e) => setFilters(prev => ({ ...prev, minPrice: e.target.value }))}
+                  placeholder="Min ₹"
+                  className="range-input"
+                />
+                <span>to</span>
+                <input
+                  type="number"
+                  value={filters.maxPrice}
+                  onChange={(e) => setFilters(prev => ({ ...prev, maxPrice: e.target.value }))}
+                  placeholder="Max ₹"
+                  className="range-input"
+                />
+              </div>
+            </div>
+            
+            <div className="filter-section">
+              <h4>📈 Performance Filters</h4>
+              <div className="range-group">
+                <input
+                  type="number"
+                  value={filters.minPL}
+                  onChange={(e) => setFilters(prev => ({ ...prev, minPL: e.target.value }))}
+                  placeholder="Min %"
+                  className="range-input"
+                />
+                <span>to</span>
+                <input
+                  type="number"
+                  value={filters.maxPL}
+                  onChange={(e) => setFilters(prev => ({ ...prev, maxPL: e.target.value }))}
+                  placeholder="Max %"
+                  className="range-input"
+                />
+              </div>
+            </div>
+            
+            <div className="filter-section">
+              <h4>� Date Range</h4>
+              <div className="date-group">
+                <input
+                  type="date"
+                  value={filters.dateFrom}
+                  onChange={(e) => setFilters(prev => ({ ...prev, dateFrom: e.target.value }))}
+                  className="date-input"
+                />
+                <span>to</span>
+                <input
+                  type="date"
+                  value={filters.dateTo}
+                  onChange={(e) => setFilters(prev => ({ ...prev, dateTo: e.target.value }))}
+                  className="date-input"
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -795,83 +758,69 @@ const RecommendationsPreview = () => {
             <thead>
               <tr>
                 <th onClick={() => handleSort('symbol')} className="sortable-header">
-                  Symbol {getSortIcon('symbol')}
+                  Stock {getSortIcon('symbol')}
                 </th>
                 <th onClick={() => handleSort('industry')} className="sortable-header">
-                  Industry {getSortIcon('industry')}
-                </th>
-                <th onClick={() => handleSort('date')} className="sortable-header">
-                  Date {getSortIcon('date')}
+                  Sector {getSortIcon('industry')}
                 </th>
                 <th onClick={() => handleSort('suggestedPrice')} className="sortable-header">
-                  Suggested Price {getSortIcon('suggestedPrice')}
+                  Entry ₹ {getSortIcon('suggestedPrice')}
                 </th>
                 <th onClick={() => handleSort('currentPrice')} className="sortable-header">
-                  CMP {getSortIcon('currentPrice')}
+                  Current ₹ {getSortIcon('currentPrice')}
                 </th>
                 <th onClick={() => handleSort('profitLoss')} className="sortable-header">
-                  P/L % {getSortIcon('profitLoss')}
+                  Returns {getSortIcon('profitLoss')}
                 </th>
                 <th onClick={() => handleSort('targetPrice')} className="sortable-header">
-                  Target Price {getSortIcon('targetPrice')}
+                  Target ₹ {getSortIcon('targetPrice')}
                 </th>
                 <th onClick={() => handleSort('pe')} className="sortable-header">
                   PE {getSortIcon('pe')}
                 </th>
-                <th onClick={() => handleSort('industryPE')} className="sortable-header">
-                  Industry PE {getSortIcon('industryPE')}
-                </th>
-                <th onClick={() => handleSort('position')} className="sortable-header">
-                  Position {getSortIcon('position')}
-                </th>
-                <th>Chart</th>
-                <th>Reason</th>
-                <th>Remarks</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {processedData.map((stock, index) => {
               const currentPrice = currentPrices[stock.yahooSymbol];
               const profitLoss = calculateProfitLoss(stock.suggested_price, currentPrice);
-              const isLoss = currentPrice && currentPrice < stock.suggested_price;
               
               return (
-                <tr key={stock.tradingViewSymbol || index} className={isLoss ? 'loss-row' : 'profit-row'}>
-                  <td className="stock-symbol">
-                    <div>
+                <tr key={stock.tradingViewSymbol || index}>
+                  <td className="stock-info">
+                    <div className="stock-name">
                       <strong>{stock.companyName || 'N/A'}</strong>
-                      <div style={{ fontSize: '0.8em', color: '#666', marginTop: '2px' }}>
-                        {stock.yahooSymbol || stock.tradingViewSymbol || 'N/A'}
-                      </div>
+                    </div>
+                    <div className="stock-symbol">
+                      {stock.yahooSymbol || stock.tradingViewSymbol || 'N/A'}
                     </div>
                   </td>
-                  <td className="industry">
-                    {stock.industry || 'N/A'}
+                  <td className="sector">
+                    <span className="sector-badge">{stock.industry || 'N/A'}</span>
                   </td>
-                  <td className="recommended-date">
-                    {stock.recommendedDate || 'N/A'}
-                  </td>
-                  <td className="suggested-price">
+                  <td className="entry-price">
                     <strong>₹{stock.suggested_price || 'N/A'}</strong>
+                    <div className="date-small">{stock.recommendedDate || 'N/A'}</div>
                   </td>
                   <td className="current-price">
                     {loading ? (
-                      <span className="loading-price">⏳</span>
+                      <span className="loading">⏳</span>
                     ) : currentPrice ? (
                       <strong>₹{currentPrice.toFixed(2)}</strong>
                     ) : (
-                      <span className="price-error">❌</span>
+                      <span className="error">❌</span>
                     )}
                   </td>
-                  <td className="profit-loss">
+                  <td className="returns">
                     {loading ? (
-                      <span className="loading-price">⏳</span>
+                      <span className="loading">⏳</span>
                     ) : profitLoss !== null ? (
-                      <span className={`pl-badge ${parseFloat(profitLoss) >= 0 ? 'profit' : 'loss'}`}>
+                      <span className={`return-badge ${parseFloat(profitLoss) >= 0 ? 'positive' : 'negative'}`}>
                         {parseFloat(profitLoss) >= 0 ? '+' : ''}{profitLoss}%
                       </span>
                     ) : (
-                      <span className="price-error">❌</span>
+                      <span className="error">❌</span>
                     )}
                   </td>
                   <td className="target-price">
@@ -879,46 +828,27 @@ const RecommendationsPreview = () => {
                   </td>
                   <td className="pe-ratio">
                     {loading ? (
-                      <span className="loading-price">⏳</span>
+                      <span className="loading">⏳</span>
                     ) : peData[stock.yahooSymbol] ? (
-                      peData[stock.yahooSymbol].toFixed(1)
+                      <span className="pe-value">{peData[stock.yahooSymbol].toFixed(1)}</span>
                     ) : (
                       'N/A'
                     )}
                   </td>
-                  <td className="industry-pe">
-                    {INDUSTRY_PE_MAP[stock.industry] ? INDUSTRY_PE_MAP[stock.industry].toFixed(1) : 'N/A'}
-                  </td>
-                  <td className="position">
-                    <span className={`position-badge ${stock.position || 'buy'}`}>
-                      {(stock.position || 'buy').toUpperCase()}
-                    </span>
-                  </td>
-                  <td className="chart-button">
+                  <td className="action-buttons">
                     <button 
-                      className="chart-btn" 
+                      className="action-btn chart-btn" 
                       onClick={() => setChartModal({ isOpen: true, tradingViewSymbol: stock.tradingViewSymbol, yahooSymbol: stock.yahooSymbol, companyName: stock.companyName })}
                       title="View Chart"
                     >
                       📈
                     </button>
-                  </td>
-                  <td className="reason-tooltip">
                     <button 
-                      className="info-btn" 
-                      title={stock.reason || 'No reason provided'}
-                      aria-label="View reason"
+                      className="action-btn info-btn" 
+                      title={`${stock.reason || 'No reason provided'}\n\nRemarks: ${stock.remarks || 'No remarks'}`}
+                      aria-label="View details"
                     >
                       ℹ️
-                    </button>
-                  </td>
-                  <td className="remarks-tooltip">
-                    <button 
-                      className="info-btn" 
-                      title={stock.remarks || 'No remarks'}
-                      aria-label="View remarks"
-                    >
-                      💬
                     </button>
                   </td>
                 </tr>
@@ -1041,14 +971,11 @@ const RecommendationsPreview = () => {
 
   return (
     <div className="recommendations-preview">
-      <h3>🤖 Recommendations</h3>
+      <h3>🤖 Stock Recommendations</h3>
       
       <div className="recommendations-content-vertical">
-        {/* Technical Analysis Table */}
-        {renderRecommendationTable(TECHNICAL_SAMPLE_DATA, '📈 Technical Analysis')}
-        
-        {/* Fundamental Analysis Table */}
-        {renderRecommendationTable(FUNDAMENTAL_SAMPLE_DATA, '📊 Fundamental Analysis')}
+        {/* Stock Recommendations Table */}
+        {renderRecommendationTable(FUNDAMENTAL_SAMPLE_DATA, '📊 Stock Recommendations')}
       </div>
       
       <div className="recommendations-disclaimer">
@@ -1067,117 +994,322 @@ const RecommendationsPreview = () => {
 
 export default RecommendationsPreview;
 
-// Add these styles to your main CSS file or use styled-components
+// Modern, clean styles
 const styles = `
-.filter-controls {
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
+.filter-controls-modern {
+  background: white;
+  border: 1px solid #e1e5e9;
+  border-radius: 12px;
   padding: 20px;
-  margin: 15px 0;
+  margin: 20px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
-.filter-row {
+.primary-filters {
   display: flex;
   gap: 15px;
-  margin-bottom: 15px;
+  align-items: center;
   flex-wrap: wrap;
-  align-items: end;
 }
 
-.filter-row:last-child {
-  margin-bottom: 0;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  min-width: 120px;
+.search-filter {
   flex: 1;
+  min-width: 250px;
 }
 
-.filter-group label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #495057;
-  margin-bottom: 4px;
-}
-
-.filter-input, .filter-select {
-  padding: 8px 10px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
   font-size: 14px;
-  background: white;
+  background: #f8f9fa;
+  transition: all 0.2s ease;
 }
 
-.filter-input:focus, .filter-select:focus {
+.search-input:focus {
   outline: none;
   border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
 }
 
-.range-inputs {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.industry-select {
+  padding: 12px 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  min-width: 150px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.range-input {
-  width: 80px;
+.industry-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
 }
 
-.clear-filters-btn {
-  background: #dc3545;
+.advanced-toggle {
+  background: #6c757d;
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 12px 20px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-.clear-filters-btn:hover {
+.advanced-toggle:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+.clear-all-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.clear-all-btn:hover {
   background: #c82333;
+  transform: translateY(-1px);
+}
+
+.advanced-filters {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e1e5e9;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.filter-section h4 {
+  margin: 0 0 12px 0;
+  color: #495057;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.range-group, .date-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.range-input, .date-input {
+  padding: 10px 12px;
+  border: 2px solid #e1e5e9;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  flex: 1;
+  transition: all 0.2s ease;
+}
+
+.range-input:focus, .date-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+.range-group span, .date-group span {
+  color: #6c757d;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .sortable-header {
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.2s;
-  padding: 12px 8px;
+  transition: all 0.2s ease;
+  padding: 16px 12px;
+  font-weight: 600;
+  color: #495057;
+  position: relative;
 }
 
 .sortable-header:hover {
   background-color: #f8f9fa;
+  color: #007bff;
+}
+
+.recommendations-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 }
 
 .recommendations-table th {
-  background: #e9ecef;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
   font-weight: 600;
   text-align: left;
-  border-bottom: 2px solid #dee2e6;
+  border: none;
+  padding: 16px 12px;
+  font-size: 14px;
+}
+
+.recommendations-table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #f1f3f4;
+  vertical-align: middle;
+}
+
+.recommendations-table tbody tr:hover {
+  background-color: #f8f9ff;
+}
+
+.recommendations-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.recommendations-table-section h3 {
+  color: #495057;
+  font-size: 24px;
+  margin-bottom: 8px;
+  font-weight: 700;
 }
 
 @media (max-width: 768px) {
-  .filter-row {
+  .primary-filters {
     flex-direction: column;
+    align-items: stretch;
   }
   
-  .filter-group {
+  .search-filter {
     min-width: auto;
   }
   
-  .range-inputs {
-    flex-direction: column;
-    gap: 5px;
+  .advanced-filters {
+    grid-template-columns: 1fr;
   }
   
-  .range-input {
-    width: 100%;
+  .range-group, .date-group {
+    flex-direction: column;
+    gap: 8px;
   }
+  
+  .range-group span, .date-group span {
+    display: none;
+  }
+}
+
+/* Table Content Styles */
+.stock-info {
+  min-width: 200px;
+}
+
+.stock-name {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+
+.stock-symbol {
+  font-size: 12px;
+  color: #6c757d;
+  font-family: monospace;
+}
+
+.sector-badge {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.date-small {
+  font-size: 11px;
+  color: #6c757d;
+  margin-top: 2px;
+}
+
+.return-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.return-badge.positive {
+  background: #d4edda;
+  color: #155724;
+}
+
+.return-badge.negative {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.pe-value {
+  font-weight: 500;
+  color: #495057;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: #e9ecef;
+  transform: translateY(-1px);
+}
+
+.chart-btn:hover {
+  background: #e3f2fd;
+  border-color: #1976d2;
+}
+
+.info-btn:hover {
+  background: #fff3cd;
+  border-color: #ffc107;
+}
+
+.loading, .error {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.loading {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.error {
+  background: #f8d7da;
+  color: #721c24;
 }
 `;
 
