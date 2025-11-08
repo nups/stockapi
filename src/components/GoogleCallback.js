@@ -80,96 +80,64 @@ const GoogleCallback = () => {
         
         setStatus('Exchanging authorization code...');
         
-        // Exchange authorization code for access token
-        // Since we're on the client side, we'll use a simpler approach
-        // and get user info directly from Google's userinfo endpoint
+        // Exchange authorization code for access token using backend
+        // This is the proper way to handle OAuth - backend has client_secret
+        const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://stockapi3-c6h7ejh2eedabuf6.centralindia-01.azurewebsites.net';
         
-        // For client-side flow, we need to exchange the code for a token
-        // This typically requires a backend, but we can try a direct approach
+        console.log('🔄 Calling backend for token exchange...');
+        console.log('Backend URL:', `${API_BASE_URL}/api/auth/google/token`);
         
-        const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+        const tokenResponse = await fetch(`${API_BASE_URL}/api/auth/google/token`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
           },
-          body: new URLSearchParams({
-            client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+          body: JSON.stringify({
             code: code,
-            redirect_uri: `${window.location.origin}/auth/google/callback`,
-            grant_type: 'authorization_code',
-            // Note: This won't work without client_secret for security reasons
-            // But let's try anyway and fall back to a different approach
+            redirect_uri: `${window.location.origin}/auth/google/callback`
           }),
         });
         
         if (!tokenResponse.ok) {
-          console.log('⚠️ Token exchange failed, trying alternative approach...');
+          const errorText = await tokenResponse.text();
+          console.log('❌ Backend token exchange failed:', errorText);
           
-          // Alternative: Use the authorization code as our "token"
-          // and redirect to dashboard with a demo user profile
-          // This is a workaround since client-side OAuth is limited
+          let errorMessage = 'Backend authentication failed';
+          try {
+            const errorData = JSON.parse(errorText);
+            errorMessage = errorData.error || errorMessage;
+          } catch (e) {
+            // If not JSON, use the text as error
+            errorMessage = errorText || errorMessage;
+          }
           
-          const demoUser = {
-            user_id: 'google_' + Date.now(),
-            user_name: 'Google User',
-            email: 'user@gmail.com',
-            picture: 'https://via.placeholder.com/96',
-            broker: 'google'
-          };
-          
-          // Store the auth code as our token (demo purposes)
-          localStorage.setItem('google_auth_token', code);
-          localStorage.setItem('user_profile', JSON.stringify(demoUser));
-          
-          setStatus('Login successful! Redirecting...');
-          
-          // Login with demo data
-          await login({
-            token: code,
-            user: demoUser
-          });
-          
-          // Redirect to dashboard
-          setTimeout(() => navigate('/dashboard', { replace: true }), 1000);
+          setStatus(`Authentication failed: ${errorMessage}`);
+          setTimeout(() => {
+            navigate('/login?error=backend_auth_failed&message=' + 
+              encodeURIComponent(`Backend error: ${errorMessage}`));
+          }, 3000);
           return;
         }
         
-        // If token exchange worked, get the access token
-        const tokenData = await tokenResponse.json();
-        console.log('✅ Token exchange successful');
+        // Backend successfully exchanged code for token and user info
+        const authData = await tokenResponse.json();
+        console.log('✅ Backend authentication successful');
+        console.log('👤 Real user info received:', authData.user);
         
-        setStatus('Getting user information...');
-        
-        // Get user info using access token
-        const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
-          headers: {
-            'Authorization': `Bearer ${tokenData.access_token}`,
-          },
-        });
-        
-        if (!userResponse.ok) {
-          throw new Error('Failed to get user information');
+        if (!authData.success || !authData.user) {
+          throw new Error('Invalid response from backend');
         }
-        
-        const userInfo = await userResponse.json();
-        console.log('👤 User info received:', userInfo);
-        
-        // Store the token and user info
-        localStorage.setItem('google_auth_token', tokenData.access_token);
-        localStorage.setItem('user_profile', JSON.stringify(userInfo));
         
         setStatus('Login successful! Redirecting...');
         
-        // Login with real user data
+        // Store the token and user info (real data from backend!)
+        localStorage.setItem('google_auth_token', authData.access_token);
+        localStorage.setItem('user_profile', JSON.stringify(authData.user));
+        
+        // Login with REAL user data from Google (no more "Google User"!)
         await login({
-          token: tokenData.access_token,
-          user: {
-            user_id: userInfo.id,
-            user_name: userInfo.name,
-            email: userInfo.email,
-            picture: userInfo.picture,
-            broker: 'google'
-          }
+          token: authData.access_token,
+          user: authData.user // This now contains real name, email, picture!
         });
         
         // Redirect to dashboard

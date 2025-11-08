@@ -79,8 +79,8 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   // New stocks added from user request
   {
     id: 1,
-    symbol: 'BSE:506685',
-    displaySymbol: '506685.BO',
+    symbol: 'ULTRAMAR.BO',
+    displaySymbol: 'UltraMarine PigULTRAMAR.BO',
     recommendedDate: 'July 19, 2025',
     suggested_price: 590, // Buy Signal price
     target_price: '₹710',
@@ -92,9 +92,9 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     position: 'buy'
   },
   {
-    id: 7,
-    symbol: 'BSE:538734',
-    displaySymbol: '538734.BO',
+    id: 17,
+    symbol: 'CEINSYSTECH.BO',
+    displaySymbol: 'CEINSYSTECH.BO',
     recommendedDate: 'Feb 2, 2025',
     suggested_price: 1730, // Buy Signal price
     target_price: '₹2100',
@@ -220,7 +220,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   {
     id: 10,
     symbol: 'BSE:539551',
-    displaySymbol: '539551.BO',
+    displaySymbol: 'Narayana Hrudayalaya',
     recommendedDate: 'Sep 1, 2025',
     suggested_price: 1750, // Buy Signal price
     target_price: '₹2100',
@@ -304,7 +304,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
   {
     id: 16,
     symbol: 'BSE:519600',
-    displaySymbol: '519600.BO',
+    displaySymbol: 'CCL Products',
     recommendedDate: 'Jun 1, 2025',
     suggested_price: 786, // Buy Signal price
     target_price: '₹943',

@@ -40,10 +40,10 @@ const Login = () => {
     }
   }, []);
 
-  // Initialize Google OAuth with simplified approach
+  // Initialize Google OAuth (traditional redirect flow)
   useEffect(() => {
     const initializeGoogle = () => {
-      console.log('Initializing Google OAuth...');
+      console.log('Initializing Google OAuth redirect flow...');
       
       // Validate Client ID
       if (!GOOGLE_CLIENT_ID) {
@@ -61,15 +61,16 @@ const Login = () => {
         return;
       }
       
-      // For direct OAuth approach, we don't need Google Identity Services
-      // Just validate the client ID and set as loaded
+      // OAuth redirect flow doesn't need additional services to load
       setGoogleLoaded(true);
-      console.log('Google OAuth ready for direct URL approach');
+      console.log('✅ Google OAuth ready for redirect flow');
     };
     
     // Start initialization
     initializeGoogle();
   }, []);
+
+
 
   // If already authenticated, redirect to dashboard
   if (isAuthenticated) {
@@ -79,7 +80,7 @@ const Login = () => {
 
 
   const handleGoogleLogin = () => {
-    console.log('Google login button clicked');
+    console.log('Google OAuth redirect login clicked');
     console.log('Current Client ID:', GOOGLE_CLIENT_ID);
     console.log('Google loaded:', googleLoaded);
     
@@ -96,16 +97,15 @@ const Login = () => {
     setIsLoading(true);
     setError('');
     
-    // Use direct redirect approach - simpler and more reliable
-    // Dynamic redirect URI based on current environment
+    // Use traditional OAuth redirect flow with backend support
     const currentOrigin = window.location.origin;
     const redirectUri = encodeURIComponent(`${currentOrigin}/auth/google/callback`);
     const scope = encodeURIComponent('openid email profile');
-    const responseType = 'code'; // Use authorization code flow
+    const responseType = 'code'; // Authorization code flow
     const state = 'google_oauth_' + Date.now(); // Security state parameter
     
     // Debug logging
-    console.log('🔐 OAuth Debug Info:');
+    console.log('🔐 OAuth Redirect Flow:');
     console.log('Current Origin:', currentOrigin);
     console.log('Redirect URI:', `${currentOrigin}/auth/google/callback`);
     console.log('State:', state);
@@ -122,9 +122,9 @@ const Login = () => {
       `access_type=offline&` +
       `prompt=select_account`;
     
-    console.log('Redirecting to Google OAuth URL:', authUrl);
+    console.log('🚀 Redirecting to Google OAuth URL:', authUrl);
     
-    // Direct redirect - cleaner approach
+    // Redirect to Google OAuth (backend will handle token exchange)
     window.location.href = authUrl;
   };
 
