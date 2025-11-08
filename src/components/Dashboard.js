@@ -66,7 +66,7 @@ const Dashboard = () => {
       <header className="dashboard-header">
         <div className="header-content">
           <div className="header-left">
-            <h1>📈 Stock Watchlist</h1>
+            <h1>� Stock some stocks</h1>
             <span className="user-info">
               Welcome, {user?.user_name || 'User'}
             </span>

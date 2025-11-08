@@ -999,32 +999,34 @@ const styles = `
 .filter-controls-modern {
   background: white;
   border: 1px solid #e1e5e9;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 20px 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border-radius: 16px;
+  padding: 32px;
+  margin: 24px 0;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  max-width: none;
+  width: 100%;
 }
 
 .primary-filters {
   display: flex;
-  gap: 15px;
+  gap: 24px;
   align-items: center;
   flex-wrap: wrap;
 }
 
 .search-filter {
-  flex: 1;
-  min-width: 250px;
+  flex: 2;
+  min-width: 350px;
 }
 
 .search-input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 16px 20px;
   border: 2px solid #e1e5e9;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 12px;
+  font-size: 16px;
   background: #f8f9fa;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .search-input:focus {
@@ -1035,14 +1037,14 @@ const styles = `
 }
 
 .industry-select {
-  padding: 12px 16px;
+  padding: 16px 20px;
   border: 2px solid #e1e5e9;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 12px;
+  font-size: 16px;
   background: white;
-  min-width: 150px;
+  min-width: 200px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .industry-select:focus {
@@ -1052,39 +1054,43 @@ const styles = `
 }
 
 .advanced-toggle {
-  background: #6c757d;
+  background: #3498db;
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 16px 24px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s ease;
   white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
 }
 
 .advanced-toggle:hover {
-  background: #5a6268;
-  transform: translateY(-1px);
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.4);
 }
 
 .clear-all-btn {
-  background: #dc3545;
+  background: #e74c3c;
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
+  padding: 16px 24px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.3s ease;
   white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
 }
 
 .clear-all-btn:hover {
-  background: #c82333;
-  transform: translateY(-1px);
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(231, 76, 60, 0.4);
 }
 
 .advanced-filters {
@@ -1153,38 +1159,57 @@ const styles = `
   background: white;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  font-size: 15px;
 }
 
 .recommendations-table th {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
   color: white;
   font-weight: 600;
   text-align: left;
   border: none;
-  padding: 16px 12px;
-  font-size: 14px;
+  padding: 20px 16px;
+  font-size: 15px;
+  letter-spacing: 0.5px;
 }
 
 .recommendations-table td {
-  padding: 16px 12px;
-  border-bottom: 1px solid #f1f3f4;
+  padding: 20px 16px;
+  border-bottom: 1px solid #e8ecf0;
   vertical-align: middle;
+  font-size: 14px;
 }
 
 .recommendations-table tbody tr:hover {
-  background-color: #f8f9ff;
+  background-color: #f8fafc;
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
 }
 
 .recommendations-table tbody tr:last-child td {
   border-bottom: none;
 }
 
+.recommendations-table-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
 .recommendations-table-section h3 {
-  color: #495057;
-  font-size: 24px;
-  margin-bottom: 8px;
-  font-weight: 700;
+  color: #2c3e50;
+  font-size: 28px;
+  margin-bottom: 16px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.recommendations-preview {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
 }
 
 @media (max-width: 768px) {
@@ -1213,29 +1238,35 @@ const styles = `
 
 /* Table Content Styles */
 .stock-info {
-  min-width: 200px;
+  min-width: 280px;
 }
 
 .stock-name {
-  font-weight: 600;
+  font-weight: 700;
   color: #2c3e50;
-  margin-bottom: 4px;
-  font-size: 15px;
+  margin-bottom: 6px;
+  font-size: 16px;
+  line-height: 1.3;
 }
 
 .stock-symbol {
-  font-size: 12px;
-  color: #6c757d;
-  font-family: monospace;
+  font-size: 13px;
+  color: #7f8c8d;
+  font-family: 'Consolas', 'Monaco', monospace;
+  background: #f8f9fa;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
 }
 
 .sector-badge {
-  background: #e3f2fd;
-  color: #1976d2;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
+  background: #e8f5e8;
+  color: #27ae60;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid #d5eddb;
 }
 
 .date-small {
@@ -1245,20 +1276,25 @@ const styles = `
 }
 
 .return-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 14px;
+  min-width: 80px;
+  text-align: center;
+  display: inline-block;
 }
 
 .return-badge.positive {
-  background: #d4edda;
-  color: #155724;
+  background: #d1f2eb;
+  color: #0e6655;
+  border: 1px solid #a3e4d7;
 }
 
 .return-badge.negative {
-  background: #f8d7da;
-  color: #721c24;
+  background: #fadbd8;
+  color: #922b21;
+  border: 1px solid #f1948a;
 }
 
 .pe-value {
@@ -1268,22 +1304,25 @@ const styles = `
 
 .action-buttons {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  justify-content: center;
 }
 
 .action-btn {
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  padding: 8px 12px;
+  background: #ffffff;
+  border: 2px solid #e1e8ed;
+  border-radius: 10px;
+  padding: 12px 16px;
   cursor: pointer;
-  font-size: 14px;
-  transition: all 0.2s ease;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .action-btn:hover {
-  background: #e9ecef;
-  transform: translateY(-1px);
+  background: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .chart-btn:hover {
