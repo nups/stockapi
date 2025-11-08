@@ -60,7 +60,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     goal: 'Consumer discretionary recovery with 18-20% upside',
     remarks: 'Improving same-store sales growth and margin expansion in key brands.',
     time_frame: '10-14 months',
-    industry: 'Textiles & Apparel',
+    industry: 'Textiles',
     position: 'buy'
   },
   {
@@ -90,7 +90,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     goal: 'Infrastructure play with 15-18% growth potential',
     remarks: 'Strong order book and government policy support for solar pumps.',
     time_frame: '12-16 months',
-    industry: 'Industrial Equipment',
+    industry: 'Industrial',
     position: 'buy'
   },
   {
@@ -120,7 +120,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     goal: 'Knowledge services play with 20-24% upside',
     remarks: 'Niche player in financial research with strong moat and recurring revenues.',
     time_frame: '12-18 months',
-    industry: 'Financial Services',
+    industry: 'FinTech',
     position: 'buy'
   },
   {
@@ -135,7 +135,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     goal: 'Pharma sector recovery with 18-20% potential',
     remarks: 'Diversified pharma portfolio with contract manufacturing growth.',
     time_frame: '14-18 months',
-    industry: 'Pharmaceuticals',
+    industry: 'Pharma',
     position: 'buy'
   },
   {
@@ -180,7 +180,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     goal: 'Infrastructure capex play with 18-19% upside',
     remarks: 'Strong fleet utilization and growing order book from infra projects.',
     time_frame: '12-16 months',
-    industry: 'Industrial Services',
+    industry: 'Services',
     position: 'buy'
   },
   {
@@ -195,7 +195,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     goal: 'Pharma generic play with 20-21% potential',
     remarks: 'Growing international business and new product launches.',
     time_frame: '14-18 months',
-    industry: 'Pharmaceuticals',
+    industry: 'Pharma',
     position: 'buy'
   },
   {
@@ -225,7 +225,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     goal: 'Tourism recovery play with 20-21% upside',
     remarks: 'Asset-light model with strong portfolio of premium hotels.',
     time_frame: '12-16 months',
-    industry: 'Hotels & Tourism',
+    industry: 'Tourism',
     position: 'buy'
   },
   {
@@ -270,7 +270,7 @@ const FUNDAMENTAL_SAMPLE_DATA = [
     goal: 'Consumer durables play with 21% upside',
     remarks: 'Market leader in quartz sinks with expanding domestic and export markets.',
     time_frame: '12-16 months',
-    industry: 'Consumer Durables',
+    industry: 'Consumer',
     position: 'buy'
   }
 ];
@@ -886,20 +886,20 @@ const RecommendationsPreview = () => {
               border: '1px solid #dee2e6'
             }}>
               <h4 style={{ margin: '0 0 15px 0', fontSize: '18px', color: '#2c3e50' }}>
-                📊 Stock Chart for {chartModal.companyName || chartModal.yahooSymbol}
+                📊 Stock Analysis for {chartModal.companyName || chartModal.yahooSymbol}
               </h4>
               <p style={{ margin: '10px 0', fontSize: '14px', color: '#6c757d' }}>
-                View detailed candlestick charts and technical analysis:
+                View comprehensive financial analysis and charts:
               </p>
               
               <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
                 <a 
-                  href={`https://finance.yahoo.com/quote/${chartModal.yahooSymbol}/chart`}
+                  href={`https://www.screener.in/company/${chartModal.yahooSymbol?.replace('.NS', '').replace('.BO', '')}/`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
                     padding: '12px 20px',
-                    backgroundColor: '#6f42c1',
+                    backgroundColor: '#e74c3c',
                     color: 'white',
                     textDecoration: 'none',
                     borderRadius: '8px',
@@ -908,19 +908,19 @@ const RecommendationsPreview = () => {
                     display: 'inline-block',
                     transition: 'background-color 0.3s'
                   }}
-                  onMouseOver={(e) => e.target.style.backgroundColor = '#5a359a'}
-                  onMouseOut={(e) => e.target.style.backgroundColor = '#6f42c1'}
+                  onMouseOver={(e) => e.target.style.backgroundColor = '#c0392b'}
+                  onMouseOut={(e) => e.target.style.backgroundColor = '#e74c3c'}
                 >
-                  📈 Yahoo Finance Chart
+                  � Screener Analysis
                 </a>
                 
                 <a 
-                  href={`https://www.google.com/finance/quote/${chartModal.yahooSymbol?.replace('.NS', '').replace('.BO', '')}:${chartModal.tradingViewSymbol?.includes('BSE:') ? 'BOM' : 'NSE'}`}
+                  href={`https://www.screener.in/company/${chartModal.yahooSymbol?.replace('.NS', '').replace('.BO', '')}/charts/`}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
                     padding: '12px 20px',  
-                    backgroundColor: '#28a745',
+                    backgroundColor: '#9b59b6',
                     color: 'white',
                     textDecoration: 'none',
                     borderRadius: '8px',
@@ -929,10 +929,10 @@ const RecommendationsPreview = () => {
                     display: 'inline-block',
                     transition: 'background-color 0.3s'
                   }}
-                  onMouseOver={(e) => e.target.style.backgroundColor = '#218838'}
-                  onMouseOut={(e) => e.target.style.backgroundColor = '#28a745'}
+                  onMouseOver={(e) => e.target.style.backgroundColor = '#8e44ad'}
+                  onMouseOut={(e) => e.target.style.backgroundColor = '#9b59b6'}
                 >
-                  📊 Google Finance Chart
+                  � Screener Charts
                 </a>
                 
                 <a 
@@ -958,7 +958,7 @@ const RecommendationsPreview = () => {
               </div>
               
               <div style={{ marginTop: '20px', fontSize: '12px', color: '#868e96' }}>
-                <p>💡 <strong>Tip:</strong> These external charts provide full candlestick analysis, technical indicators, and real-time data.</p>
+                <p>💡 <strong>Tip:</strong> Screener.in provides comprehensive Indian stock analysis, financials, ratios, and TradingView offers advanced charting tools.</p>
               </div>
             </div>
           </div>
@@ -1154,7 +1154,17 @@ const styles = `
   margin-top: 12px;
   background: white;
   font-size: 15px;
+  table-layout: fixed;
 }
+
+.recommendations-table th:nth-child(1) { width: 20%; } /* Stock */
+.recommendations-table th:nth-child(2) { width: 12%; } /* Sector */
+.recommendations-table th:nth-child(3) { width: 12%; } /* Entry */
+.recommendations-table th:nth-child(4) { width: 12%; } /* Current */
+.recommendations-table th:nth-child(5) { width: 12%; } /* Returns */
+.recommendations-table th:nth-child(6) { width: 12%; } /* Target */
+.recommendations-table th:nth-child(7) { width: 8%; }  /* PE */
+.recommendations-table th:nth-child(8) { width: 12%; } /* Actions */
 
 .recommendations-table th {
   background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
@@ -1172,6 +1182,11 @@ const styles = `
   border-bottom: 1px solid #f1f3f4;
   vertical-align: middle;
   font-size: 14px;
+  overflow: hidden;
+}
+
+.recommendations-table td.sector {
+  padding: 12px 6px;
 }
 
 .recommendations-table tbody tr:hover {
@@ -1244,11 +1259,16 @@ const styles = `
 .sector-badge {
   background: #e8f5e8;
   color: #27ae60;
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 13px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
   font-weight: 600;
   border: 1px solid #d5eddb;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
+  display: inline-block;
 }
 
 .date-small {
