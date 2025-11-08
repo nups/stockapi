@@ -6,21 +6,12 @@ import RecommendationsPreview from './RecommendationsPreview';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState('zerodha'); // Default to Zerodha tab
+  const [activeTab, setActiveTab] = useState('recommendations'); // Default to Recommendations tab
   
   // Debug logging
   console.log('🎯 Dashboard loaded - Active tab:', activeTab);
   console.log('👤 User:', user);
-  const [userStats, setUserStats] = useState({
-    totalStocks: 0,
-    watchlistCount: 0,
-    totalValue: 0,
-    dailyChange: 0
-  });
-
   useEffect(() => {
-    // Fetch user stats on component mount
-    fetchUserStats();
     
     // Check for URL tab parameter first
     const urlParams = new URLSearchParams(window.location.search);
@@ -59,20 +50,7 @@ const Dashboard = () => {
     }
   }, []);
 
-  const fetchUserStats = async () => {
-    try {
-      // This would typically call your API to get user stats
-      // For now, using demo data
-      setUserStats({
-        totalStocks: 15,
-        watchlistCount: 3,
-        totalValue: 125000,
-        dailyChange: 2.5
-      });
-    } catch (error) {
-      console.error('Failed to fetch user stats:', error);
-    }
-  };
+
 
   const handleLogout = async () => {
     try {
@@ -104,41 +82,6 @@ const Dashboard = () => {
         </div>
       </header>
 
-      {/* Stats Cards */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-icon">📊</div>
-          <div className="stat-content">
-            <h3>{userStats.totalStocks}</h3>
-            <p>Total Stocks</p>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon">📋</div>
-          <div className="stat-content">
-            <h3>{userStats.watchlistCount}</h3>
-            <p>Watchlists</p>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon">💰</div>
-          <div className="stat-content">
-            <h3>₹{userStats.totalValue.toLocaleString()}</h3>
-            <p>Portfolio Value</p>
-          </div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-icon">
-            {userStats.dailyChange >= 0 ? '📈' : '📉'}
-          </div>
-          <div className="stat-content">
-            <h3 className={userStats.dailyChange >= 0 ? 'positive' : 'negative'}>
-              {userStats.dailyChange >= 0 ? '+' : ''}{userStats.dailyChange}%
-            </h3>
-            <p>Daily Change</p>
-          </div>
-        </div>
-      </div>
 
       {/* Navigation Tabs */}
       <div className="dashboard-tabs">
