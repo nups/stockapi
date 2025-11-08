@@ -748,8 +748,6 @@ const RecommendationsPreview = () => {
     
     return (
       <div className="recommendations-table-section">
-        <h3>{title} ({processedData.length} stocks)</h3>
-        
         {/* Filter Controls */}
         <FilterControls data={data} />
         
@@ -1193,15 +1191,6 @@ const styles = `
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 24px;
-}
-
-.recommendations-table-section h3 {
-  color: #2c3e50;
-  font-size: 28px;
-  margin-bottom: 16px;
-  font-weight: 800;
-  text-align: center;
-  letter-spacing: -0.5px;
 }
 
 .recommendations-preview {
