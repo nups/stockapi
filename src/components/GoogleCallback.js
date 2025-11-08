@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -7,8 +7,15 @@ const GoogleCallback = () => {
   const [searchParams] = useSearchParams();
   const { login } = useAuth();
   const [status, setStatus] = useState('Processing...');
+  const hasProcessed = useRef(false);
 
   useEffect(() => {
+    // Prevent multiple calls
+    if (hasProcessed.current) {
+      console.log('⚠️ Already processed, skipping duplicate call');
+      return;
+    }
+    hasProcessed.current = true;
     const handleGoogleCallback = async () => {
       try {
         console.log('🔄 Processing Google OAuth callback...');
@@ -87,15 +94,19 @@ const GoogleCallback = () => {
         console.log('🔄 Calling backend for token exchange...');
         console.log('Backend URL:', `${API_BASE_URL}/api/auth/google/token`);
         
+        const requestBody = {
+          code: code,
+          redirect_uri: `${window.location.origin}/auth/google/callback`
+        };
+        
+        console.log('📤 Request payload:', requestBody);
+        
         const tokenResponse = await fetch(`${API_BASE_URL}/api/auth/google/token`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            code: code,
-            redirect_uri: `${window.location.origin}/auth/google/callback`
-          }),
+          body: JSON.stringify(requestBody),
         });
         
         if (!tokenResponse.ok) {
@@ -151,7 +162,7 @@ const GoogleCallback = () => {
     };
 
     handleGoogleCallback();
-  }, [searchParams, login, navigate]);
+  }, [searchParams, login, navigate]); // Dependencies needed but controlled by hasProcessed ref
 
   return (
     <div className="login-container">
