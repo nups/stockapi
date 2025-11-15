@@ -449,11 +449,11 @@ const RecommendationsPreview = () => {
     setAiModal(prev => ({ ...prev, isOpen: true, stock, loading: true, recommendation: null }));
     
     try {
-      // Try to get session token for authentication
-      const sessionToken = localStorage.getItem('zerodha_session') || localStorage.getItem('google_auth_token');
+      // Get Google session token for authentication
+      const sessionToken = localStorage.getItem('google_auth_token');
       
       if (!sessionToken) {
-        throw new Error('Authentication required - please connect to Zerodha first');
+        throw new Error('Authentication required - please login with Google first');
       }
       
       console.log('Fetching AI recommendation for:', stock.companyName);
