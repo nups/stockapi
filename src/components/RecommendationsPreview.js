@@ -280,6 +280,7 @@ const RecommendationsPreview = () => {
   const [peData, setPeData] = useState({});
   const [loading, setLoading] = useState(true);
   const [chartModal, setChartModal] = useState({ isOpen: false, tradingViewSymbol: '', yahooSymbol: '', companyName: '' });
+  const [aiModal, setAiModal] = useState({ isOpen: false, stock: null, loading: false, recommendation: null, error: null });
   
   // Filter and Sort State
   const [filters, setFilters] = useState({
@@ -442,6 +443,118 @@ const RecommendationsPreview = () => {
     if (!currentPrice || !suggestedPrice) return null;
     return ((currentPrice - suggestedPrice) / suggestedPrice * 100).toFixed(2);
   };
+
+  // Function to fetch AI recommendation for a specific stock
+  const fetchAIRecommendation = async (stock) => {
+    setAiModal(prev => ({ ...prev, isOpen: true, stock, loading: true, recommendation: null }));
+    
+    try {
+      // Try to get session token for authentication
+      const sessionToken = localStorage.getItem('zerodha_session') || localStorage.getItem('google_auth_token');
+      
+      if (!sessionToken) {
+        throw new Error('Authentication required - please connect to Zerodha first');
+      }
+      
+      console.log('Fetching AI recommendation for:', stock.companyName);
+      
+      // Prepare query parameters with stock information
+      const stockParams = new URLSearchParams({
+        session: sessionToken,
+        symbol: stock.yahooSymbol,
+        company: stock.companyName,
+        trading_symbol: stock.yahooSymbol.replace('.NS', '').replace('.BO', ''),
+        industry: stock.industry || '',
+        current_price: currentPrices[stock.yahooSymbol] || stock.suggested_price || 0,
+        entry_price: stock.suggested_price || 0,
+        stockname: stock.companyName // Adding stockname parameter as requested
+      });
+      
+      // Call the AI recommendations endpoint with stock parameters
+      let response = await fetch(`https://stockapi3-c6h7ejh2eedabuf6.centralindia-01.azurewebsites.net/api/zerodha/holdings-ai?${stockParams.toString()}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('AI data received:', data);
+        
+        // Find recommendation for this specific stock from the holdings
+        let stockRecommendation = null;
+        
+        if (data.holdings && Array.isArray(data.holdings)) {
+          // Try multiple matching strategies to find the stock
+          stockRecommendation = data.holdings.find(holding => {
+            const tradingSymbol = stock.yahooSymbol.replace('.NS', '').replace('.BO', '');
+            const companyName = stock.companyName.toUpperCase().replace(/\s+/g, '');
+            
+            return (
+              holding.tradingsymbol === tradingSymbol ||
+              holding.tradingsymbol === companyName ||
+              holding.ai_recommendation?.symbol === stock.yahooSymbol ||
+              (holding.tradingsymbol && tradingSymbol.includes(holding.tradingsymbol)) ||
+              (holding.tradingsymbol && holding.tradingsymbol.includes(tradingSymbol))
+            );
+          });
+        }
+        
+        if (stockRecommendation && stockRecommendation.ai_recommendation) {
+          console.log('Found AI recommendation for', stock.companyName, ':', stockRecommendation.ai_recommendation);
+          setAiModal(prev => ({ ...prev, loading: false, recommendation: stockRecommendation.ai_recommendation }));
+          return;
+        } else {
+          console.log('No AI recommendation found for', stock.companyName, 'in holdings data');
+        }
+      }
+      
+      // Try the general AI recommendations endpoint with stock parameters
+      response = await fetch(`https://stockapi3-c6h7ejh2eedabuf6.centralindia-01.azurewebsites.net/api/ai-recommendations?${stockParams.toString()}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Try to find recommendation for this stock
+        if (data.recommendations && Array.isArray(data.recommendations)) {
+          const stockRec = data.recommendations.find(rec => 
+            rec.symbol === stock.yahooSymbol || 
+            rec.company === stock.companyName
+          );
+          
+          if (stockRec) {
+            setAiModal(prev => ({ ...prev, loading: false, recommendation: stockRec }));
+            return;
+          }
+        }
+      }
+      
+      throw new Error('No AI recommendation found for this stock');
+      
+    } catch (error) {
+      console.error('AI API failed:', error.message);
+      
+      // Show error message instead of mock data
+      setAiModal(prev => ({ 
+        ...prev, 
+        loading: false, 
+        recommendation: null,
+        error: error.message.includes('Authentication required') 
+          ? 'Please connect to Zerodha first to get AI recommendations'
+          : 'Unable to fetch AI recommendation at this time. Please try again later.'
+      }));
+    }
+  };
+
+
 
   // Function to get all unique symbols from fundamental dataset only
   const getAllSymbols = () => {
@@ -842,6 +955,14 @@ const RecommendationsPreview = () => {
                       📈
                     </button>
                     <button 
+                      className="action-btn ai-btn" 
+                      onClick={() => fetchAIRecommendation(stock)}
+                      title="Get AI Recommendation"
+                      disabled={loading}
+                    >
+                      🤖
+                    </button>
+                    <button 
                       className="action-btn info-btn" 
                       title={`${stock.reason || 'No reason provided'}\n\nRemarks: ${stock.remarks || 'No remarks'}`}
                       aria-label="View details"
@@ -967,6 +1088,140 @@ const RecommendationsPreview = () => {
     );
   };
 
+  // AI Recommendation Modal Component
+  const AIModal = () => {
+    if (!aiModal.isOpen) return null;
+
+    const getRecommendationColor = (recommendation) => {
+      switch (recommendation?.toUpperCase()) {
+        case 'BUY': return '#28a745';
+        case 'SELL': return '#dc3545';
+        case 'HOLD': return '#ffc107';
+        default: return '#6c757d';
+      }
+    };
+
+    const getScoreColor = (score) => {
+      if (score >= 4) return '#28a745';
+      if (score >= 3) return '#ffc107';
+      if (score >= 2) return '#fd7e14';
+      return '#dc3545';
+    };
+
+
+
+    return (
+      <div className="ai-modal-overlay" onClick={() => setAiModal({ isOpen: false, stock: null, loading: false, recommendation: null, error: null })}>
+        <div className="ai-modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="ai-modal-header">
+            <h3>🤖 AI Analysis: {aiModal.stock?.companyName || 'Stock'}</h3>
+            <button 
+              className="ai-modal-close"
+              onClick={() => setAiModal({ isOpen: false, stock: null, loading: false, recommendation: null, error: null })}
+            >
+              ✕
+            </button>
+          </div>
+          
+          <div className="ai-modal-body">
+            {aiModal.loading ? (
+              <div className="ai-loading">
+                <div className="loading-spinner-ai"></div>
+                <p>Analyzing stock data with AI...</p>
+              </div>
+            ) : aiModal.recommendation ? (
+              <div className="ai-recommendation-content">
+                {/* Header with stock info */}
+                <div className="stock-header-ai">
+                  <div className="stock-details">
+                    <h4>{aiModal.stock?.companyName}</h4>
+                    <p className="stock-symbol">{aiModal.stock?.yahooSymbol} | {aiModal.stock?.industry}</p>
+                    <p className="current-price">Current: ₹{currentPrices[aiModal.stock?.yahooSymbol]?.toFixed(2) || 'N/A'}</p>
+                  </div>
+                </div>
+
+                {/* Recommendation Summary */}
+                <div className="recommendation-summary">
+                  <div className="recommendation-badge" style={{ backgroundColor: getRecommendationColor(aiModal.recommendation.recommendation) }}>
+                    <span className="rec-action">{aiModal.recommendation.recommendation}</span>
+                    <span className="rec-priority">Priority: {aiModal.recommendation.action_priority}</span>
+                  </div>
+                  
+                  <div className="scores-grid">
+                    <div className="score-item">
+                      <span className="score-label">Fundamental</span>
+                      <span className="score-value" style={{ color: getScoreColor(aiModal.recommendation.fundamental_score) }}>
+                        {aiModal.recommendation.fundamental_score}/5
+                      </span>
+                    </div>
+                    <div className="score-item">
+                      <span className="score-label">Technical</span>
+                      <span className="score-value" style={{ color: getScoreColor(aiModal.recommendation.technical_score) }}>
+                        {aiModal.recommendation.technical_score}/5
+                      </span>
+                    </div>
+                    <div className="score-item">
+                      <span className="score-label">Overall</span>
+                      <span className="score-value overall" style={{ color: getScoreColor(aiModal.recommendation.overall_score) }}>
+                        {aiModal.recommendation.overall_score}/5
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Analysis Details */}
+                <div className="analysis-details">
+                  <div className="analysis-section">
+                    <h5>🎯 AI Reasoning</h5>
+                    <p>{aiModal.recommendation.reason}</p>
+                  </div>
+                  
+                  <div className="analysis-section">
+                    <h5>💡 Key Insights</h5>
+                    <p>{aiModal.recommendation.insight}</p>
+                  </div>
+                  
+                  <div className="analysis-section">
+                    <h5>⚠️ Risk Assessment</h5>
+                    <p className="risk-note">{aiModal.recommendation.risk_note}</p>
+                  </div>
+                  
+                  {aiModal.recommendation.analysis_timestamp && (
+                    <div className="analysis-footer">
+                      <small>Analysis generated: {aiModal.recommendation.analysis_timestamp}</small>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : aiModal.error ? (
+              <div className="ai-error">
+                <div className="error-icon">⚠️</div>
+                <h4>AI Recommendation Unavailable</h4>
+                <p>{aiModal.error}</p>
+                {aiModal.error.includes('connect to Zerodha') && (
+                  <div className="error-action">
+                    <p><strong>To get AI recommendations:</strong></p>
+                    <ol>
+                      <li>Go to the "Zerodha Integration" tab</li>
+                      <li>Connect your Zerodha account</li>
+                      <li>Return here and try again</li>
+                    </ol>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="ai-error">
+                <div className="error-icon">❌</div>
+                <h4>No Recommendation Available</h4>
+                <p>Unable to generate AI recommendation for this stock at this time.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="recommendations-preview">
       <div className="recommendations-content-vertical">
@@ -984,6 +1239,9 @@ const RecommendationsPreview = () => {
       
       {/* Chart Modal */}
       <ChartModal />
+      
+      {/* AI Recommendation Modal */}
+      <AIModal />
     </div>
   );
 };
@@ -1341,6 +1599,330 @@ const styles = `
 .info-btn:hover {
   background: #fff3cd;
   border-color: #ffc107;
+}
+
+.ai-btn:hover {
+  background: #e8f5e8;
+  border-color: #28a745;
+}
+
+.ai-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* AI Modal Styles */
+.ai-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  padding: 20px;
+}
+
+.ai-modal-content {
+  background: white;
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+.ai-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #e9ecef;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 16px 16px 0 0;
+}
+
+.ai-modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.ai-modal-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.ai-modal-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.ai-modal-body {
+  padding: 24px;
+}
+
+.ai-loading {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.loading-spinner-ai {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.stock-header-ai {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.stock-details h4 {
+  margin: 0 0 8px 0;
+  color: #2c3e50;
+  font-size: 18px;
+}
+
+.stock-symbol {
+  font-family: 'Consolas', 'Monaco', monospace;
+  background: #e9ecef;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 12px;
+  color: #495057;
+  margin-bottom: 8px;
+}
+
+.current-price {
+  font-weight: 600;
+  color: #28a745;
+  font-size: 16px;
+  margin: 0;
+}
+
+.recommendation-summary {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.recommendation-badge {
+  background: #28a745;
+  color: white;
+  padding: 16px 20px;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 140px;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.rec-action {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.rec-priority {
+  display: block;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.scores-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  flex: 1;
+}
+
+.score-item {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.score-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.score-label {
+  display: block;
+  font-size: 11px;
+  color: #6c757d;
+  margin-bottom: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.score-value {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.score-value.overall {
+  font-size: 18px;
+}
+
+.analysis-details {
+  space-y: 16px;
+}
+
+.analysis-section {
+  background: #f8f9fa;
+  border-left: 4px solid #667eea;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  border-radius: 0 8px 8px 0;
+}
+
+.analysis-section h5 {
+  margin: 0 0 12px 0;
+  color: #2c3e50;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.analysis-section p {
+  margin: 0;
+  color: #495057;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.risk-note {
+  color: #dc3545 !important;
+  font-weight: 500;
+}
+
+.analysis-footer {
+  text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid #e9ecef;
+  margin-top: 20px;
+}
+
+.analysis-footer small {
+  color: #6c757d;
+  font-size: 11px;
+}
+
+.ai-error {
+  text-align: center;
+  padding: 40px 20px;
+  color: #dc3545;
+}
+
+.ai-error .error-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.ai-error h4 {
+  color: #dc3545;
+  margin: 0 0 16px 0;
+  font-size: 18px;
+}
+
+.ai-error p {
+  color: #6c757d;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.error-action {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.error-action p {
+  margin: 0 0 12px 0;
+  color: #495057;
+  font-weight: 600;
+}
+
+.error-action ol {
+  margin: 0;
+  padding-left: 20px;
+  color: #6c757d;
+}
+
+.error-action li {
+  margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+  .ai-modal-content {
+    margin: 10px;
+    max-height: 95vh;
+  }
+  
+  .recommendation-summary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .scores-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ai-modal-header {
+    padding: 16px;
+  }
+  
+  .ai-modal-body {
+    padding: 16px;
+  }
 }
 
 .loading, .error {
