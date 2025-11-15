@@ -511,32 +511,6 @@ const RecommendationsPreview = () => {
         }
       }
       
-      // Try the general AI recommendations endpoint with stock parameters
-      response = await fetch(`https://stockapi3-c6h7ejh2eedabuf6.centralindia-01.azurewebsites.net/api/ai-recommendations?${stockParams.toString()}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        
-        // Try to find recommendation for this stock
-        if (data.recommendations && Array.isArray(data.recommendations)) {
-          const stockRec = data.recommendations.find(rec => 
-            rec.symbol === stock.yahooSymbol || 
-            rec.company === stock.companyName
-          );
-          
-          if (stockRec) {
-            setAiModal(prev => ({ ...prev, loading: false, recommendation: stockRec }));
-            return;
-          }
-        }
-      }
-      
       throw new Error('No AI recommendation found for this stock');
       
     } catch (error) {
