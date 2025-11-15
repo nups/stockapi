@@ -449,8 +449,8 @@ const RecommendationsPreview = () => {
     setAiModal(prev => ({ ...prev, isOpen: true, stock, loading: true, recommendation: null }));
     
     try {
-      // Get Google session token for authentication
-      const sessionToken = localStorage.getItem('google_auth_token');
+      // Get Google session token for authentication (fallback to auth token if session token not available)
+      const sessionToken = localStorage.getItem('google_session_token') || localStorage.getItem('google_auth_token');
       
       if (!sessionToken) {
         throw new Error('Authentication required - please login with Google first');

@@ -194,6 +194,11 @@ export function AuthProvider({ children }) {
         localStorage.setItem('google_auth_token', credentials.token);
         localStorage.setItem('user_profile', JSON.stringify(credentials.user));
         
+        // Also store session token if available
+        if (credentials.session_token) {
+          localStorage.setItem('google_session_token', credentials.session_token);
+        }
+        
         dispatch({
           type: AUTH_ACTIONS.LOGIN_SUCCESS,
           payload: { user: credentials.user }

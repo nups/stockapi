@@ -145,9 +145,15 @@ const GoogleCallback = () => {
         localStorage.setItem('google_auth_token', authData.access_token);
         localStorage.setItem('user_profile', JSON.stringify(authData.user));
         
+        // Also store session token if available from backend
+        if (authData.session_token || authData.id_token) {
+          localStorage.setItem('google_session_token', authData.session_token || authData.id_token);
+        }
+        
         // Login with REAL user data from Google (no more "Google User"!)
         await login({
           token: authData.access_token,
+          session_token: authData.session_token || authData.id_token,
           user: authData.user // This now contains real name, email, picture!
         });
         
