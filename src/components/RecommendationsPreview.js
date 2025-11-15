@@ -483,7 +483,21 @@ const RecommendationsPreview = () => {
         const data = await response.json();
         console.log('AI data received:', data);
         
-        // Find recommendation for this specific stock from the holdings
+        // Check if AI recommendation is in stock_analysis (new backend format)
+        if (data.stock_analysis && data.stock_analysis.ai_recommendation) {
+          console.log('Found AI recommendation in stock_analysis for', stock.companyName, ':', data.stock_analysis.ai_recommendation);
+          setAiModal(prev => ({ ...prev, loading: false, recommendation: data.stock_analysis.ai_recommendation }));
+          return;
+        }
+        
+        // Check if AI recommendation is directly in the response (alternative format)
+        if (data.ai_recommendation) {
+          console.log('Found direct AI recommendation for', stock.companyName, ':', data.ai_recommendation);
+          setAiModal(prev => ({ ...prev, loading: false, recommendation: data.ai_recommendation }));
+          return;
+        }
+        
+        // Otherwise, find recommendation for this specific stock from the holdings array
         let stockRecommendation = null;
         
         if (data.holdings && Array.isArray(data.holdings)) {
